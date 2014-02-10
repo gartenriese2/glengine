@@ -1,10 +1,13 @@
 #ifndef _WINDOW_
 #define _WINDOW_
 
-#include "../includes/glew/include/GL/glew.h"
-#include "../includes/glfw/include/GLFW/glfw3.h"
+#include "../includes/glew.h"
+#include "../includes/glfw3.h"
+
+#include "loop.hpp"
 
 #include <string>
+#include <thread>
 
 class Window {
 
@@ -12,6 +15,10 @@ class Window {
 
 		Window(unsigned int, unsigned int);
 		Window(unsigned int, unsigned int, const std::string &);
+
+		~Window();
+
+		GLFWwindow * getWindow() { return m_window; }
 
 	protected:
 
@@ -21,7 +28,8 @@ class Window {
 		unsigned int m_width;
 		unsigned int m_height;
 
-		GLFWwindow * window;
+		GLFWwindow * m_window;
+		Loop m_loop;
 
 };
 

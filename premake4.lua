@@ -26,8 +26,7 @@ project "main"
 
     flags {"Symbols"}
     buildoptions {"-std=c++11", "-Wall", "-pedantic"}
-    -- linkoptions { "../includes/libglfw3.a" , "../includes/libGLEW.a" }
-    links { "pthread", "GL", "GLU", "glfw3", "X11", "Xxf86vm", "Xi", "Xrandr" }
+    links {"glfw3", "pthread", "X11", "Xrandr", "Xxf86vm", "Xi", "GL"}
 
     if (use_clang) then
         buildoptions {"-stdlib=libc++"}
