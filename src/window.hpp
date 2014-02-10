@@ -18,8 +18,6 @@ class Window {
 
 		~Window();
 
-		GLFWwindow * getWindow() { return m_window; }
-
 	protected:
 
 		void init(unsigned int, unsigned int, const std::string &);
