@@ -14,7 +14,7 @@ Engine::~Engine() {
 
 void Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
 
-	m_rendering = new std::thread(&Engine::windowThread, * this, width, height, title);
+	m_rendering = new std::thread(&Engine::windowThread, width, height, title);
 
 }
 

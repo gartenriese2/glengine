@@ -1,23 +1,16 @@
 #include "engine.hpp"
-#include "window.hpp"
 
 #include <unistd.h>
-#include <thread>
-
-void threadTest() {
-
-	Window w(800, 600, "Hallo Welt");
-
-}
 
 int main() {
 
-	// Window w(800, 600, "Hallo Welt");
-	// Engine e;
-	// e.createWindow(800, 600);
-	std::thread t(threadTest);
+	Engine e;
+	e.createWindow(800, 600);
+	sleep(1);
+	e.createWindow(200, 200);
+	
 	sleep(5);
-	t.join();
+	
 	return 0;
 
 }

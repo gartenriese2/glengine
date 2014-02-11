@@ -15,7 +15,7 @@ class Engine {
 
 	private:
 
-		void windowThread(unsigned int, unsigned int, const std::string &);
+		static void windowThread(unsigned int, unsigned int, const std::string &);
 
 		std::thread * m_rendering;
 
