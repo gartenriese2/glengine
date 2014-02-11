@@ -1,8 +1,7 @@
 #ifndef _LOOP_
 #define _LOOP_
 
-#include "../includes/glew.h"
-#include "../includes/glfw3.h"
+#include "glincludes.hpp"
 
 class Loop {
 
@@ -11,6 +10,10 @@ class Loop {
 		Loop();
 
 		void start(GLFWwindow *);
+
+	private:
+
+		void playground();
 
 };
 

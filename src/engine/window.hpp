@@ -1,10 +1,8 @@
 #ifndef _WINDOW_
 #define _WINDOW_
 
-#include "../includes/glew.h"
-#include "../includes/glfw3.h"
-
 #include "loop.hpp"
+#include "glincludes.hpp"
 
 #include <string>
 #include <thread>
