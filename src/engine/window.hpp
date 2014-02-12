@@ -1,8 +1,8 @@
 #ifndef _WINDOW_
 #define _WINDOW_
 
-#include "loop.hpp"
-#include "glincludes.hpp"
+#include "gl/loop.hpp"
+#include "gl/glincludes.hpp"
 
 #include <string>
 #include <thread>

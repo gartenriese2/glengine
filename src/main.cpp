@@ -1,6 +1,7 @@
 #include "engine/engine.hpp"
 
 #include <unistd.h>
+#include <iostream>
 
 int main() {
 
@@ -10,6 +11,7 @@ int main() {
 	// e.createWindow(200, 200);
 	
 	sleep(2);
+	std::cout << "Hello World!\n";
 	
 	return 0;
 
