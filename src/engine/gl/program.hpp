@@ -3,6 +3,7 @@
 
 #include "shader.hpp"
 #include "../glmincludes.hpp"
+#include "uniform.hpp"
 
 #include <map>
 
@@ -10,21 +11,22 @@ class Program {
 
  	public:
 
- 		Program();
- 		~Program();
+		Program();
+		~Program();
 
- 		// const int & operator[](const std::string & idx) const; // TODO!
- 		void transmit(const std::string &, const glm::mat4 &);
+ 		Uniform operator[](const std::string & name) const;
 
- 		void attachShader(const Shader &);
- 		void use();
+		void attachShader(const Shader &);
+		void use();
 
  	private:
 
- 		GLuint m_program;
- 		bool m_linked;
+		void link();
 
- 		std::map<const std::string, GLuint> m_handles;
+		GLuint m_program;
+		bool m_linked;
+
+		std::map<const std::string, GLuint> m_uniforms;
 
 };
 

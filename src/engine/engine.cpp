@@ -8,13 +8,15 @@ Engine::Engine() {
 
 Engine::~Engine() {
 
-	m_rendering->join();
+	for (const auto thread : m_windowThreads) {
+		thread->join();
+	}
 
 }
 
 void Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
 
-	m_rendering = new std::thread(&Engine::windowThread, width, height, title);
+	m_windowThreads.emplace_back(new std::thread(&Engine::windowThread, width, height, title));
 
 }
 

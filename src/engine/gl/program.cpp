@@ -21,54 +21,72 @@ Program::~Program() {
 
 }
 
+Uniform Program::operator[](const std::string & name) const {
+	
+	auto it = m_uniforms.find(name);
+	if (it != m_uniforms.end()) {
+		return Uniform(it->second);
+	}
+	return Uniform(-1);
+		
+}
+
+
 void Program::attachShader(const Shader & shader) {
 	
 	glAttachShader(m_program, shader());
 
 }
 
-void Program::use() {
+void Program::link() {
 
-	if (!m_linked) {
+	glLinkProgram(m_program);
 
-		glLinkProgram(m_program);
+	GLint success = GL_FALSE;
+	glGetProgramiv(m_program, GL_LINK_STATUS, &success);
+	
+	if (!success) {
 
-		GLint success = GL_FALSE;
-		glGetProgramiv(m_program, GL_LINK_STATUS, &success);
-		
-		if (!success) {
+		GLint logSize = 0;
+		glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &logSize);
 
-			GLint logSize = 0;
-			glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &logSize);
+		std::vector<char> tmp;
+		tmp.reserve(logSize);
+		glGetProgramInfoLog(m_program, logSize, NULL, &tmp[0]);
 
-			std::vector<char> tmp;
-			tmp.reserve(logSize);
-			glGetProgramInfoLog(m_program, logSize, NULL, &tmp[0]);
-
-			Debug::log("Program linking failed with the following error:\n");
-			if (tmp.size() != 0) Debug::log(tmp[0]);
-			exit(0);
-
-		}
-
-		m_linked = true;
+		Debug::log("Program linking failed with the following error:\n");
+		if (tmp.size() != 0) Debug::log(tmp[0]);
+		exit(0);
 
 	}
 
-	glUseProgram(m_program);
+	m_linked = true;
+
+	m_uniforms.clear();
+
+	GLint numUniforms;
+	glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, & numUniforms);
+	GLint maxLength;
+	glGetProgramiv(m_program, GL_ACTIVE_UNIFORM_MAX_LENGTH, & maxLength);
+	std::unique_ptr<char[]> buffer{new char[maxLength]};
+	GLint size = 1;
+	GLsizei length = 1;
+	GLenum type = 0;
+	for (GLuint i = 0; i < numUniforms; ++i) {
+		
+		glGetActiveUniform(m_program, i, maxLength, &length, &size, &type, buffer.get());
+		m_uniforms.emplace(std::string(buffer.get()), i);
+
+	}
 
 }
 
-void Program::transmit(const std::string & name, const glm::mat4 & value) {
+void Program::use() {
 
-	GLuint handle;
-	if (m_handles.count(name) == 0) {
-		handle = glGetUniformLocation(m_program, name.c_str());
-		m_handles[name] = handle;
-	} else {
-		handle = m_handles[name];
+	if (!m_linked) {
+		link();
 	}
 
-	glUniformMatrix4fv(handle, 1, GL_FALSE, & value[0][0]);
+	glUseProgram(m_program);
 
 }

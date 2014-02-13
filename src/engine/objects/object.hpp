@@ -18,6 +18,7 @@ class Object {
 	protected:
 
 		GLuint m_vertexBuffer;
+		GLuint m_colorBuffer;
 		GLuint m_vertexArray;
 
 		glm::mat4 m_modelMatrix;

@@ -4,8 +4,9 @@ Object::Object()
   : m_modelMatrix(glm::mat4(1.f))
 {
 
-	glGenBuffers(1, &m_vertexBuffer);
-	glGenVertexArrays(1, &m_vertexArray);
+	glGenBuffers(1, & m_vertexBuffer);
+	glGenBuffers(1, & m_colorBuffer);
+	glGenVertexArrays(1, & m_vertexArray);
 
 }
 

@@ -10,8 +10,13 @@ class Triangle : public Primitive {
 	public:
 
 		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
+		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 
 		void draw() const;
+
+	private:
+
+		void init(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 
 };
 

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <thread>
+#include <vector>
 
 class Engine {
 
@@ -17,7 +18,7 @@ class Engine {
 
 		static void windowThread(unsigned int, unsigned int, const std::string &);
 
-		std::thread * m_rendering;
+		std::vector<std::thread *> m_windowThreads;
 
 };
 
