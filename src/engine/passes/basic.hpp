@@ -1,26 +1,17 @@
 #ifndef _BASIC_
 #define _BASIC_
 
-#include "../objects/object.hpp"
-#include "../gl/program.hpp"
+#include "pass.hpp"
 
-#include <vector>
-#include <memory>
-
-class Basic {
+class Basic : public Pass {
 
  	public:
 
  		Basic();
 
- 		void draw();
-
- 		void addObjects(const Object &);
+ 		void draw(const Camera &);
 
  	private:
-
- 		std::vector<const Object *> m_objects;
- 		Program m_program;
 
 };
 

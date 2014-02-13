@@ -51,8 +51,24 @@ void Program::use() {
 
 		}
 
+		m_linked = true;
+
 	}
 
 	glUseProgram(m_program);
+
+}
+
+void Program::transmit(const std::string & name, const glm::mat4 & value) {
+
+	GLuint handle;
+	if (m_handles.count(name) == 0) {
+		handle = glGetUniformLocation(m_program, name.c_str());
+		m_handles[name] = handle;
+	} else {
+		handle = m_handles[name];
+	}
+
+	glUniformMatrix4fv(handle, 1, GL_FALSE, & value[0][0]);
 
 }

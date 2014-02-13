@@ -1,11 +1,11 @@
 #include "camera.hpp"
 
-Camera::Camera(const glm::vec3 & pos, const glm::vec3 & look, const glm::vec3 & up, float fov, int width, int height, float near, float far)
+Camera::Camera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & up, float fov, int width, int height, float near, float far)
   : m_width(width),
   	m_height(height),
   	m_fov(fov),
   	m_pos(pos),
-  	m_dir(glm::normalize(look)),
+  	m_dir(glm::normalize(dir)),
   	m_up(glm::normalize(up)),
   	m_initPos(pos),
   	m_initDir(m_dir),

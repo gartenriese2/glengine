@@ -2,6 +2,9 @@
 #define _PROGRAM_
 
 #include "shader.hpp"
+#include "../glmincludes.hpp"
+
+#include <map>
 
 class Program {
 
@@ -10,6 +13,9 @@ class Program {
  		Program();
  		~Program();
 
+ 		// const int & operator[](const std::string & idx) const; // TODO!
+ 		void transmit(const std::string &, const glm::mat4 &);
+
  		void attachShader(const Shader &);
  		void use();
 
@@ -17,6 +23,8 @@ class Program {
 
  		GLuint m_program;
  		bool m_linked;
+
+ 		std::map<const std::string, GLuint> m_handles;
 
 };
 

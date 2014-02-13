@@ -9,7 +9,7 @@ Basic::Basic() {
 
 }
 
-void Basic::draw() {
+void Basic::draw(const Camera & cam) {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0, 0, 0, 1);
@@ -18,14 +18,10 @@ void Basic::draw() {
 
 	for (const auto obj : m_objects) {
 
+		// m_program["MVP"] = cam.getProjMat() * cam.getViewMat() * obj->getModelMatrix(); // TODO!
+		m_program.transmit("MVP", cam.getProjMat() * cam.getViewMat() * obj->getModelMatrix());
 		obj->draw();
 
 	}
-
-}
-
-void Basic::addObjects(const Object & obj) {
-
-	m_objects.emplace_back(& obj);
 
 }
