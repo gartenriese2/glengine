@@ -24,6 +24,7 @@ void Loop::start(GLFWwindow * window) const {
 	{
 		t1.rotate(0.001f, {0.f, 0.f, 1.f});
 		t3.rotate(0.0005f, {0.f, 0.f, 1.f});
+		t2.rotate(0.0001f, {1.f, 0.f, 0.f});
 
 		/* Render here */
 
