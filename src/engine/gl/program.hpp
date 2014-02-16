@@ -16,7 +16,7 @@ class Program {
 
  		Uniform operator[](const std::string & name) const;
 
-		void attachShader(const Shader &);
+		void attachShader(const Shader &) const;
 		void use();
 
  	private:

@@ -32,7 +32,7 @@ Uniform Program::operator[](const std::string & name) const {
 }
 
 
-void Program::attachShader(const Shader & shader) {
+void Program::attachShader(const Shader & shader) const {
 	
 	glAttachShader(m_program, shader());
 

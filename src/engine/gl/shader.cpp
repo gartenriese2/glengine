@@ -65,7 +65,7 @@ Shader::~Shader() {
 
 }
 
-const std::string Shader::getShaderCode(const std::string & file) {
+const std::string Shader::getShaderCode(const std::string & file) const {
 
 	std::string code;
 	std::ifstream stream(file, std::ifstream::in);

@@ -9,7 +9,7 @@ class Loop {
 
 		Loop();
 
-		void start(GLFWwindow *);
+		void start(GLFWwindow *) const;
 
 };
 

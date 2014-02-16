@@ -1,6 +1,7 @@
 #include "engine.hpp"
 
 #include "window.hpp"
+#include "debug.hpp"
 
 Engine::Engine() {
 
@@ -8,8 +9,10 @@ Engine::Engine() {
 
 Engine::~Engine() {
 
-	for (const auto thread : m_windowThreads) {
+	for (auto thread : m_windowThreads) {
+		// DEB
 		thread->join();
+		// DEB
 	}
 
 }

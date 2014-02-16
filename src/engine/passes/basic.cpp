@@ -19,7 +19,6 @@ void Basic::draw(const Camera & cam) {
 	for (const auto obj : m_objects) {
 
 		m_program["MVP"] = cam.getProjMat() * cam.getViewMat() * obj->getModelMatrix();
-		// m_program.transmit("MVP", cam.getProjMat() * cam.getViewMat() * obj->getModelMatrix());
 		obj->draw();
 
 	}

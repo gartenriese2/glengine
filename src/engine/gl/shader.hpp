@@ -18,7 +18,7 @@ class Shader {
 
   		GLuint m_shader;
 
-  		const std::string getShaderCode(const std::string &);
+  		const std::string getShaderCode(const std::string &) const;
 
 };
 

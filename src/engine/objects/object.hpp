@@ -23,6 +23,8 @@ class Object {
 
 		glm::mat4 m_modelMatrix;
 
+		glm::vec3 m_center;
+
 };
 
 #endif // _OBJECT_
