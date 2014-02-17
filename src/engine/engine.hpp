@@ -18,6 +18,8 @@ class Engine {
 
 		static void windowThread(unsigned int, unsigned int, const std::string &);
 
+		void init();
+
 		std::vector<std::thread *> m_windowThreads;
 
 };

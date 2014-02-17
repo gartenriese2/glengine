@@ -17,15 +17,10 @@ Window::Window(unsigned int width, unsigned int height, const std::string & titl
 }
 
 Window::~Window() {
-	glfwTerminate();
+	glfwDestroyWindow(m_window);
 }
 
 void Window::init(unsigned int width, unsigned int height, const std::string & title) {
-
-	if (!glfwInit()) {
-		Debug::log("Could not initialize GLFW!");
-		exit(0);
-	}
 
 	m_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	if (!m_window) {

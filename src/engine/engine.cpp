@@ -5,6 +5,8 @@
 
 Engine::Engine() {
 
+	init();
+
 }
 
 Engine::~Engine() {
@@ -13,6 +15,17 @@ Engine::~Engine() {
 		// DEB
 		thread->join();
 		// DEB
+	}
+
+	glfwTerminate();
+
+}
+
+void Engine::init() {
+
+	if (!glfwInit()) {
+		Debug::log("Could not initialize GLFW!");
+		exit(0);
 	}
 
 }
