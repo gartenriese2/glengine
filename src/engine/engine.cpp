@@ -11,10 +11,8 @@ Engine::Engine() {
 
 Engine::~Engine() {
 
-	for (auto thread : m_windowThreads) {
-		// DEB
-		thread->join();
-		// DEB
+	for (const auto & thread : m_windowThreads) {
+		thread.second->join();
 	}
 
 	glfwTerminate();
@@ -30,9 +28,11 @@ void Engine::init() {
 
 }
 
-void Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
+WindowID Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
 
-	m_windowThreads.emplace_back(new std::thread(&Engine::windowThread, width, height, title));
+	static WindowID windowCounter = 0;
+	m_windowThreads[windowCounter++] = std::unique_ptr<std::thread>(new std::thread(&Engine::windowThread, width, height, title));
+	return windowCounter - 1;
 
 }
 

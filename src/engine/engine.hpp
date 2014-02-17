@@ -3,7 +3,10 @@
 
 #include <string>
 #include <thread>
-#include <vector>
+#include <map>
+#include <memory>
+
+using WindowID = unsigned int;
 
 class Engine {
 
@@ -12,7 +15,7 @@ class Engine {
 		Engine();
 		~Engine();
 
-		void createWindow(unsigned int, unsigned int, const std::string & = "Default Title");
+		WindowID createWindow(unsigned int, unsigned int, const std::string & = "Default Title");
 
 	private:
 
@@ -20,7 +23,7 @@ class Engine {
 
 		void init();
 
-		std::vector<std::thread *> m_windowThreads;
+		std::map<WindowID, std::unique_ptr<std::thread>> m_windowThreads;
 
 };
 
