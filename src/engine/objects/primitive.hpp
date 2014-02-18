@@ -6,8 +6,6 @@
 class Primitive : public Object {
 
  	public:
-		
-		Primitive();
 
 		virtual void draw() const = 0;
 

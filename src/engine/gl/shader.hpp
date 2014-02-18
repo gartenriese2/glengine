@@ -10,6 +10,10 @@ class Shader {
   	public:
 
   		Shader(const std::string &);
+  		Shader(const Shader &) = delete;
+		Shader(Shader &&) = delete;
+		Shader & operator=(const Shader &) = delete;
+		Shader & operator=(Shader &&) = delete;
   		~Shader();
 
   		GLuint operator()() const { return m_shader; }

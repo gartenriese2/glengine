@@ -34,6 +34,10 @@ class Debug {
 	private:
 
 		Debug();
+		Debug(const Debug &) = delete;
+		Debug(Debug &&) = delete;
+		Debug & operator=(const Debug &) = delete;
+		Debug & operator=(Debug &&) = delete;
 		virtual ~Debug();
 
 		Debug & instance();

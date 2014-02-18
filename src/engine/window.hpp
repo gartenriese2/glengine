@@ -10,10 +10,12 @@
 class Window {
 
 	public:
-
-		Window(unsigned int, unsigned int);
+		
 		Window(unsigned int, unsigned int, const std::string &);
-
+		Window(const Window &) = delete;
+		Window(Window &&) = delete;
+		Window & operator=(const Window &) = delete;
+		Window & operator=(Window &&) = delete;
 		~Window();
 
 	protected:

@@ -12,6 +12,10 @@ class Pass {
 	public:
 	
 		Pass();
+		Pass(const Pass &) = delete;
+		Pass(Pass &&) = delete;
+		Pass & operator=(const Pass &) = delete;
+		Pass & operator=(Pass &&) = delete;
 
 		virtual void draw(const Camera &) = 0;
 

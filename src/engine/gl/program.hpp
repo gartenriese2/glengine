@@ -12,6 +12,10 @@ class Program {
  	public:
 
 		Program();
+		Program(const Program &) = delete;
+		Program(Program &&) = delete;
+		Program & operator=(const Program &) = delete;
+		Program & operator=(Program &&) = delete;
 		~Program();
 
  		Uniform operator[](const std::string & name) const;

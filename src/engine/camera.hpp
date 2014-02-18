@@ -9,6 +9,8 @@ class Camera {
 
 		Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, int, int, float, float);
 		// Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, float, float, float);
+		Camera(Camera &&) = default;
+		Camera & operator=(Camera &&) = default;
 
 		const glm::mat4 & getViewMat() const { return m_view; }
 		const glm::mat4 & getProjMat() const { return m_proj; }

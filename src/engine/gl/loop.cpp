@@ -3,6 +3,8 @@
 #include "program.hpp"
 #include "../passes/basic.hpp"
 #include "../objects/triangle.hpp"
+#include "../objects/quadrilateral.hpp"
+#include "../debug.hpp"
 
 Loop::Loop() {
 }
@@ -13,9 +15,12 @@ void Loop::start(GLFWwindow * window) const {
 	Triangle t1({-1.f, -1.f, 0.f}, {1.f, -1.f, 0.f}, {0.f, 1.f, 0.f});
 	Triangle t2({-2.f, -2.f, 1.f}, {0.f, -2.f, 1.f}, {-1.f, 0.f, 1.f}, {1.f, 1.f, 0.f});
 	Triangle t3({0.f, 0.f, -1.f}, {2.f, 0.f, -1.f}, {1.f, 2.f, -1.f}, {{1.f, 1.f, 0.f}, {0.f, 1.f, 1.f}});
+	Quadrilateral q({-2.f, -2.f, 0.f}, {2.f, -2.f, 0.f}, {2.f, 2.f, 0.f}, {-2.f, 2.f, 0.f},
+		{{0.f, 1.f, 1.f}, {1.f, 0.f, 1.f}, {1.f, 1.f, 1.f}, {0.f, 0.f, 1.f}});
 	b.addObjects(t1);
 	b.addObjects(t2);
 	b.addObjects(t3);
+	b.addObjects(q);
 	Camera cam({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f}, 45.f, 800, 600, 0.1f, 10.f);
 
 	glEnable(GL_DEPTH_TEST);
@@ -35,6 +40,7 @@ void Loop::start(GLFWwindow * window) const {
 
 		/* Poll for and process events */
 		glfwPollEvents();
+
 	}
 
 }

@@ -2,13 +2,6 @@
 
 #include "debug.hpp"
 
-Window::Window(unsigned int width, unsigned int height)
-  : m_width(width),
-	m_height(height)
-{
-	init(m_width, m_height, "Title");
-}
-
 Window::Window(unsigned int width, unsigned int height, const std::string & title)
   : m_width(width),
 	m_height(height)
