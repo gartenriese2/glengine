@@ -5,7 +5,10 @@
 static const glm::vec3 k_defaultColor {1.f, 0.f, 0.f};
 
 Object::Object()
-  : m_modelMatrix(glm::mat4(1.f))
+  : m_modelMatrix(glm::mat4(1.f)),
+  	m_scaleMatrix(glm::mat4(1.f)),
+  	m_rotationMatrix(glm::mat4(1.f)),
+  	m_translationMatrix(glm::mat4(1.f))
 {
 
 	glGenBuffers(1, & m_vertexBuffer);
@@ -26,9 +29,72 @@ Object::~Object() {
 
 void Object::rotate(float radians, const glm::vec3 & axis) {
 
-	m_modelMatrix = glm::translate(m_modelMatrix, m_center);
-	m_modelMatrix = glm::rotate(m_modelMatrix, radians, axis);
-	m_modelMatrix = glm::translate(m_modelMatrix, -m_center);
+	if (glm::length(axis) != 0.f) {
+
+		m_rotationMatrix = glm::translate(m_rotationMatrix, m_center);
+		m_rotationMatrix = glm::rotate(m_rotationMatrix, radians, axis);
+		m_rotationMatrix = glm::translate(m_rotationMatrix, -m_center);
+		m_modelMatrix = m_translationMatrix * m_rotationMatrix * m_scaleMatrix;
+
+	}
+
+}
+
+void Object::rotateAround(float radians, const glm::vec3 & axis, const glm::vec3 & point) {
+
+	if (glm::length(axis) != 0.f) {
+		
+		rotate(radians, axis);
+
+		// http://inside.mines.edu/~gmurray/ArbitraryAxisRotation/ArbitraryAxisRotation.html -> Section 6.2
+		float x = m_actualPosition.x;
+		float y = m_actualPosition.y;
+		float z = m_actualPosition.z;
+		float a = point.x;
+		float b = point.y;
+		float c = point.z;
+		glm::vec3 nAxis = glm::normalize(axis);
+		float u = nAxis.x;
+		float v = nAxis.y;
+		float w = nAxis.z;
+
+		float retX = (a * (v*v + w*w) - u * (b*v + c*w - u*x - v*y - w*z)) * (1 - glm::cos(radians))
+			+ x * glm::cos(radians) + (-c*v + b*w - w*y + v*z) * glm::sin(radians);
+		float retY = (b * (u*u + w*w) - v * (a*u + c*w - u*x - v*y - w*z)) * (1 - glm::cos(radians))
+			+ y * glm::cos(radians) + (c*u - a*w + w*x - u*z) * glm::sin(radians);
+		float retZ = (c * (u*u + v*v) - w * (a*u + b*v - u*x - v*y - w*z)) * (1 - glm::cos(radians))
+			+ z * glm::cos(radians) + (-b*u + a*v - v*x + u*y) * glm::sin(radians);
+
+		moveTo({retX, retY, retZ});
+
+	}
+
+}
+
+void Object::move(float val, const glm::vec3 & dir) {
+
+	if (glm::length(dir) != 0.f) {
+
+		m_translationMatrix = glm::translate(m_translationMatrix, val * dir);
+		m_modelMatrix = m_translationMatrix * m_rotationMatrix * m_scaleMatrix;
+		m_actualPosition += (val * dir);
+
+	}
+
+}
+
+void Object::moveTo(const glm::vec3 & to) {
+
+	m_translationMatrix = glm::translate(m_translationMatrix, to - m_actualPosition);
+	m_modelMatrix = m_translationMatrix * m_rotationMatrix * m_scaleMatrix;
+	m_actualPosition = to;
+
+}
+
+void Object::setCenter(const glm::vec3 & center) {
+
+	m_center = center;
+	m_actualPosition = center;
 
 }
 

@@ -29,6 +29,11 @@ class Object {
 		virtual void draw() const = 0;
 		const glm::mat4 & getModelMatrix() const { return m_modelMatrix; }
 		void rotate(float, const glm::vec3 &);
+		void rotateAround(float, const glm::vec3 &, const glm::vec3 &);
+		void move(float, const glm::vec3 &);
+		void moveTo(const glm::vec3 &);
+
+		bool hasAttachments() const { return !m_attachedObjects.empty(); }
 
 		GLuint m_vertexBuffer;
 		GLuint m_colorBuffer;
@@ -36,8 +41,16 @@ class Object {
 		GLuint m_vertexArray;
 
 		glm::mat4 m_modelMatrix;
+		glm::mat4 m_scaleMatrix;
+		glm::mat4 m_rotationMatrix;
+		glm::mat4 m_translationMatrix;
 
 		glm::vec3 m_center;
+		glm::vec3 m_actualPosition;
+
+		std::vector<unsigned long> m_attachedObjects;
+
+		void setCenter(const glm::vec3 &);
 
 		const std::vector<GLfloat> getColorVector(const std::initializer_list<glm::vec3> &, unsigned int) const;
 		const std::vector<GLfloat> getColorVector(const glm::vec3 &, unsigned int) const;

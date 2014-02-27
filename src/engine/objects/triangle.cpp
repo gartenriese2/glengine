@@ -20,7 +20,7 @@ Triangle::Triangle(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c
 
 void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const std::vector<GLfloat> & colors) {
 
-	m_center = ((a + b) / 2.f + c) / 2.f;
+	setCenter((a + b + c) / 3.f);
 
 	glBindVertexArray(m_vertexArray);
 

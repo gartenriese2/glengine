@@ -21,7 +21,7 @@ Quadrilateral::Quadrilateral(const glm::vec3 & a, const glm::vec3 & b, const glm
 void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & d,
 	const std::vector<GLfloat> & colors) {
 
-	m_center = (a + b + c + d) / 4.f;
+	setCenter((a + b + c + d) / 4.f);
 
 	std::vector<GLfloat> vertices {
 	   a.x, a.y, a.z,
