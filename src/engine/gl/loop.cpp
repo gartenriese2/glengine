@@ -2,8 +2,7 @@
 
 #include "program.hpp"
 #include "../passes/basic.hpp"
-#include "../objects/triangle.hpp"
-#include "../objects/quadrilateral.hpp"
+#include "../objects/objectinterface.hpp"
 #include "../debug.hpp"
 
 Loop::Loop() {
@@ -12,10 +11,10 @@ Loop::Loop() {
 void Loop::start(GLFWwindow * window) const {
 
 	Basic b;
-	Triangle t1({-1.f, -1.f, 0.f}, {1.f, -1.f, 0.f}, {0.f, 1.f, 0.f});
-	Triangle t2({-2.f, -2.f, 1.f}, {0.f, -2.f, 1.f}, {-1.f, 0.f, 1.f}, {1.f, 1.f, 0.f});
-	Triangle t3({0.f, 0.f, -1.f}, {2.f, 0.f, -1.f}, {1.f, 2.f, -1.f}, {{1.f, 1.f, 0.f}, {0.f, 1.f, 1.f}});
-	Quadrilateral q({-2.f, -2.f, 0.f}, {2.f, -2.f, 0.f}, {2.f, 2.f, 0.f}, {-2.f, 2.f, 0.f},
+	ObjectID t1 = ObjectInterface::createTriangle({-1.f, -1.f, 0.f}, {1.f, -1.f, 0.f}, {0.f, 1.f, 0.f});
+	ObjectID t2 = ObjectInterface::createTriangle({-2.f, -2.f, 1.f}, {0.f, -2.f, 1.f}, {-1.f, 0.f, 1.f}, {1.f, 1.f, 0.f});
+	ObjectID t3 = ObjectInterface::createTriangle({0.f, 0.f, -1.f}, {2.f, 0.f, -1.f}, {1.f, 2.f, -1.f}, {{1.f, 1.f, 0.f}, {0.f, 1.f, 1.f}});
+	ObjectID q = ObjectInterface::createQuadrilateral({-2.f, -2.f, 0.f}, {2.f, -2.f, 0.f}, {2.f, 2.f, 0.f}, {-2.f, 2.f, 0.f},
 		{{0.f, 1.f, 1.f}, {1.f, 0.f, 1.f}, {1.f, 1.f, 1.f}, {0.f, 0.f, 1.f}});
 	b.addObjects(t1);
 	b.addObjects(t2);
@@ -27,9 +26,9 @@ void Loop::start(GLFWwindow * window) const {
 
 	while (!glfwWindowShouldClose(window))
 	{
-		t1.rotate(0.001f, {0.f, 0.f, 1.f});
-		t3.rotate(0.0005f, {0.f, 0.f, 1.f});
-		t2.rotate(0.0001f, {1.f, 0.f, 0.f});
+		ObjectInterface::rotate(t1, 0.001f, {0.f, 0.f, 1.f});
+		ObjectInterface::rotate(t3, 0.0005f, {0.f, 0.f, 1.f});
+		ObjectInterface::rotate(t2, 0.0001f, {1.f, 0.f, 0.f});
 
 		/* Render here */
 

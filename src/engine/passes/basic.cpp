@@ -16,10 +16,10 @@ void Basic::draw(const Camera & cam) {
 
 	m_program.use();
 
-	for (const auto obj : m_objects) {
+	for (auto id : m_objects) {
 
-		m_program["MVP"] = cam.getProjMat() * cam.getViewMat() * obj->getModelMatrix();
-		obj->draw();
+		m_program["MVP"] = cam.getProjMat() * cam.getViewMat() * ObjectInterface::getModelMatrix(id);
+		ObjectInterface::draw(id);
 
 	}
 

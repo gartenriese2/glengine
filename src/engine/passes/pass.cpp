@@ -3,8 +3,8 @@
 Pass::Pass() {
 }
 
-void Pass::addObjects(const Object & obj) {
+void Pass::addObjects(ObjectID id) {
 
-	m_objects.emplace_back(& obj);
+	m_objects.emplace_back(id);
 
 }

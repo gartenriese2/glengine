@@ -23,7 +23,7 @@ class Object {
 
 		const glm::mat4 & getModelMatrix() const { return m_modelMatrix; }
 
-		void rotate(float radians, const glm::vec3 &);
+		void rotate(float, const glm::vec3 &);
 
 	protected:
 
