@@ -7,9 +7,22 @@
 #include <initializer_list>
 #include <vector>
 
+class ObjectInterface;
+
 class Triangle : public Primitive {
 
 	public:
+	
+		Triangle(const Triangle &) = delete;
+		Triangle(Triangle &&) = delete;
+		Triangle & operator=(const Triangle &) = delete;
+		Triangle & operator=(Triangle &&) = delete;
+
+		virtual ~Triangle() {}
+
+	protected:
+
+		friend ObjectInterface;
 
 		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});

@@ -7,9 +7,22 @@
 #include <initializer_list>
 #include <vector>
 
+class ObjectInterface;
+
 class Quadrilateral : public Primitive {
 
 	public:
+	
+		Quadrilateral(const Quadrilateral &) = delete;
+		Quadrilateral(Quadrilateral &&) = delete;
+		Quadrilateral & operator=(const Quadrilateral &) = delete;
+		Quadrilateral & operator=(Quadrilateral &&) = delete;
+
+		virtual ~Quadrilateral() {}
+
+	protected:
+
+		friend ObjectInterface;
 
 		Quadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &);

@@ -7,11 +7,12 @@
 #include <vector>
 #include <initializer_list>
 
+class ObjectInterface;
+
 class Object {
 
 	public:
 	
-		Object();
 		Object(const Object &) = delete;
 		Object(Object &&) = delete;
 		Object & operator=(const Object &) = delete;
@@ -19,13 +20,15 @@ class Object {
 
 		virtual ~Object();
 
-		virtual void draw() const = 0;
-
-		const glm::mat4 & getModelMatrix() const { return m_modelMatrix; }
-
-		void rotate(float, const glm::vec3 &);
-
 	protected:
+
+		friend ObjectInterface;
+
+		Object();
+
+		virtual void draw() const = 0;
+		const glm::mat4 & getModelMatrix() const { return m_modelMatrix; }
+		void rotate(float, const glm::vec3 &);
 
 		GLuint m_vertexBuffer;
 		GLuint m_colorBuffer;
