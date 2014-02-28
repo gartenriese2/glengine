@@ -18,21 +18,25 @@ Triangle::Triangle(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c
 
 }
 
+std::shared_ptr<Object> Triangle::getCopy() {
+
+	return std::shared_ptr<Object>(new Triangle(*this));
+
+}
+
 void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const std::vector<GLfloat> & colors) {
 
 	setCenter((a + b + c) / 3.f);
 
-	glBindVertexArray(m_vertexArray);
-
-	bindVertices({
+	m_vertexBuffer.insertData<GLfloat>({
 		a.x, a.y, a.z,
 		b.x, b.y, b.z,
 		c.x, c.y, c.z
 	});
+	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 
-	bindColors(colors);
-
-	glBindVertexArray(0);
+	m_colorBuffer.insertData(colors);
+	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
 }
 

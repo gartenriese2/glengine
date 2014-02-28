@@ -26,6 +26,8 @@ class ObjectInterface {
 		static ObjectID createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &,	const std::initializer_list<glm::vec3> & = {});
 
+		static ObjectID copyObject(ObjectID);
+
 
 		static void draw(ObjectID);
 		static const glm::mat4 & getModelMatrix(ObjectID);

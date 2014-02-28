@@ -11,18 +11,54 @@ Object::Object()
   	m_translationMatrix(glm::mat4(1.f))
 {
 
-	glGenBuffers(1, & m_vertexBuffer);
-	glGenBuffers(1, & m_colorBuffer);
-	glGenBuffers(1, & m_indexBuffer);
-	glGenVertexArrays(1, & m_vertexArray);
+	glGenVertexArrays(1, &m_vertexArray);
+
+}
+
+Object::Object(const Object & other)
+  : m_modelMatrix(other.m_modelMatrix),
+  	m_scaleMatrix(other.m_scaleMatrix),
+  	m_rotationMatrix(other.m_rotationMatrix),
+  	m_translationMatrix(other.m_translationMatrix),
+  	m_center(other.m_center),
+  	m_actualPosition(other.m_actualPosition)
+{
+Debug::log(m_center);
+	
+	glGenVertexArrays(1, &m_vertexArray);
+
+	glBindVertexArray(m_vertexArray);
+
+	GLint size = 0;
+
+	// glBindBuffer(GL_COPY_READ_BUFFER, other.m_indexBuffer);
+	// glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &size);Debug::log(size);
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
+	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW);
+	// glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_ELEMENT_ARRAY_BUFFER, 0, 0, size);
+// Debug::log(size);
+// 	glBindBuffer(GL_COPY_READ_BUFFER, other.m_vertexBuffer);
+// 	glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &size);
+// 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
+// 	glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW);
+// 	glCopyBufferSubData(other.m_vertexBuffer, m_vertexBuffer, 0, 0, size);
+// 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *) 0);
+// 	glEnableVertexAttribArray(0);
+// Debug::log(size);
+// 	glBindBuffer(GL_COPY_READ_BUFFER, other.m_colorBuffer);
+// 	glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &size);
+// 	glBindBuffer(GL_ARRAY_BUFFER, m_colorBuffer);
+// 	glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW);
+// 	glCopyBufferSubData(other.m_colorBuffer, m_colorBuffer, 0, 0, size);
+// 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *) 0);
+// 	glEnableVertexAttribArray(1);
+Debug::log(size);
+	glBindVertexArray(0);
 
 }
 
 Object::~Object() {
 
-	glDeleteBuffers(1, & m_vertexBuffer);
-	glDeleteBuffers(1, & m_colorBuffer);
-	glDeleteBuffers(1, & m_indexBuffer);
 	glDeleteVertexArrays(1, & m_vertexArray);
 
 }
@@ -137,12 +173,5 @@ const std::vector<GLfloat> Object::getColorVector(const glm::vec3 & color, unsig
 	}
 
 	return v;
-
-}
-
-void Object::bindIndices(const std::vector<GLushort> & v) {
-	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
-	bufferData(GL_ELEMENT_ARRAY_BUFFER, v, GL_STATIC_DRAW);
 
 }

@@ -13,7 +13,6 @@ class Quadrilateral : public Primitive {
 
 	public:
 	
-		Quadrilateral(const Quadrilateral &) = delete;
 		Quadrilateral(Quadrilateral &&) = delete;
 		Quadrilateral & operator=(const Quadrilateral &) = delete;
 		Quadrilateral & operator=(Quadrilateral &&) = delete;
@@ -28,6 +27,9 @@ class Quadrilateral : public Primitive {
 			const glm::vec3 &);
 		Quadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::initializer_list<glm::vec3> & = {});
+		Quadrilateral(const Quadrilateral & q) : Primitive(q) {}
+
+		std::shared_ptr<Object> getCopy();
 
 		void draw() const;
 

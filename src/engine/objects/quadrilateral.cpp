@@ -18,35 +18,33 @@ Quadrilateral::Quadrilateral(const glm::vec3 & a, const glm::vec3 & b, const glm
 
 }
 
+std::shared_ptr<Object> Quadrilateral::getCopy() {
+
+	return std::shared_ptr<Object>(new Quadrilateral(*this));
+
+}
+
 void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & d,
 	const std::vector<GLfloat> & colors) {
 
 	setCenter((a + b + c + d) / 4.f);
 
-	std::vector<GLfloat> vertices {
-	   a.x, a.y, a.z,
+	m_vertexBuffer.insertData<GLfloat>({
+		a.x, a.y, a.z,
 	   b.x, b.y, b.z,
 	   c.x, c.y, c.z,
 	   d.x, d.y, d.z
-	};
+	});
+	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 
-	glBindVertexArray(m_vertexArray);
+	m_colorBuffer.insertData(colors);
+	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
-	bindIndices({
+	m_indexBuffer.insertData({
 		0, 1, 2,
 		2, 3, 0
 	});
-
-	bindVertices({
-	   a.x, a.y, a.z,
-	   b.x, b.y, b.z,
-	   c.x, c.y, c.z,
-	   d.x, d.y, d.z
-	});
-
-	bindColors(colors);
-
-	glBindVertexArray(0);
+	m_indexBuffer.bindToVAO(m_vertexArray);
 
 }
 

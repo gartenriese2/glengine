@@ -2,6 +2,7 @@
 #define _PRIMITIVE_
 
 #include "object.hpp"
+#include "../debug.hpp"
 
 class ObjectInterface;
 
@@ -9,7 +10,6 @@ class Primitive : public Object {
 
  	public:
 	
-		Primitive(const Primitive &) = delete;
 		Primitive(Primitive &&) = delete;
 		Primitive & operator=(const Primitive &) = delete;
 		Primitive & operator=(Primitive &&) = delete;
@@ -21,6 +21,7 @@ class Primitive : public Object {
  		friend ObjectInterface;
 
  		Primitive() {}
+ 		Primitive(const Primitive & p) : Object(p) {}
 
 		virtual void draw() const = 0;
 

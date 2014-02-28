@@ -3,6 +3,7 @@
 
 #include "primitive.hpp"
 #include "../glmincludes.hpp"
+#include "../debug.hpp"
 
 #include <initializer_list>
 #include <vector>
@@ -13,7 +14,6 @@ class Triangle : public Primitive {
 
 	public:
 	
-		Triangle(const Triangle &) = delete;
 		Triangle(Triangle &&) = delete;
 		Triangle & operator=(const Triangle &) = delete;
 		Triangle & operator=(Triangle &&) = delete;
@@ -26,6 +26,9 @@ class Triangle : public Primitive {
 
 		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
+		Triangle(const Triangle & t) : Primitive(t) {}
+
+		std::shared_ptr<Object> getCopy();
 
 		void draw() const;
 

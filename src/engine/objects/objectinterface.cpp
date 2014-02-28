@@ -55,6 +55,13 @@ ObjectID ObjectInterface::createQuadrilateral(const glm::vec3 & a, const glm::ve
 
 }
 
+ObjectID ObjectInterface::copyObject(ObjectID id) {
+
+	instance().checkID(id);
+	return addObject(instance().m_objects.at(id)->getCopy());
+
+}
+
 void ObjectInterface::draw(ObjectID id) {
 
 	instance().checkID(id);
