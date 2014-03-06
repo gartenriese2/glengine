@@ -25,11 +25,8 @@ class Engine {
 
 	private:
 
-		// static void windowThread(unsigned int, unsigned int, const std::string &);
-
 		void init();
 
-		// std::map<WindowID, std::unique_ptr<std::thread>> m_windowThreads;
 		std::map<WindowID, std::unique_ptr<WindowThread>> m_windowThreads;
 
 };

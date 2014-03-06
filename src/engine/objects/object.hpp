@@ -36,6 +36,7 @@ class Object {
 		void rotateAround(float, const glm::vec3 &, const glm::vec3 &);
 		void move(float, const glm::vec3 &);
 		void moveTo(const glm::vec3 &);
+		void scale(const glm::vec3 &);
 
 		bool hasAttachments() const { return !m_attachedObjects.empty(); }
 
@@ -51,6 +52,7 @@ class Object {
 
 		glm::vec3 m_center;
 		glm::vec3 m_actualPosition;
+		glm::vec3 m_actualScale;
 
 		std::vector<unsigned long> m_attachedObjects;
 

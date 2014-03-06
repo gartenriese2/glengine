@@ -39,6 +39,7 @@ void Loop::start(GLFWwindow * window) const {
 		ObjectInterface::rotate(t1, -0.002f, {0.f, 0.f, 1.f});
 		ObjectInterface::rotate(t2, 0.002f, {0.f, 0.f, 1.f});
 		ObjectInterface::rotate(q2, 0.002f, {0.f, 0.f, 1.f});
+		ObjectInterface::scale(t1, {0.9999f, 0.9999f, 0.9999f});
 
 		/* Render here */
 

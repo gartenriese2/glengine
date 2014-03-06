@@ -8,7 +8,8 @@ Object::Object()
   : m_modelMatrix(glm::mat4(1.f)),
   	m_scaleMatrix(glm::mat4(1.f)),
   	m_rotationMatrix(glm::mat4(1.f)),
-  	m_translationMatrix(glm::mat4(1.f))
+  	m_translationMatrix(glm::mat4(1.f)),
+  	m_actualScale(1.f)
 {
 
 	glGenVertexArrays(1, &m_vertexArray);
@@ -24,7 +25,8 @@ Object::Object(const Object & other)
   	m_rotationMatrix(other.m_rotationMatrix),
   	m_translationMatrix(other.m_translationMatrix),
   	m_center(other.m_center),
-  	m_actualPosition(other.m_actualPosition)
+  	m_actualPosition(other.m_actualPosition),
+  	m_actualScale(other.m_actualScale)
 {
 
 	glGenVertexArrays(1, &m_vertexArray);
@@ -101,6 +103,19 @@ void Object::moveTo(const glm::vec3 & to) {
 	m_translationMatrix = glm::translate(m_translationMatrix, to - m_actualPosition);
 	m_modelMatrix = m_translationMatrix * m_rotationMatrix * m_scaleMatrix;
 	m_actualPosition = to;
+
+}
+
+void Object::scale(const glm::vec3 & val) {
+
+	if (glm::length(val) != 0.f) {
+
+		m_scaleMatrix = glm::translate(m_scaleMatrix, m_center);
+		m_scaleMatrix = glm::scale(m_scaleMatrix, val);
+		m_scaleMatrix = glm::translate(m_scaleMatrix, -m_center);
+		m_modelMatrix = m_translationMatrix * m_rotationMatrix * m_scaleMatrix;
+
+	}
 
 }
 

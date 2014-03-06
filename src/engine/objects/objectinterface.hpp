@@ -36,6 +36,7 @@ class ObjectInterface {
 		static void rotateAround(ObjectID, float, const glm::vec3 &, ObjectID);
 		static void move(ObjectID, float, const glm::vec3 &);
 		static void moveTo(ObjectID, const glm::vec3 &);
+		static void scale(ObjectID, const glm::vec3 &);
 
 		static void attach(ObjectID, ObjectID);
 

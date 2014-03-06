@@ -29,6 +29,11 @@ class Window {
 		GLFWwindow * m_window;
 		Loop m_loop;
 
+	private:
+
+		static void debugCallback(GLenum, GLenum, GLuint, GLenum, GLsizei, const GLchar *, GLvoid *);
+		static void formatDebugOutput(char outStr[], size_t, GLenum, GLenum, GLuint, GLenum, const char *);
+
 };
 
 #endif // _WINDOW_

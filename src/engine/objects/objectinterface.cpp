@@ -157,6 +157,26 @@ void ObjectInterface::moveTo(ObjectID id, const glm::vec3 & to) {
 
 }
 
+void ObjectInterface::scale(ObjectID id, const glm::vec3 & val) {
+
+	instance().checkID(id);
+
+	auto & obj = instance().m_objects.at(id);
+	obj->scale(val);
+
+	if (obj->hasAttachments()) {
+		
+		for (auto ob : obj->m_attachedObjects) {
+			auto & o = instance().m_objects.at(ob);
+
+			o->scale(val);
+			o->moveTo(obj->m_actualPosition + val * (o->m_actualPosition - obj->m_actualPosition));
+			
+		}
+	}
+
+}
+
 void ObjectInterface::attach(ObjectID id, ObjectID attachment) {
 
 	instance().checkID(id);
