@@ -23,11 +23,17 @@ void Window::init(unsigned int width, unsigned int height, const std::string & t
 	}
 
 	glfwMakeContextCurrent(m_window);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
 		Debug::log("Cound not initialize GLEW!");
 		Debug::log(glewGetErrorString(err));
+	}
+
+	if (glewIsSupported("GL_ARB_debug_output")) {
+		// glDebugMessageARB(DebugCallbackARB, stderr); // print debug output to stderr
+		// glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 	}
 
 	m_loop.start(m_window);

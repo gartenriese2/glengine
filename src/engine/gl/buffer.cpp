@@ -16,18 +16,9 @@ Buffer::Buffer(const Buffer & other) {
 	bind(GL_COPY_WRITE_BUFFER);
 
 	GLint size = 0;
-	GLint size2 = 0;
 	glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &size);
-	Debug::log("buffer GL_COPY_READ_BUFFER " + std::to_string(size));
-
-glGetBufferParameteriv(GL_COPY_WRITE_BUFFER, GL_BUFFER_SIZE, &size2);
-Debug::log("buffer GL_COPY_WRITE_BUFFER " + std::to_string(size2));
 
 	glBufferData(GL_COPY_WRITE_BUFFER, size, nullptr, GL_STATIC_DRAW);
-
-glGetBufferParameteriv(GL_COPY_WRITE_BUFFER, GL_BUFFER_SIZE, &size2);
-Debug::log("buffer GL_COPY_WRITE_BUFFER " + std::to_string(size2));
-
 	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, size);
 
 	other.unbind(GL_COPY_READ_BUFFER);

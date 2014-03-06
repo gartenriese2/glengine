@@ -10,7 +10,7 @@ Object::Object()
   	m_rotationMatrix(glm::mat4(1.f)),
   	m_translationMatrix(glm::mat4(1.f))
 {
-Debug::log("Object Constructor");
+
 	glGenVertexArrays(1, &m_vertexArray);
 
 }
@@ -26,14 +26,10 @@ Object::Object(const Object & other)
   	m_center(other.m_center),
   	m_actualPosition(other.m_actualPosition)
 {
-Debug::log("Object Copy Constructor");
+
 	glGenVertexArrays(1, &m_vertexArray);
 	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 	m_colorBuffer.bindToVAO(m_vertexArray, 1);
-	m_indexBuffer.insertData({
-		0, 1, 2,
-		2, 3, 0
-	});
 	m_indexBuffer.bindToVAO(m_vertexArray);
 	
 }
