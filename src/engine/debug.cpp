@@ -1,5 +1,7 @@
 #include "debug.hpp"
 
+#include "gl/glincludes.hpp"
+
 Debug * Debug::s_instance = nullptr;
 std::mutex Debug::s_mutex;
 
@@ -27,4 +29,32 @@ Debug::Debug() {
 }
 
 Debug::~Debug() {
+}
+
+void Debug::logGL() {
+
+	GLenum e = glGetError();
+	switch(e) {
+		case GL_NO_ERROR:
+			log("GL_NO_ERROR");
+			break;
+		case GL_INVALID_ENUM:
+			log("GL_INVALID_ENUM");
+			break;
+		case GL_INVALID_VALUE:
+			log("GL_INVALID_VALUE");
+			break;
+		case GL_INVALID_OPERATION:
+			log("GL_INVALID_OPERATION");
+			break;
+		case GL_INVALID_FRAMEBUFFER_OPERATION:
+			log("GL_INVALID_FRAMEBUFFER_OPERATION");
+			break;
+		case GL_OUT_OF_MEMORY:
+			log("GL_OUT_OF_MEMORY");
+			break;
+		default:
+			log("NO STANDARD ERROR");
+	}
+
 }

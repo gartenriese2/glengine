@@ -3,6 +3,7 @@
 
 #include <mutex>
 #include <iostream>
+#include <string>
 #include "glmincludes.hpp"
 
 #define DEB std::cout << "DEBUG: " << __FILE__ << " " << __FUNCTION__ << " " << __LINE__ << std::endl;
@@ -20,6 +21,8 @@ class Debug {
 		static void log(const glm::vec3 & vec) {
 			log("vec3: " + std::to_string(vec.x) + "|" + std::to_string(vec.y) + "|" + std::to_string(vec.z));
 		}
+
+		static void logGL();
 
 	protected:
 

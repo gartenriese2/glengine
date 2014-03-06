@@ -10,13 +10,15 @@ class IndexBuffer : public Buffer {
 
 	public:
 
-		IndexBuffer();
+		IndexBuffer() {}
+		IndexBuffer(const IndexBuffer &);
 		IndexBuffer(IndexBuffer &&) = delete;
 		IndexBuffer & operator=(const IndexBuffer &) = delete;
 		IndexBuffer & operator=(IndexBuffer &&) = delete;
-		~IndexBuffer();
+		~IndexBuffer() {}
 
-		void bind(GLenum = GL_ELEMENT_ARRAY_BUFFER);
+		void bind(GLenum = GL_ELEMENT_ARRAY_BUFFER) const;
+		void unbind(GLenum = GL_ELEMENT_ARRAY_BUFFER) const;
 
 		void insertData(const std::vector<GLushort> & data, GLenum target = GL_ELEMENT_ARRAY_BUFFER, GLenum usage = GL_STATIC_DRAW) {
 			bind(target);
@@ -24,10 +26,6 @@ class IndexBuffer : public Buffer {
 		}
 
 		void bindToVAO(GLuint);
-
-	private:
-
-		GLuint m_name;
 
 };
 

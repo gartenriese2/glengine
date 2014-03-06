@@ -49,9 +49,11 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 }
 
 void Quadrilateral::draw() const {
-
+DEB
 	glBindVertexArray(m_vertexArray);
+DEB
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
+DEB
 	glBindVertexArray(0);
-
+DEB
 }

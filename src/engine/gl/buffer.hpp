@@ -11,12 +11,14 @@ class Buffer {
 	public:
 
 		Buffer();
+		Buffer(const Buffer &);
 		Buffer(Buffer &&) = delete;
 		Buffer & operator=(const Buffer &) = delete;
 		Buffer & operator=(Buffer &&) = delete;
 		~Buffer();
 
-		void bind(GLenum = GL_ARRAY_BUFFER);
+		void bind(GLenum = GL_ARRAY_BUFFER) const;
+		void unbind(GLenum = GL_ARRAY_BUFFER) const;
 		void bindToVAO(GLuint, unsigned int);
 
 		template <class T>
@@ -25,7 +27,7 @@ class Buffer {
 			glBufferData(target, data.size() * sizeof(T), &data[0], usage);
 		}		
 
-	private:
+	protected:
 
 		GLuint m_name;
 
