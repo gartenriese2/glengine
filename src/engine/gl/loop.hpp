@@ -4,8 +4,9 @@
 #include "glincludes.hpp"
 #include "../passes/render.hpp"
 
-#include <vector>
+#include <queue>
 #include <memory>
+#include <functional>
 
 class Loop {
 
@@ -20,12 +21,15 @@ class Loop {
 		void start(GLFWwindow *);
 
 		void setRendering(const std::shared_ptr<Render> render) { m_rendering = render; }
+		void addCommand(std::function<void()>);
+		void emptyCommands();
 
 	private:
 
 		void render();
 
 		std::shared_ptr<Render> m_rendering;
+		std::queue<std::function<void()>> m_commands;
 
 };
 

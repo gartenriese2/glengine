@@ -18,6 +18,8 @@ class Window {
 		Window & operator=(Window &&) = delete;
 		~Window();
 
+		Loop & getLoop() { return m_loop; }
+
 	protected:
 
 		void init(unsigned int, unsigned int, const std::string &);

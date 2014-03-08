@@ -8,11 +8,6 @@
 #include <mutex>
 
 static std::mutex s_mutex;
-static ObjectID id = 1;
-
-ObjectID ObjectInterface::nextID() const {
-	return ++id;
-}
 
 void ObjectInterface::checkID(ObjectID id) const {
 	
@@ -22,50 +17,54 @@ void ObjectInterface::checkID(ObjectID id) const {
 	}
 }
 
-ObjectID ObjectInterface::addObject(const std::shared_ptr<Object> ptr) {
-
-	std::lock_guard<std::mutex> lock(s_mutex);
+void ObjectInterface::addObject(ObjectID id, const std::shared_ptr<Object> ptr) {
 	
-	ObjectID id = instance().nextID();
 	instance().m_objects.emplace(id, ptr);
-	return id;
 
 }
 
-ObjectID ObjectInterface::createTriangle(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
+void ObjectInterface::createTriangle(ObjectID id, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 			const glm::vec3 & col) {
 
-	return addObject(std::shared_ptr<Object>(new Triangle(a, b, c, col)));
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Triangle(a, b, c, col)));
 
 }
 
-ObjectID ObjectInterface::createTriangle(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
+void ObjectInterface::createTriangle(ObjectID id, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 			const std::initializer_list<glm::vec3> & colors) {
-
-	return addObject(std::shared_ptr<Object>(new Triangle(a, b, c, colors)));
-
-}
-
-ObjectID ObjectInterface::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
-			const glm::vec3 & d, const glm::vec3 & col) {
-
-	return addObject(std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, col)));
-
-}
-
-ObjectID ObjectInterface::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
-			const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
-
-	return addObject(std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, colors)));
-
-}
-
-ObjectID ObjectInterface::copyObject(ObjectID id) {
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	instance().checkID(id);
-	return addObject(instance().m_objects.at(id)->getCopy());
+	return addObject(id, std::shared_ptr<Object>(new Triangle(a, b, c, colors)));
+
+}
+
+void ObjectInterface::createQuadrilateral(ObjectID id, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
+			const glm::vec3 & d, const glm::vec3 & col) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, col)));
+
+}
+
+void ObjectInterface::createQuadrilateral(ObjectID id, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
+			const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, colors)));
+
+}
+
+void ObjectInterface::copyObject(ObjectID orig, ObjectID copy) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	instance().checkID(orig);
+	return addObject(copy, instance().m_objects.at(orig)->getCopy());
 
 }
 

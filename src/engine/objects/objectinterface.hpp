@@ -15,18 +15,18 @@ class ObjectInterface {
 	public:
 
 		// TRIANGLE
-		static ObjectID createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		static void createTriangle(ObjectID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &);
-		static ObjectID createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		static void createTriangle(ObjectID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::initializer_list<glm::vec3> & = {});
 
 		// QUADRILATERAL
-		static ObjectID createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		static void createQuadrilateral(ObjectID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const glm::vec3 &);
-		static ObjectID createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		static void createQuadrilateral(ObjectID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &,	const std::initializer_list<glm::vec3> & = {});
 
-		static ObjectID copyObject(ObjectID);
+		static void copyObject(ObjectID, ObjectID);
 
 
 		static void draw(ObjectID);
@@ -43,7 +43,7 @@ class ObjectInterface {
 	private:
 
 		static ObjectInterface & instance() { static ObjectInterface obj; return obj; }
-		static ObjectID addObject(const std::shared_ptr<Object>);
+		static void addObject(ObjectID, const std::shared_ptr<Object>);
 
 		ObjectID nextID() const;
 		void checkID(ObjectID) const;

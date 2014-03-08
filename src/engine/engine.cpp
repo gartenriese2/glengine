@@ -31,7 +31,9 @@ void Engine::init() {
 WindowID Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
 
 	static WindowID windowCounter = 0;
-	m_windowThreads[windowCounter++] = std::unique_ptr<WindowThread>(new WindowThread(width, height, title));
+	std::shared_ptr<Window> ptr;
+	m_windowThreads[windowCounter++] = std::unique_ptr<WindowThread>(new WindowThread(ptr, width, height, title));
+	Loop & l = ptr->getLoop();
 	return windowCounter - 1;
 
 }
