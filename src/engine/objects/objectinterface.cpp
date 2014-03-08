@@ -5,7 +5,9 @@
 #include "../debug.hpp"
 
 #include <algorithm>
+#include <mutex>
 
+static std::mutex s_mutex;
 static ObjectID id = 1;
 
 ObjectID ObjectInterface::nextID() const {
@@ -13,6 +15,7 @@ ObjectID ObjectInterface::nextID() const {
 }
 
 void ObjectInterface::checkID(ObjectID id) const {
+	
 	if (m_objects.count(id) == 0) {
 		Debug::log("No Object with ID " + std::to_string(id));
 		exit(0);
@@ -21,6 +24,8 @@ void ObjectInterface::checkID(ObjectID id) const {
 
 ObjectID ObjectInterface::addObject(const std::shared_ptr<Object> ptr) {
 
+	std::lock_guard<std::mutex> lock(s_mutex);
+	
 	ObjectID id = instance().nextID();
 	instance().m_objects.emplace(id, ptr);
 	return id;
@@ -57,12 +62,16 @@ ObjectID ObjectInterface::createQuadrilateral(const glm::vec3 & a, const glm::ve
 
 ObjectID ObjectInterface::copyObject(ObjectID id) {
 
+	std::lock_guard<std::mutex> lock(s_mutex);
+
 	instance().checkID(id);
 	return addObject(instance().m_objects.at(id)->getCopy());
 
 }
 
 void ObjectInterface::draw(ObjectID id) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
 
 	instance().checkID(id);
 	instance().m_objects.at(id)->draw();
@@ -71,12 +80,16 @@ void ObjectInterface::draw(ObjectID id) {
 
 const glm::mat4 & ObjectInterface::getModelMatrix(ObjectID id) {
 
+	std::lock_guard<std::mutex> lock(s_mutex);
+
 	instance().checkID(id);
 	return instance().m_objects.at(id)->getModelMatrix();
 
 }
 
 void ObjectInterface::rotate(ObjectID id, float rad, const glm::vec3 & axis) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
 
 	instance().checkID(id);
 
@@ -93,6 +106,8 @@ void ObjectInterface::rotate(ObjectID id, float rad, const glm::vec3 & axis) {
 
 void ObjectInterface::rotateAround(ObjectID id, float rad, const glm::vec3 & axis, const glm::vec3 & point) {
 
+	std::lock_guard<std::mutex> lock(s_mutex);
+
 	instance().checkID(id);
 
 	auto & obj = instance().m_objects.at(id);
@@ -107,6 +122,8 @@ void ObjectInterface::rotateAround(ObjectID id, float rad, const glm::vec3 & axi
 }
 
 void ObjectInterface::rotateAround(ObjectID id, float rad, const glm::vec3 & axis, ObjectID around) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
 
 	instance().checkID(id);
 	instance().checkID(around);
@@ -125,6 +142,8 @@ void ObjectInterface::rotateAround(ObjectID id, float rad, const glm::vec3 & axi
 
 void ObjectInterface::move(ObjectID id, float val, const glm::vec3 & dir) {
 
+	std::lock_guard<std::mutex> lock(s_mutex);
+
 	instance().checkID(id);
 
 	auto & obj = instance().m_objects.at(id);
@@ -139,6 +158,8 @@ void ObjectInterface::move(ObjectID id, float val, const glm::vec3 & dir) {
 }
 
 void ObjectInterface::moveTo(ObjectID id, const glm::vec3 & to) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
 
 	instance().checkID(id);
 
@@ -159,6 +180,8 @@ void ObjectInterface::moveTo(ObjectID id, const glm::vec3 & to) {
 
 void ObjectInterface::scale(ObjectID id, const glm::vec3 & val) {
 
+	std::lock_guard<std::mutex> lock(s_mutex);
+
 	instance().checkID(id);
 
 	auto & obj = instance().m_objects.at(id);
@@ -178,6 +201,8 @@ void ObjectInterface::scale(ObjectID id, const glm::vec3 & val) {
 }
 
 void ObjectInterface::attach(ObjectID id, ObjectID attachment) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
 
 	instance().checkID(id);
 	instance().checkID(attachment);

@@ -2,6 +2,7 @@
 #define _ENGINE_
 
 #include "windowthread.hpp"
+#include "objects/objectinterface.hpp"
 
 #include <string>
 #include <thread>
@@ -22,6 +23,9 @@ class Engine {
 		~Engine();
 
 		WindowID createWindow(unsigned int, unsigned int, const std::string & = "Default Title");
+
+		ObjectID createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &);
 
 	private:
 

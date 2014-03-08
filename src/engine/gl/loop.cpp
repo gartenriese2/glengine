@@ -2,15 +2,14 @@
 
 #include "program.hpp"
 #include "../passes/basic.hpp"
-#include "../objects/objectinterface.hpp"
 #include "../debug.hpp"
+#include "../passes/basicrender.hpp"
 
 Loop::Loop() {
 }
 
-void Loop::start(GLFWwindow * window) const {
+void Loop::start(GLFWwindow * window) {
 
-	Basic b;
 	ObjectID t1 = ObjectInterface::createTriangle({-0.5f, -0.5f, 0.f}, {0.5f, -0.5f, 0.f}, {0.f, 0.5f, 0.f});
 	ObjectID t2 = ObjectInterface::createTriangle({-2.f, -2.f, 1.f}, {-1.5f, -2.f, 1.f}, {-1.75f, -1.5f, 1.f}, {1.f, 1.f, 0.f});
 	ObjectID t22 = ObjectInterface::copyObject(t2);
@@ -22,13 +21,9 @@ void Loop::start(GLFWwindow * window) const {
 	ObjectID q2 = ObjectInterface::copyObject(q);
 	ObjectInterface::moveTo(q2, {2.f, 0.f, -1.f});
 
-	b.addObjects(t1);
-	b.addObjects(t2);
-	b.addObjects(q);
-	b.addObjects(t22);
-	b.addObjects(q2);
-
-	Camera cam({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f}, 45.f, 1000, 800, 0.1f, 10.f);
+	BasicRender r(Camera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f}, 45.f, 1000, 800, 0.1f, 10.f));
+	r.addObjects({t1, t2, q, t22, q2});
+	setRendering(std::shared_ptr<Render>(&r));
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -41,9 +36,7 @@ void Loop::start(GLFWwindow * window) const {
 		ObjectInterface::rotate(q2, 0.002f, {0.f, 0.f, 1.f});
 		ObjectInterface::scale(t1, {0.9999f, 0.9999f, 0.9999f});
 
-		/* Render here */
-
-		b.draw(cam);
+		render();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -51,6 +44,14 @@ void Loop::start(GLFWwindow * window) const {
 		/* Poll for and process events */
 		glfwPollEvents();
 
+	}
+
+}
+
+void Loop::render() {
+
+	if (m_rendering) {
+		m_rendering->draw();
 	}
 
 }

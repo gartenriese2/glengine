@@ -11,7 +11,7 @@ class Pass {
 	
 	public:
 	
-		Pass();
+		Pass() {}
 		Pass(const Pass &) = delete;
 		Pass(Pass &&) = delete;
 		Pass & operator=(const Pass &) = delete;
@@ -19,7 +19,8 @@ class Pass {
 
 		virtual void draw(const Camera &) = 0;
 
-		void addObjects(ObjectID);
+		void addObjects(ObjectID id) { m_objects.emplace_back(id); }
+		void addObjects(std::vector<ObjectID> vec) { m_objects.insert(m_objects.cend(), vec.cbegin(), vec.cend()); }
 
 	protected:
 
