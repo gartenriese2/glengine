@@ -7,6 +7,7 @@ int main() {
 
 	Engine e;
 	WindowID id = e.createWindow(800, 600);
+	sleep(1);
 	e.createTriangle(id, {-1.f, 0.f, 2.f}, {1.f, 0.f, 2.f}, {0.f, 1.f, 2.f}, {0.f, 1.f, 0.f});
 	// sleep(1);
 	// e.createWindow(200, 200);
