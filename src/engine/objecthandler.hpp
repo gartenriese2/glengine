@@ -1,7 +1,10 @@
 #ifndef _OBJECTHANDLER_
 #define _OBJECTHANDLER_
 
-#include "window.hpp"
+#include "gl/loop.hpp"
+#include "glmincludes.hpp"
+
+#include <initializer_list>
 
 using ObjectID = unsigned long;
 
@@ -11,6 +14,7 @@ class ObjectHandler {
 
 		ObjectHandler() {}
 
+		ObjectID createObject(Loop &, std::function<void(ObjectID)>);
 
 };
 

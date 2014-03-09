@@ -11,7 +11,7 @@ class WindowThread : public std::thread {
 
 	public:
 
-		WindowThread(std::shared_ptr<Window>, unsigned int, unsigned int, const std::string & = "Default Title");
+		WindowThread(std::shared_ptr<Window>);
 		WindowThread(const WindowThread &) = delete;
 		WindowThread(WindowThread &&) = delete;
 		WindowThread & operator=(const WindowThread &) = delete;
@@ -20,7 +20,7 @@ class WindowThread : public std::thread {
 
 	private:
 
-		static void windowFunction(std::shared_ptr<Window>, unsigned int, unsigned int, const std::string &);
+		static void windowFunction(std::shared_ptr<Window>);
 
 };
 

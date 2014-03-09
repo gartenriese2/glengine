@@ -18,15 +18,17 @@ class Window {
 		Window & operator=(Window &&) = delete;
 		~Window();
 
+		void start();
+
 		Loop & getLoop() { return m_loop; }
 
 	protected:
 
-		void init(unsigned int, unsigned int, const std::string &);
 		void resize();
 
 		unsigned int m_width;
 		unsigned int m_height;
+		std::string m_title;
 
 		GLFWwindow * m_window;
 		Loop m_loop;

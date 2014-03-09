@@ -2,6 +2,7 @@
 
 #include "window.hpp"
 #include "debug.hpp"
+#include "objects/objectinterface.hpp"
 
 Engine::Engine() {
 
@@ -30,10 +31,31 @@ void Engine::init() {
 
 WindowID Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
 
-	static WindowID windowCounter = 0;
-	std::shared_ptr<Window> ptr;
-	m_windowThreads[windowCounter++] = std::unique_ptr<WindowThread>(new WindowThread(ptr, width, height, title));
-	Loop & l = ptr->getLoop();
-	return windowCounter - 1;
+	static WindowID windowCounter = 1;
+	WindowID id = windowCounter;
+	++windowCounter;
+
+	m_windows[id] = std::shared_ptr<Window>(new Window(width, height, title));
+	m_windowThreads[id] = std::unique_ptr<WindowThread>(new WindowThread(m_windows[id]));
+
+	return id;
+
+}
+
+ObjectID Engine::createTriangle(WindowID id, const glm::vec3 & a, const glm::vec3 & b,
+	const glm::vec3 & c, const glm::vec3 & color) {
+
+	return m_objHandler.createObject(m_windows[id]->getLoop(), [=](ObjectID id){
+		ObjectInterface::createTriangle(id, a, b, c, color);
+	});
+
+}
+
+ObjectID Engine::createTriangle(WindowID id, const glm::vec3 & a, const glm::vec3 & b,
+	const glm::vec3 & c, const std::initializer_list<glm::vec3> & colors) {
+
+	return m_objHandler.createObject(m_windows[id]->getLoop(), [=](ObjectID id){
+		ObjectInterface::createTriangle(id, a, b, c, colors);
+	});
 
 }

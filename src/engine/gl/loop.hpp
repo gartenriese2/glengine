@@ -21,6 +21,7 @@ class Loop {
 		void start(GLFWwindow *);
 
 		void setRendering(const std::shared_ptr<Render> render) { m_rendering = render; }
+		void addObjectToRender(unsigned long id) { m_rendering->addObjects({id}); }
 		void addCommand(std::function<void()>);
 		void emptyCommands();
 

@@ -4,18 +4,18 @@
 
 Window::Window(unsigned int width, unsigned int height, const std::string & title)
   : m_width(width),
-	m_height(height)
+	m_height(height),
+    m_title(title)
 {
-	init(m_width, m_height, title);
 }
 
 Window::~Window() {
 	glfwDestroyWindow(m_window);
 }
 
-void Window::init(unsigned int width, unsigned int height, const std::string & title) {
+void Window::start() {
 
-	m_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+	m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), NULL, NULL);
 	if (!m_window) {
 		glfwTerminate();
 		Debug::log("Could not create Window!");
