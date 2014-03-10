@@ -1,6 +1,7 @@
 #include "object.hpp"
 
 #include "../debug.hpp"
+#include "../handler.hpp"
 
 static const glm::vec3 k_defaultColor {1.f, 0.f, 0.f};
 

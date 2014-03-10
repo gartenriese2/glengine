@@ -8,47 +8,45 @@
 #include <map>
 #include <memory>
 
-using ObjectID = unsigned long;
-
 class ObjectInterface {
 
 	public:
 
 		// TRIANGLE
-		static void createTriangle(ObjectID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		static void createTriangle(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &);
-		static void createTriangle(ObjectID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		static void createTriangle(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::initializer_list<glm::vec3> & = {});
 
 		// QUADRILATERAL
-		static void createQuadrilateral(ObjectID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		static void createQuadrilateral(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const glm::vec3 &);
-		static void createQuadrilateral(ObjectID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		static void createQuadrilateral(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &,	const std::initializer_list<glm::vec3> & = {});
 
-		static void copyObject(ObjectID, ObjectID);
+		static void copyObject(unsigned long, unsigned long);
 
 
-		static void draw(ObjectID);
-		static const glm::mat4 & getModelMatrix(ObjectID);
-		static void rotate(ObjectID, float, const glm::vec3 &);
-		static void rotateAround(ObjectID, float, const glm::vec3 &, const glm::vec3 &);
-		static void rotateAround(ObjectID, float, const glm::vec3 &, ObjectID);
-		static void move(ObjectID, float, const glm::vec3 &);
-		static void moveTo(ObjectID, const glm::vec3 &);
-		static void scale(ObjectID, const glm::vec3 &);
+		static void draw(unsigned long);
+		static const glm::mat4 & getModelMatrix(unsigned long);
+		static void rotate(unsigned long, float, const glm::vec3 &);
+		static void rotateAround(unsigned long, float, const glm::vec3 &, const glm::vec3 &);
+		static void rotateAround(unsigned long, float, const glm::vec3 &, unsigned long);
+		static void move(unsigned long, float, const glm::vec3 &);
+		static void moveTo(unsigned long, const glm::vec3 &);
+		static void scale(unsigned long, const glm::vec3 &);
 
-		static void attach(ObjectID, ObjectID);
+		static void attach(unsigned long, unsigned long);
 
 	private:
 
 		static ObjectInterface & instance() { static ObjectInterface obj; return obj; }
-		static void addObject(ObjectID, const std::shared_ptr<Object>);
+		static void addObject(unsigned long, const std::shared_ptr<Object>);
 
-		ObjectID nextID() const;
-		void checkID(ObjectID) const;
+		unsigned long nextID() const;
+		void checkID(unsigned long) const;
 
-		std::map<ObjectID, std::shared_ptr<Object>> m_objects;
+		std::map<unsigned long, std::shared_ptr<Object>> m_objects;
 
 };
 

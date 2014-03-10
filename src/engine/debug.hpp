@@ -6,7 +6,7 @@
 #include <string>
 #include "glmincludes.hpp"
 
-#define DEB std::cout << "DEBUG: " << __FILE__ << " " << __FUNCTION__ << " " << __LINE__ << std::endl;
+#define DEB Debug::log("DEBUG: " + std::string(__FILE__) + " " + __FUNCTION__ + " " + std::to_string(__LINE__));
 
 class Debug {
 
@@ -14,6 +14,7 @@ class Debug {
 
 		template<class T>
 		static void log(const T & output) {
+			std::lock_guard<std::mutex> guard(s_mutex);
 			// Please implement your favorite debug output method here!
 			std::cout << output << std::endl;
 		}

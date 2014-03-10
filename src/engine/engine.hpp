@@ -2,15 +2,11 @@
 #define _ENGINE_
 
 #include "windowthread.hpp"
-#include "objecthandler.hpp"
-#include "glmincludes.hpp"
+#include "handler.hpp"
 
 #include <string>
-#include <thread>
 #include <map>
 #include <memory>
-
-using WindowID = unsigned int;
 
 class Engine {
 
@@ -23,25 +19,13 @@ class Engine {
 		Engine & operator=(Engine &&) = delete;
 		~Engine();
 
-		WindowID createWindow(unsigned int, unsigned int, const std::string & = "Default Title");
-
-		ObjectID createTriangle(WindowID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
-			const glm::vec3 &);
-		ObjectID createTriangle(WindowID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
-			const std::initializer_list<glm::vec3> & = {});
-		ObjectID createQuadrilateral(WindowID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
-			const glm::vec3 &, const glm::vec3 &);
-		ObjectID createQuadrilateral(WindowID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
-			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
+		const WindowID createWindow(unsigned int, unsigned int, const std::string & = "Default Title");
 
 	private:
 
 		void init();
 
-		std::map<WindowID, std::shared_ptr<Window>> m_windows;
-		std::map<WindowID, std::unique_ptr<WindowThread>> m_windowThreads;
-
-		ObjectHandler m_objHandler;
+		std::map<unsigned long, std::unique_ptr<WindowThread>> m_windowThreads;
 
 };
 

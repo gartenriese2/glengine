@@ -10,7 +10,7 @@ Window::Window(unsigned int width, unsigned int height, const std::string & titl
 }
 
 Window::~Window() {
-	glfwDestroyWindow(m_window);
+    glfwDestroyWindow(m_window);
 }
 
 void Window::start() {

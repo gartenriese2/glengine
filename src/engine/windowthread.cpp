@@ -1,5 +1,7 @@
 #include "windowthread.hpp"
 
+#include "debug.hpp"
+
 WindowThread::WindowThread(std::shared_ptr<Window> window)
   : std::thread(&WindowThread::windowFunction, window)
 {

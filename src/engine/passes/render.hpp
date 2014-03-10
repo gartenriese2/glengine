@@ -3,8 +3,6 @@
 
 #include <vector>
 
-using ObjectID = unsigned long;
-
 class Render {
 
 	public:
@@ -16,7 +14,7 @@ class Render {
 		Render & operator=(Render &&) = delete;
 
 		virtual void draw() = 0;
-		virtual void addObjects(std::vector<ObjectID>) = 0;
+		virtual void addObjects(std::vector<unsigned long>) = 0;
 
 };
 

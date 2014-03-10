@@ -1,7 +1,6 @@
 #ifndef _PASS_
 #define _PASS_
 
-#include "../objects/objectinterface.hpp"
 #include "../gl/program.hpp"
 #include "../camera.hpp"
 
@@ -19,13 +18,13 @@ class Pass {
 
 		virtual void draw(const Camera &) = 0;
 
-		void addObjects(ObjectID id) { m_objects.emplace_back(id); }
-		void addObjects(std::vector<ObjectID> vec) { m_objects.insert(m_objects.cend(), vec.cbegin(), vec.cend()); }
+		void addObjects(unsigned long id) { m_objects.emplace_back(id); }
+		void addObjects(std::vector<unsigned long> vec) { m_objects.insert(m_objects.cend(), vec.cbegin(), vec.cend()); }
 
 	protected:
 
 		Program m_program;
-		std::vector<ObjectID> m_objects;
+		std::vector<unsigned long> m_objects;
 };
 
 #endif // _PASS_

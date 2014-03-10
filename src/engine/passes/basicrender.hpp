@@ -13,8 +13,8 @@ class BasicRender : public Render {
 
 		void draw();
 
-		void addObjects(ObjectID id) { m_basicPass.addObjects(id); }
-		void addObjects(std::vector<ObjectID> vec) { m_basicPass.addObjects(vec); }
+		void addObjects(unsigned long id) { m_basicPass.addObjects(id); }
+		void addObjects(std::vector<unsigned long> vec) { m_basicPass.addObjects(vec); }
 
 	private:
 

@@ -1,5 +1,8 @@
 #include "basic.hpp"
 
+#include "../objects/objectinterface.hpp"
+#include "../debug.hpp"
+
 Basic::Basic() {
 
 	Shader vert("shader/basic.vert");

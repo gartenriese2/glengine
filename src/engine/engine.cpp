@@ -29,51 +29,14 @@ void Engine::init() {
 
 }
 
-WindowID Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
+const WindowID Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
 
-	static WindowID windowCounter = 1;
-	WindowID id = windowCounter;
-	++windowCounter;
+	std::shared_ptr<Window> ptr(new Window(width, height, title));
 
-	m_windows[id] = std::shared_ptr<Window>(new Window(width, height, title));
-	m_windowThreads[id] = std::unique_ptr<WindowThread>(new WindowThread(m_windows[id]));
+	WindowID id(ptr);
+
+	m_windowThreads[id()] = std::unique_ptr<WindowThread>(new WindowThread(ptr));
 
 	return id;
-
-}
-
-ObjectID Engine::createTriangle(WindowID id, const glm::vec3 & a, const glm::vec3 & b,
-	const glm::vec3 & c, const glm::vec3 & color) {
-
-	return m_objHandler.createObject(m_windows[id]->getLoop(), [=](ObjectID id){
-		ObjectInterface::createTriangle(id, a, b, c, color);
-	});
-
-}
-
-ObjectID Engine::createTriangle(WindowID id, const glm::vec3 & a, const glm::vec3 & b,
-	const glm::vec3 & c, const std::initializer_list<glm::vec3> & colors) {
-
-	return m_objHandler.createObject(m_windows[id]->getLoop(), [=](ObjectID id){
-		ObjectInterface::createTriangle(id, a, b, c, colors);
-	});
-
-}
-
-ObjectID Engine::createQuadrilateral(WindowID id, const glm::vec3 & a, const glm::vec3 & b,
-	const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & color) {
-
-	return m_objHandler.createObject(m_windows[id]->getLoop(), [=](ObjectID id){
-		ObjectInterface::createQuadrilateral(id, a, b, c, d, color);
-	});
-
-}
-
-ObjectID Engine::createQuadrilateral(WindowID id, const glm::vec3 & a, const glm::vec3 & b,
-	const glm::vec3 & c, const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
-
-	return m_objHandler.createObject(m_windows[id]->getLoop(), [=](ObjectID id){
-		ObjectInterface::createQuadrilateral(id, a, b, c, d, colors);
-	});
 
 }
