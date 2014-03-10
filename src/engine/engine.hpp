@@ -29,6 +29,10 @@ class Engine {
 			const glm::vec3 &);
 		ObjectID createTriangle(WindowID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::initializer_list<glm::vec3> & = {});
+		ObjectID createQuadrilateral(WindowID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, const glm::vec3 &);
+		ObjectID createQuadrilateral(WindowID, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
 
 	private:
 

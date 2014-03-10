@@ -59,3 +59,21 @@ ObjectID Engine::createTriangle(WindowID id, const glm::vec3 & a, const glm::vec
 	});
 
 }
+
+ObjectID Engine::createQuadrilateral(WindowID id, const glm::vec3 & a, const glm::vec3 & b,
+	const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & color) {
+
+	return m_objHandler.createObject(m_windows[id]->getLoop(), [=](ObjectID id){
+		ObjectInterface::createQuadrilateral(id, a, b, c, d, color);
+	});
+
+}
+
+ObjectID Engine::createQuadrilateral(WindowID id, const glm::vec3 & a, const glm::vec3 & b,
+	const glm::vec3 & c, const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
+
+	return m_objHandler.createObject(m_windows[id]->getLoop(), [=](ObjectID id){
+		ObjectInterface::createQuadrilateral(id, a, b, c, d, colors);
+	});
+
+}
