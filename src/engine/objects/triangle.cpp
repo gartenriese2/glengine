@@ -2,8 +2,6 @@
 
 #include "../debug.hpp"
 
-#include <vector>
-
 static constexpr unsigned int k_vertices = 3;
 
 Triangle::Triangle(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & color) {

@@ -2,6 +2,7 @@
 
 #include "triangle.hpp"
 #include "quadrilateral.hpp"
+#include "circle.hpp"
 #include "../debug.hpp"
 
 #include <algorithm>
@@ -61,6 +62,24 @@ void ObjectInterface::createQuadrilateral(unsigned long id, const glm::vec3 & a,
 	std::lock_guard<std::mutex> lock(s_mutex);
 
 	return addObject(id, std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, colors)));
+
+}
+
+void ObjectInterface::createCircle(unsigned long id, const glm::vec3 & center, const glm::vec3 & axis, float radius,
+	unsigned int edges, const glm::vec3 & color) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Circle(center, axis, radius, edges, color)));
+
+}
+
+void ObjectInterface::createCircle(unsigned long id, const glm::vec3 & center, const glm::vec3 & axis, float radius,
+	unsigned int edges,	const std::initializer_list<glm::vec3> & colors) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Circle(center, axis, radius, edges, colors)));
 
 }
 

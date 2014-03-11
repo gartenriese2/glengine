@@ -18,6 +18,9 @@ class ObjectID {
 		bool operator<(const ObjectID & other) const { return this->m_id < other.m_id; }
 		unsigned long operator()() const { return m_id; }
 
+		void hide();
+		void show();
+
 		void rotate(float, const glm::vec3 &);
 		void rotateAround(float, const glm::vec3 &, const glm::vec3 &);
 		void rotateAround(float, const glm::vec3 &, const ObjectID &);
@@ -56,10 +59,17 @@ class WindowID {
 			const glm::vec3 &);
 		const ObjectID & createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::initializer_list<glm::vec3> & = {});
+
 		const ObjectID & createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const glm::vec3 &);
 		const ObjectID & createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
+
+		const ObjectID & createCircle(const glm::vec3 &, const glm::vec3 &, float, unsigned int,
+			const glm::vec3 &);
+		const ObjectID & createCircle(const glm::vec3 &, const glm::vec3 &, float, unsigned int,
+			const std::initializer_list<glm::vec3> & = {});
+
 		const ObjectID & createCopy(const ObjectID &);
 
 	private:

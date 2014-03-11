@@ -5,6 +5,8 @@
 #include "basic.hpp"
 #include "../camera.hpp"
 
+#include <set>
+
 class BasicRender : public Render {
 
 	public:
@@ -13,8 +15,8 @@ class BasicRender : public Render {
 
 		void draw();
 
-		void addObjects(unsigned long id) { m_basicPass.addObjects(id); }
-		void addObjects(std::vector<unsigned long> vec) { m_basicPass.addObjects(vec); }
+		void addObjects(std::set<unsigned long> vec) { m_basicPass.addObjects(vec); }
+		void removeObject(unsigned long id) { m_basicPass.removeObject(id); }
 
 	private:
 

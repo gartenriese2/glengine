@@ -22,6 +22,7 @@ class Loop {
 
 		void setRendering(const std::shared_ptr<Render> render) { m_rendering = render; }
 		void addObjectToRender(unsigned long);
+		void removeObjectFromRender(unsigned long);
 		void addCommand(std::function<void()>);
 		void emptyCommands();
 

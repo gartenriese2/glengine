@@ -13,6 +13,24 @@ ObjectID::ObjectID(WindowID & win)
 
 }
 
+void ObjectID::hide() {
+
+	Loop & loop = m_window.getLoop();
+	loop.addCommand([=, &loop](){
+		loop.removeObjectFromRender(m_id);
+	});
+
+}
+
+void ObjectID::show() {
+
+	Loop & loop = m_window.getLoop();
+	loop.addCommand([=, &loop](){
+		loop.addObjectToRender(m_id);
+	});
+
+}
+
 void ObjectID::rotate(float angle, const glm::vec3 & axis) {
 
 	m_window.getLoop().addCommand([=](){
@@ -159,6 +177,38 @@ const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::v
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createQuadrilateral(id, a, b, c, d, colors);
+		loop.addObjectToRender(id);
+	});
+
+	return m_objects.back();
+
+}
+
+const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec3 & axis, float radius,
+	unsigned int edges, const glm::vec3 & color) {
+
+	m_objects.emplace_back(*this);
+	unsigned long id = m_objects.back()();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createCircle(id, center, axis, radius, edges, color);
+		loop.addObjectToRender(id);
+	});
+
+	return m_objects.back();
+
+}
+
+const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec3 & axis, float radius,
+	unsigned int edges,	const std::initializer_list<glm::vec3> & colors) {
+
+	m_objects.emplace_back(*this);
+	unsigned long id = m_objects.back()();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createCircle(id, center, axis, radius, edges, colors);
 		loop.addObjectToRender(id);
 	});
 

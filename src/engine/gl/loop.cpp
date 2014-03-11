@@ -67,3 +67,7 @@ void Loop::emptyCommands() {
 void Loop::addObjectToRender(unsigned long id) {
 	m_rendering->addObjects({id});
 }
+
+void Loop::removeObjectFromRender(unsigned long id) {
+	m_rendering->removeObject({id});
+}

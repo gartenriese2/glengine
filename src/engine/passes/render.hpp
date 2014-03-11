@@ -1,7 +1,7 @@
 #ifndef _RENDER_
 #define _RENDER_
 
-#include <vector>
+#include <set>
 
 class Render {
 
@@ -14,7 +14,8 @@ class Render {
 		Render & operator=(Render &&) = delete;
 
 		virtual void draw() = 0;
-		virtual void addObjects(std::vector<unsigned long>) = 0;
+		virtual void addObjects(std::set<unsigned long>) = 0;
+		virtual void removeObject(unsigned long) = 0;
 
 };
 

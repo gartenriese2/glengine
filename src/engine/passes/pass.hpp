@@ -4,7 +4,7 @@
 #include "../gl/program.hpp"
 #include "../camera.hpp"
 
-#include <vector>
+#include <set>
 
 class Pass {
 	
@@ -18,13 +18,13 @@ class Pass {
 
 		virtual void draw(const Camera &) = 0;
 
-		void addObjects(unsigned long id) { m_objects.emplace_back(id); }
-		void addObjects(std::vector<unsigned long> vec) { m_objects.insert(m_objects.cend(), vec.cbegin(), vec.cend()); }
+		void addObjects(std::set<unsigned long> set) { m_objects.insert(set.cbegin(), set.cend()); }
+		void removeObject(unsigned long id) { m_objects.erase(id); }
 
 	protected:
 
 		Program m_program;
-		std::vector<unsigned long> m_objects;
+		std::set<unsigned long> m_objects;
 };
 
 #endif // _PASS_
