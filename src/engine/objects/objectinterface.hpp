@@ -41,6 +41,9 @@ class ObjectInterface {
 		static void move(unsigned long, float, const glm::vec3 &);
 		static void moveTo(unsigned long, const glm::vec3 &);
 		static void scale(unsigned long, const glm::vec3 &);
+		static void scaleColor(unsigned long, float);
+		static void setColor(unsigned long, const std::initializer_list<glm::vec3> & = {});
+		static void setColor(unsigned long, const glm::vec3 &);
 
 		static void attach(unsigned long, unsigned long);
 

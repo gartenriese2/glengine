@@ -81,6 +81,30 @@ void ObjectID::scale(const glm::vec3 & value) {
 
 }
 
+void ObjectID::scaleColor(float scale) {
+
+	m_window.getLoop().addCommand([=](){
+		ObjectInterface::scaleColor(m_id, scale);
+	});
+
+}
+
+void ObjectID::setColor(const std::initializer_list<glm::vec3> & colors) {
+
+	m_window.getLoop().addCommand([=](){
+		ObjectInterface::setColor(m_id, colors);
+	});
+
+}
+
+void ObjectID::setColor(const glm::vec3 & color) {
+
+	m_window.getLoop().addCommand([=](){
+		ObjectInterface::setColor(m_id, color);
+	});
+
+}
+
 void ObjectID::attachTo(const ObjectID & other) {
 
 	if (m_window.hasObject(other)) {

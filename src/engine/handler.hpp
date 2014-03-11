@@ -5,6 +5,7 @@
 #include "window.hpp"
 
 #include <memory>
+#include <initializer_list>
 
 class WindowID;
 
@@ -27,6 +28,9 @@ class ObjectID {
 		void move(float, const glm::vec3 &);
 		void moveTo(const glm::vec3 &);
 		void scale(const glm::vec3 &);
+		void scaleColor(float);
+		void setColor(const std::initializer_list<glm::vec3> & = {});
+		void setColor(const glm::vec3 &);
 		void attachTo(const ObjectID &);
 
 	private:
@@ -35,8 +39,6 @@ class ObjectID {
 		WindowID & m_window;
 
 };
-
-#include <initializer_list>
 
 class WindowID {
 

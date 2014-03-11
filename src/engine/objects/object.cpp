@@ -120,6 +120,37 @@ void Object::scale(const glm::vec3 & val) {
 
 }
 
+void Object::scaleColor(float scale) {
+
+	GLint size = m_colorBuffer.getSize();
+	m_colorBuffer.bind(GL_COPY_WRITE_BUFFER);
+	
+	GLfloat * data = (GLfloat *) glMapBuffer(GL_COPY_WRITE_BUFFER, GL_READ_WRITE);
+	if (data != (GLfloat *) NULL) {
+		for(GLint i = 0; i < 3 * size; ++i) {
+        	data[i] *= scale;
+        }
+		glUnmapBuffer(GL_COPY_WRITE_BUFFER);
+	} else {
+		Debug::log("glMapBuffer failed!");
+	}
+
+	m_colorBuffer.unbind(GL_COPY_WRITE_BUFFER);
+
+}
+
+void Object::setColor(const std::initializer_list<glm::vec3> & colors) {
+
+	m_colorBuffer.insertData(getColorVector(colors, m_colorBuffer.getSize()));
+
+}
+
+void Object::setColor(const glm::vec3 & color) {
+
+	m_colorBuffer.insertData(getColorVector(color, m_colorBuffer.getSize()));
+
+}
+
 void Object::setCenter(const glm::vec3 & center) {
 
 	m_center = center;

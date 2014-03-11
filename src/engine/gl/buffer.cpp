@@ -32,6 +32,18 @@ Buffer::~Buffer() {
 
 }
 
+GLint Buffer::getSize() {
+
+	GLint size = 0;
+
+	bind(GL_COPY_READ_BUFFER);
+	glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &size);
+	unbind(GL_COPY_READ_BUFFER);
+
+	return size / sizeof(GLfloat) / 3;
+
+}
+
 void Buffer::bind(GLenum target) const {
 
 	glBindBuffer(target, m_name);

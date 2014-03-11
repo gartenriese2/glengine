@@ -223,6 +223,36 @@ void ObjectInterface::scale(unsigned long id, const glm::vec3 & val) {
 
 }
 
+void ObjectInterface::scaleColor(unsigned long id, float scale) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	instance().checkID(id);
+
+	instance().m_objects.at(id)->scaleColor(scale);
+
+}
+
+void ObjectInterface::setColor(unsigned long id, const std::initializer_list<glm::vec3> & colors) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	instance().checkID(id);
+
+	instance().m_objects.at(id)->setColor(colors);
+
+}
+
+void ObjectInterface::setColor(unsigned long id, const glm::vec3 & color) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	instance().checkID(id);
+
+	instance().m_objects.at(id)->setColor(color);
+
+}
+
 void ObjectInterface::attach(unsigned long id, unsigned long attachment) {
 
 	std::lock_guard<std::mutex> lock(s_mutex);

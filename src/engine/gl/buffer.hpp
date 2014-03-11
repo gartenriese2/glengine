@@ -17,6 +17,8 @@ class Buffer {
 		Buffer & operator=(Buffer &&) = delete;
 		~Buffer();
 
+		GLint getSize();
+
 		void bind(GLenum = GL_ARRAY_BUFFER) const;
 		void unbind(GLenum = GL_ARRAY_BUFFER) const;
 		void bindToVAO(GLuint, unsigned int);
@@ -25,6 +27,7 @@ class Buffer {
 		void insertData(const std::vector<T> & data, GLenum target = GL_ARRAY_BUFFER, GLenum usage = GL_STATIC_DRAW) {
 			bind(target);
 			glBufferData(target, data.size() * sizeof(T), &data[0], usage);
+			unbind(target);
 		}		
 
 	protected:
