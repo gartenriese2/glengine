@@ -14,8 +14,8 @@ void ObjectInterface::checkID(unsigned long id) const {
 	if (m_objects.count(id) == 0) {
 		Debug::log("No Object with ID " + std::to_string(id));
 		Debug::log("Only the following IDs are there:");
-		for (auto i : m_objects) {
-			Debug::log(std::to_string(id));
+		for (auto & i : m_objects) {
+			Debug::log(std::to_string(i.first));
 		}
 		exit(0);
 	}

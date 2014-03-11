@@ -82,15 +82,18 @@ WindowID::WindowID(std::shared_ptr<Window> ptr)
 
 }
 
-ObjectID WindowID::createCopy(const ObjectID & id) {
+const ObjectID & WindowID::createCopy(const ObjectID & id) {
 
+	// Only copy if it is an Object in the same window
 	if (hasObject(id)) {
 		m_objects.emplace_back(*this);
+		unsigned long origid = id();
+		unsigned long copyid = m_objects.back()();
 		Loop & loop = m_window->getLoop();
 
-		loop.addCommand([&](){
-			ObjectInterface::copyObject(id(), m_objects.back()());
-			loop.addObjectToRender(m_objects.back()());
+		loop.addCommand([=, &loop](){
+			ObjectInterface::copyObject(origid, copyid);
+			loop.addObjectToRender(copyid);
 		});
 
 		return m_objects.back();
@@ -99,60 +102,64 @@ ObjectID WindowID::createCopy(const ObjectID & id) {
 
 }
 
-ObjectID WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 & b,
+const ObjectID & WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & color) {
 
 	m_objects.emplace_back(*this);
+	unsigned long id = m_objects.back()();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
-		ObjectInterface::createTriangle(m_objects.back()(), a, b, c, color);
-		loop.addObjectToRender(m_objects.back()());
+		ObjectInterface::createTriangle(id, a, b, c, color);
+		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
 	
 }
 
-ObjectID WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 & b,
+const ObjectID & WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const std::initializer_list<glm::vec3> & colors) {
 
 	m_objects.emplace_back(*this);
+	unsigned long id = m_objects.back()();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
-		ObjectInterface::createTriangle(m_objects.back()(), a, b, c, colors);
-		loop.addObjectToRender(m_objects.back()());
+		ObjectInterface::createTriangle(id, a, b, c, colors);
+		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
 
 }
 
-ObjectID WindowID::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b,
+const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & color) {
 
 	m_objects.emplace_back(*this);
+	unsigned long id = m_objects.back()();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
-		ObjectInterface::createQuadrilateral(m_objects.back()(), a, b, c, d, color);
-		loop.addObjectToRender(m_objects.back()());
+		ObjectInterface::createQuadrilateral(id, a, b, c, d, color);
+		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
 
 }
 
-ObjectID WindowID::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b,
+const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
 
 	m_objects.emplace_back(*this);
+	unsigned long id = m_objects.back()();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
-		ObjectInterface::createQuadrilateral(m_objects.back()(), a, b, c, d, colors);
-		loop.addObjectToRender(m_objects.back()());
+		ObjectInterface::createQuadrilateral(id, a, b, c, d, colors);
+		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();

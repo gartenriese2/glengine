@@ -52,15 +52,15 @@ class WindowID {
 		Loop & getLoop() { return m_window->getLoop(); }
 		bool hasObject(ObjectID id) const { return std::find(m_objects.cbegin(), m_objects.cend(), id) != m_objects.cend(); }
 
-		ObjectID createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		const ObjectID & createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &);
-		ObjectID createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		const ObjectID & createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::initializer_list<glm::vec3> & = {});
-		ObjectID createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		const ObjectID & createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const glm::vec3 &);
-		ObjectID createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+		const ObjectID & createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
-		ObjectID createCopy(const ObjectID &);
+		const ObjectID & createCopy(const ObjectID &);
 
 	private:
 
