@@ -40,6 +40,9 @@ class ObjectID {
 
 };
 
+class RenderID;
+class CameraID;
+
 class WindowID {
 
 	public:
@@ -74,11 +77,33 @@ class WindowID {
 
 		const ObjectID & createCopy(const ObjectID &);
 
+		const RenderID & createBasicRendering(const CameraID &);
+
 	private:
 
 		unsigned long m_id;
 		std::shared_ptr<Window> m_window;
 		std::vector<ObjectID> m_objects;
+		std::vector<RenderID> m_renders;
+
+};
+
+class RenderID {
+
+	public:
+
+		RenderID(WindowID &);
+
+		bool operator==(const RenderID & other) const { return this->m_id == other.m_id; }
+		bool operator<(const RenderID & other) const { return this->m_id < other.m_id; }
+		unsigned long operator()() const { return m_id; }
+
+		void addObjects(const std::set<ObjectID> &);
+
+	private:
+
+		unsigned long m_id;
+		WindowID & m_window;
 
 };
 

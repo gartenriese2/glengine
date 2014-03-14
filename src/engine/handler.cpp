@@ -239,3 +239,25 @@ const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec
 	return m_objects.back();
 
 }
+
+const RenderID & WindowID::createBasicRendering(const CameraID & cam) {
+
+	m_renders.emplace_back(*this);
+	unsigned long id = m_renders.back()();
+
+	return m_renders.back();
+
+}
+
+RenderID::RenderID(WindowID & win)
+  : m_window(win)
+{
+
+	static unsigned long renderID = 0;
+	m_id = ++renderID;
+
+}
+
+void RenderID::addObjects(const std::set<ObjectID> & set) {
+
+}
