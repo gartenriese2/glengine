@@ -79,12 +79,15 @@ class WindowID {
 
 		const RenderID & createBasicRendering(const CameraID &);
 
+		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, int, int, float, float);
+
 	private:
 
 		unsigned long m_id;
 		std::shared_ptr<Window> m_window;
 		std::vector<ObjectID> m_objects;
 		std::vector<RenderID> m_renders;
+		std::vector<CameraID> m_cameras;
 
 };
 
@@ -104,6 +107,14 @@ class RenderID {
 
 		unsigned long m_id;
 		WindowID & m_window;
+
+};
+
+class CameraID {
+
+	public:
+
+		CameraID(WindowID &);
 
 };
 
