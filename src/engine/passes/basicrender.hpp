@@ -11,7 +11,7 @@ class BasicRender : public Render {
 
 	public:
 
-		BasicRender(const Camera & cam) : m_cam(cam) {}
+		BasicRender(Camera & cam) : m_cam(cam) {}
 
 		void draw();
 
@@ -20,7 +20,7 @@ class BasicRender : public Render {
 
 	private:
 
-		const Camera & m_cam;
+		Camera & m_cam;
 		Basic m_basicPass;
 
 };

@@ -42,6 +42,12 @@ void ampelDemo() {
 			red.scaleColor(4.f);
 		}
 
+		// cam.move({0.001f, 0.f, 0.f});
+
+		// if (count % 2000 == 0) cam.move({-2.f, 0.f, 0.f});
+
+		cam.rotateAround(0.001f, {0.f, 1.f, 0.f}, {0.f, 0.f, 0.f});
+
 		++count;
 
 	}
@@ -139,10 +145,10 @@ void test() {
 
 int main() {
 
-	// ampelDemo();
+	ampelDemo();
 	// rotateDemo();
 	// secondWindowDemo();
-	test();
+	// test();
 
 	return 0;
 

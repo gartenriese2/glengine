@@ -229,14 +229,15 @@ const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec
 
 }
 
-const RenderID & WindowID::createBasicRendering(const CameraID & cam) {
+const RenderID & WindowID::createBasicRendering(CameraID & camID) {
 
 	m_renders.emplace_back(*this);
 	unsigned long id = m_renders.back()();
 	Loop & loop = m_window->getLoop();
+	Camera & cam = camID.getCam();
 
-	loop.addCommand([=, &loop](){
-		std::shared_ptr<Render> r(new BasicRender(cam.getCam()));
+	loop.addCommand([=, &loop, &cam](){
+		std::shared_ptr<Render> r(new BasicRender(cam));
 		loop.addRendering(id, r);
 	});
 

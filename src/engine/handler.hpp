@@ -74,7 +74,7 @@ class WindowID {
 
 		const ObjectID & createCopy(const ObjectID &);
 
-		const RenderID & createBasicRendering(const CameraID &);
+		const RenderID & createBasicRendering(CameraID &);
 
 		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 
@@ -119,7 +119,12 @@ class CameraID {
 
 		unsigned long operator()() const { return m_id; }
 
-		const Camera & getCam() const { return m_cam; }
+		Camera & getCam() { return m_cam; }
+
+		void move(const glm::vec3 & change) { m_cam.move(change); }
+		void rotate(float radians, const glm::vec3 & axis) { m_cam.rotate(radians, axis); }
+		void rotateAround(float radians, const glm::vec3 & axis, const glm::vec3 & point)
+			{ m_cam.rotateAround(radians, axis, point); }
 
 	private:
 

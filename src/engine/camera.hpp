@@ -20,11 +20,13 @@ class Camera {
 		int getWidth() const { return m_width; }
 		int getHeight() const { return m_height; }
 
+		void calculateView();
+
 		void reset();
-		void move(float, float, float);
-		// void rotate(float, float);
-		// void rotateAround(float);
-		// bool zoom(int);
+		void move(const glm::vec3 &);
+		void moveTo(const glm::vec3 &);
+		void rotate(float, const glm::vec3 &);
+		void rotateAround(float, const glm::vec3 &, const glm::vec3 &);
 
 	private:
 

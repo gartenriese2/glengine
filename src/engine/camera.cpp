@@ -17,8 +17,14 @@ Camera::Camera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & u
   	m_initUp(m_up)
 {
 
-	m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
+	calculateView();
 	m_proj = glm::perspective(m_fov, static_cast<float>(width) / static_cast<float>(height), near, far);
+
+}
+
+void Camera::calculateView() {
+
+	m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
 
 }
 
@@ -42,71 +48,35 @@ void Camera::reset() {
 	m_pos = m_initPos;
 	m_dir = m_initDir;
 	m_up = m_initUp;
-	m_view = glm::lookAt(m_initPos, m_initPos + m_initDir, m_initUp);
+
+	calculateView();
 
 }
 
-void Camera::move(float forward, float sideward, float upward) {
+void Camera::move(const glm::vec3 & change) {
 
-	forward *= glm::sqrt(m_pos.y / 10.f);
-	sideward *= glm::sqrt(m_pos.y / 10.f);
-	upward *= glm::sqrt(m_pos.y / 10.f);
-	if (m_pos.y <= 1.0 && upward > 0.f) upward = 0.f;
+	m_pos += change;
 
-	glm::vec3 up(forward * m_dir.x, 0, forward * m_dir.z);
-	glm::vec3 right(-sideward * m_dir.z, 0, sideward * m_dir.x);
-	glm::vec3 lift(0, upward * m_dir.y, 0);
-
-	m_pos += up + right + lift;
-
-	m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
+	calculateView();
 
 }
 
-// bool Camera::zoom(const int zoom) {
+void Camera::moveTo(const glm::vec3 & to) {
 
-// 	if (m_pos.y > 10.f || zoom < 0) {
-// 		float factor = glm::pow(m_pos.y, 0.75f);
+	m_pos = to;
 
-// 		m_pos += static_cast<float>(zoom) * factor * m_dir;
-// 		m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
+	calculateView();
 
-// 		return true;
-// 	}
+}
 
-// 	return false;
+void Camera::rotate(float radians, const glm::vec3 & axis) {
 
-// }
+	// TO DO
 
-// void Camera::rotate(const float dx, const float dy) {
+}
 
-// float radX = -m_fov * static_cast<float>(M_PI) / 180.f * dx / static_cast<float>(m_width);
-// float radY = -m_fov * static_cast<float>(M_PI) / 180.f * dy / static_cast<float>(m_width);
+void Camera::rotateAround(float radians, const glm::vec3 & axis, const glm::vec3 & point) {
 
-// glm::mat4 umat(1.f);
-// m_dir = glm::vec3(glm::rotate(umat, radX, m_up) * glm::vec4(m_dir, 1.f));
+	// TO DO
 
-// glm::vec3 right_dir = glm::normalize(glm::cross(m_dir, m_up));
-
-// m_dir = glm::vec3(glm::rotate(umat, radY, right_dir) * glm::vec4(m_dir, 1.f));
-// m_dir = glm::normalize(m_dir);
-// m_up = glm::normalize(glm::cross(right_dir, m_dir));
-
-// m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
-
-// }
-
-// void Camera::rotateAround(const float angle) {
-
-// float steps = m_pos.y / -m_dir.y;
-// glm::vec3 center = m_pos + m_dir * steps;
-
-// glm::mat4 umat(1.f);
-// float rad = angle * static_cast<float>(M_PI) / 180.f;
-// m_dir = glm::vec3(glm::rotate(umat, rad, glm::vec3(0.f,1.f,0.f)) * glm::vec4(m_dir, 1.f));
-// m_pos = center - m_dir * steps;
-// m_up = glm::vec3(glm::rotate(umat, rad, glm::vec3(0.f,1.f,0.f)) * glm::vec4(m_up, 1.f));
-
-// m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
-
-// }
+}
