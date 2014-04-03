@@ -9,6 +9,7 @@ Program::Program()
 {
 
 	m_program = glCreateProgram();
+
 	if (m_program == 0) {
 		Debug::log("Error creating Program!");
 	}

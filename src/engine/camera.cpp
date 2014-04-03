@@ -1,8 +1,11 @@
 #include "camera.hpp"
 
+#include "debug.hpp"
+
 #include <utility>
 
-Camera::Camera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & up, float fov, int width, int height, float near, float far)
+Camera::Camera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & up, float fov,
+	int width, int height, float near, float far)
   : m_width(width),
   	m_height(height),
   	m_fov(fov),

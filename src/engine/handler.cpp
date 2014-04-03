@@ -1,8 +1,16 @@
 #include "handler.hpp"
 
+#include "debug.hpp"
+
 #include "objects/objectinterface.hpp"
 #include "gl/loop.hpp"
-#include "debug.hpp"
+#include "passes/basicrender.hpp"
+
+/*
+*
+*	ObjectID
+*
+*/
 
 ObjectID::ObjectID(WindowID & win)
   : m_window(win)
@@ -10,24 +18,6 @@ ObjectID::ObjectID(WindowID & win)
 
 	static unsigned long objectID = 0;
 	m_id = ++objectID;
-
-}
-
-void ObjectID::hide() {
-
-	Loop & loop = m_window.getLoop();
-	loop.addCommand([=, &loop](){
-		loop.removeObjectFromRender(m_id);
-	});
-
-}
-
-void ObjectID::show() {
-
-	Loop & loop = m_window.getLoop();
-	loop.addCommand([=, &loop](){
-		loop.addObjectToRender(m_id);
-	});
 
 }
 
@@ -115,6 +105,12 @@ void ObjectID::attachTo(const ObjectID & other) {
 
 }
 
+/*
+*
+*	WindowID
+*
+*/
+
 WindowID::WindowID(std::shared_ptr<Window> ptr)
   : m_window(ptr)
 {
@@ -135,7 +131,6 @@ const ObjectID & WindowID::createCopy(const ObjectID & id) {
 
 		loop.addCommand([=, &loop](){
 			ObjectInterface::copyObject(origid, copyid);
-			loop.addObjectToRender(copyid);
 		});
 
 		return m_objects.back();
@@ -153,7 +148,6 @@ const ObjectID & WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 &
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createTriangle(id, a, b, c, color);
-		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
@@ -169,7 +163,6 @@ const ObjectID & WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 &
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createTriangle(id, a, b, c, colors);
-		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
@@ -185,7 +178,6 @@ const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::v
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createQuadrilateral(id, a, b, c, d, color);
-		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
@@ -201,7 +193,6 @@ const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::v
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createQuadrilateral(id, a, b, c, d, colors);
-		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
@@ -217,7 +208,6 @@ const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCircle(id, center, axis, radius, edges, color);
-		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
@@ -233,7 +223,6 @@ const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCircle(id, center, axis, radius, edges, colors);
-		loop.addObjectToRender(id);
 	});
 
 	return m_objects.back();
@@ -244,10 +233,30 @@ const RenderID & WindowID::createBasicRendering(const CameraID & cam) {
 
 	m_renders.emplace_back(*this);
 	unsigned long id = m_renders.back()();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		std::shared_ptr<Render> r(new BasicRender(cam.getCam()));
+		loop.addRendering(id, r);
+	});
 
 	return m_renders.back();
 
 }
+
+const CameraID & WindowID::createCamera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & up) {
+
+	m_cameras.emplace_back(Camera(pos, dir, up, 45.f, m_window->getWidth(), m_window->getHeight(), 0.01f, 1000.f));
+
+	return m_cameras.back();
+
+}
+
+/*
+*
+*	RenderID
+*
+*/
 
 RenderID::RenderID(WindowID & win)
   : m_window(win)
@@ -258,6 +267,54 @@ RenderID::RenderID(WindowID & win)
 
 }
 
+void RenderID::set() {
+
+	Loop & loop = m_window.getLoop();
+
+	loop.addCommand([=, &loop](){
+		loop.setRendering(loop.getRendering(m_id));
+	});
+
+}
+
 void RenderID::addObjects(const std::set<ObjectID> & set) {
+
+	Loop & loop = m_window.getLoop();
+
+	std::set<unsigned long> IDs;
+	for (const ObjectID & o : set) {
+		IDs.emplace(o());
+	}
+
+	loop.addCommand([=, &loop](){
+		loop.addObjectsToRender(m_id, IDs);
+	});
+
+}
+
+void RenderID::removeObject(const ObjectID & id) {
+
+	Loop & loop = m_window.getLoop();
+
+	unsigned long ID = id();
+	
+	loop.addCommand([=, &loop](){
+		loop.removeObjectFromRender(m_id, ID);
+	});
+
+}
+
+/*
+*
+*	CameraID
+*
+*/
+
+CameraID::CameraID(const Camera & cam)
+  : m_cam(cam)
+{
+
+	static unsigned long cameraID = 0;
+	m_id = ++cameraID;
 
 }

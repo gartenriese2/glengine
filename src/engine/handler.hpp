@@ -8,6 +8,7 @@
 #include <initializer_list>
 
 class WindowID;
+class RenderID;
 
 class ObjectID {
 
@@ -18,9 +19,6 @@ class ObjectID {
 		bool operator==(const ObjectID & other) const { return this->m_id == other.m_id; }
 		bool operator<(const ObjectID & other) const { return this->m_id < other.m_id; }
 		unsigned long operator()() const { return m_id; }
-
-		void hide();
-		void show();
 
 		void rotate(float, const glm::vec3 &);
 		void rotateAround(float, const glm::vec3 &, const glm::vec3 &);
@@ -40,7 +38,6 @@ class ObjectID {
 
 };
 
-class RenderID;
 class CameraID;
 
 class WindowID {
@@ -79,7 +76,7 @@ class WindowID {
 
 		const RenderID & createBasicRendering(const CameraID &);
 
-		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, int, int, float, float);
+		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 
 	private:
 
@@ -101,7 +98,9 @@ class RenderID {
 		bool operator<(const RenderID & other) const { return this->m_id < other.m_id; }
 		unsigned long operator()() const { return m_id; }
 
+		void set();
 		void addObjects(const std::set<ObjectID> &);
+		void removeObject(const ObjectID &);
 
 	private:
 
@@ -110,11 +109,22 @@ class RenderID {
 
 };
 
+#include "camera.hpp"
+
 class CameraID {
 
 	public:
 
-		CameraID(WindowID &);
+		CameraID(const Camera &);
+
+		unsigned long operator()() const { return m_id; }
+
+		const Camera & getCam() const { return m_cam; }
+
+	private:
+
+		unsigned long m_id;
+		Camera m_cam;
 
 };
 

@@ -2,6 +2,7 @@
 #define _CAMERA_
 
 #include "glmincludes.hpp"
+#include "debug.hpp"
 
 class Camera {
 
@@ -9,6 +10,7 @@ class Camera {
 
 		Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, int, int, float, float);
 		// Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, float, float, float);
+		Camera(const Camera &) = default;
 		Camera(Camera &&) = default;
 		Camera & operator=(Camera &&) = default;
 

@@ -2,6 +2,7 @@
 #define _RENDER_
 
 #include <set>
+#include "../debug.hpp"
 
 class Render {
 

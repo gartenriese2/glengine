@@ -15,9 +15,6 @@ Loop::Loop() {
 
 void Loop::start(GLFWwindow * window) {
 
-	BasicRender r(Camera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f}, 45.f, 1000, 800, 0.1f, 10.f));
-	setRendering(std::shared_ptr<Render>(&r));
-
 	glEnable(GL_DEPTH_TEST);
 
 	while (!glfwWindowShouldClose(window))
@@ -64,10 +61,10 @@ void Loop::emptyCommands() {
 
 }
 
-void Loop::addObjectToRender(unsigned long id) {
-	m_rendering->addObjects({id});
+void Loop::addObjectsToRender(unsigned long renderID, std::set<unsigned long> objectIDs) {
+	m_createdRenderings.at(renderID)->addObjects(objectIDs);
 }
 
-void Loop::removeObjectFromRender(unsigned long id) {
-	m_rendering->removeObject({id});
+void Loop::removeObjectFromRender(unsigned long renderID, unsigned long objectID) {
+	m_createdRenderings.at(renderID)->removeObject(objectID);
 }

@@ -21,6 +21,8 @@ class Window {
 		void start();
 
 		Loop & getLoop() { return m_loop; }
+		unsigned int getWidth() const { return m_width; }
+		unsigned int getHeight() const { return m_height; }
 
 	protected:
 

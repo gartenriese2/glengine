@@ -3,6 +3,7 @@
 
 #include "../gl/program.hpp"
 #include "../camera.hpp"
+#include "../debug.hpp"
 
 #include <set>
 
