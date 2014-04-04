@@ -20,6 +20,7 @@ class Engine {
 		~Engine();
 
 		const WindowID createWindow(unsigned int, unsigned int, const std::string & = "Default Title");
+		const WindowID createFullscreenWindow(unsigned int, unsigned int, const std::string & = "Default Title");
 
 	private:
 

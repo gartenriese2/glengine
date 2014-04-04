@@ -2,10 +2,11 @@
 
 #include "debug.hpp"
 
-Window::Window(unsigned int width, unsigned int height, const std::string & title)
+Window::Window(unsigned int width, unsigned int height, const std::string & title, bool fullscreen)
   : m_width(width),
 	m_height(height),
-    m_title(title)
+    m_title(title),
+    m_fullscreen(fullscreen)
 {
 }
 
@@ -15,7 +16,7 @@ Window::~Window() {
 
 void Window::start() {
 
-	m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), NULL, NULL);
+	m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), m_fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 	if (!m_window) {
 		glfwTerminate();
 		Debug::log("Could not create Window!");

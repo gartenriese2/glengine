@@ -11,7 +11,7 @@ class Window {
 
 	public:
 		
-		Window(unsigned int, unsigned int, const std::string &);
+		Window(unsigned int, unsigned int, const std::string &, bool);
 		Window(const Window &) = delete;
 		Window(Window &&) = delete;
 		Window & operator=(const Window &) = delete;
@@ -37,6 +37,8 @@ class Window {
 
 		GLFWwindow * m_window;
 		Loop m_loop;
+
+		bool m_fullscreen;
 
 	private:
 

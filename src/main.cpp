@@ -8,7 +8,8 @@ Engine e;
 
 void ampelDemo() {
 
-	WindowID w = e.createWindow(800, 800);
+	// WindowID w = e.createFullscreenWindow(2560, 1440);
+	WindowID w = e.createWindow(1024, 768);
 
 	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
 	RenderID basic = w.createBasicRendering(cam);

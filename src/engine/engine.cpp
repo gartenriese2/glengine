@@ -31,7 +31,19 @@ void Engine::init() {
 
 const WindowID Engine::createWindow(unsigned int width, unsigned int height, const std::string & title) {
 
-	std::shared_ptr<Window> ptr(new Window(width, height, title));
+	std::shared_ptr<Window> ptr(new Window(width, height, title, false));
+
+	WindowID id(ptr);
+
+	m_windowThreads[id()] = std::unique_ptr<WindowThread>(new WindowThread(ptr));
+
+	return id;
+
+}
+
+const WindowID Engine::createFullscreenWindow(unsigned int width, unsigned int height, const std::string & title) {
+
+	std::shared_ptr<Window> ptr(new Window(width, height, title, true));
 
 	WindowID id(ptr);
 
