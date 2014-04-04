@@ -82,8 +82,9 @@ class WindowID {
 
 		void addKeyEvent(int key, std::function<void()> f) { getLoop().addKeyEvent(key, f); }
 		void removeKeyEvent(int key) { getLoop().removeKeyEvent(key); }
-		void setMouseMoveEvent(std::function<void(double, double)> f) { getLoop().setMouseMoveEvent(f); }
+		bool isKeyPressed(int key) { return GLFW_PRESS == glfwGetKey(m_window->getGLFWWindow(), key); }
 
+		void setMouseMoveEvent(std::function<void(double, double)> f) { getLoop().setMouseMoveEvent(f); }
 		bool isLeftMouseButtonPressed() { return GLFW_PRESS == glfwGetMouseButton(m_window->getGLFWWindow(), GLFW_MOUSE_BUTTON_LEFT); }
 
 	private:
@@ -133,6 +134,7 @@ class CameraID {
 		const glm::vec3 & getDir() const { return m_cam.getDir(); }
 		const glm::vec3 & getUp() const { return m_cam.getUp(); }
 
+		void reset() { m_cam.reset(); }
 		void move(const glm::vec3 & change) { m_cam.move(change); }
 		void rotate(float radians, const glm::vec3 & axis) { m_cam.rotate(radians, axis); }
 		void rotateAround(float radians, const glm::vec3 & axis, const glm::vec3 & point)

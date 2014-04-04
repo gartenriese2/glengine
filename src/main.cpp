@@ -20,26 +20,29 @@ void ampelDemo() {
 		w.close();
 		glfwTerminate();
 	});
+	w.addKeyEvent(GLFW_KEY_R, [&](){
+		cam.reset();
+	});
 	w.addKeyEvent(GLFW_KEY_SPACE, [&](){
 		cam.rotate(0.05f, {0.f, 0.f, 1.f});
 	});
 	w.addKeyEvent(GLFW_KEY_W, [&](){
-		cam.move(glm::normalize(cam.getDir()) * 0.05f);
+		cam.move(glm::normalize(cam.getDir()) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.2f : 0.05f));
 	});
 	w.addKeyEvent(GLFW_KEY_S, [&](){
-		cam.move(-glm::normalize(cam.getDir()) * 0.05f);
+		cam.move(-glm::normalize(cam.getDir()) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.2f : 0.05f));
 	});
 	w.addKeyEvent(GLFW_KEY_Q, [&](){
-		cam.move(glm::normalize(cam.getUp()) * 0.05f);
+		cam.move(glm::normalize(cam.getUp()) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.2f : 0.05f));
 	});
 	w.addKeyEvent(GLFW_KEY_E, [&](){
-		cam.move(-glm::normalize(cam.getUp()) * 0.05f);
+		cam.move(-glm::normalize(cam.getUp()) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.2f : 0.05f));
 	});
 	w.addKeyEvent(GLFW_KEY_A, [&](){
-		cam.move(glm::normalize(glm::cross(cam.getUp(), cam.getDir())) * 0.05f);
+		cam.move(glm::normalize(glm::cross(cam.getUp(), cam.getDir())) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.2f : 0.05f));
 	});
 	w.addKeyEvent(GLFW_KEY_D, [&](){
-		cam.move(-glm::normalize(glm::cross(cam.getUp(), cam.getDir())) * 0.05f);
+		cam.move(-glm::normalize(glm::cross(cam.getUp(), cam.getDir())) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.2f : 0.05f));
 	});
 
 	double oldX = -1.0, oldY = -1.0;
