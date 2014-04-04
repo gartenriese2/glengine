@@ -57,6 +57,8 @@ class WindowID {
 		Loop & getLoop() { return m_window->getLoop(); }
 		bool hasObject(ObjectID id) const { return std::find(m_objects.cbegin(), m_objects.cend(), id) != m_objects.cend(); }
 
+		void close() { glfwSetWindowShouldClose(m_window->getGLFWWindow(), GL_TRUE); }
+
 		const ObjectID & createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &);
 		const ObjectID & createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
@@ -80,6 +82,9 @@ class WindowID {
 
 		void addKeyEvent(int key, std::function<void()> f) { getLoop().addKeyEvent(key, f); }
 		void removeKeyEvent(int key) { getLoop().removeKeyEvent(key); }
+		void setMouseMoveEvent(std::function<void(double, double)> f) { getLoop().setMouseMoveEvent(f); }
+
+		bool isLeftMouseButtonPressed() { return GLFW_PRESS == glfwGetMouseButton(m_window->getGLFWWindow(), GLFW_MOUSE_BUTTON_LEFT); }
 
 	private:
 
@@ -124,10 +129,16 @@ class CameraID {
 
 		Camera & getCam() { return m_cam; }
 
+		const glm::vec3 & getPos() const { return m_cam.getPos(); }
+		const glm::vec3 & getDir() const { return m_cam.getDir(); }
+		const glm::vec3 & getUp() const { return m_cam.getUp(); }
+
 		void move(const glm::vec3 & change) { m_cam.move(change); }
 		void rotate(float radians, const glm::vec3 & axis) { m_cam.rotate(radians, axis); }
 		void rotateAround(float radians, const glm::vec3 & axis, const glm::vec3 & point)
 			{ m_cam.rotateAround(radians, axis, point); }
+		void yaw(float radians) { m_cam.rotate(radians, getUp()); }
+		void pitch(float radians) { m_cam.rotate(radians, glm::cross(getUp(), getDir())); }
 
 	private:
 

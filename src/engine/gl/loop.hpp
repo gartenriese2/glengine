@@ -32,6 +32,7 @@ class Loop {
 
 		void addKeyEvent(int key, std::function<void()> f) { m_keyEvents.emplace(key, f); }
 		void removeKeyEvent(int key) { m_keyEvents.erase(key); }
+		void setMouseMoveEvent(std::function<void(double, double)> f) { m_mouseMoveEvent = f; }
 
 	private:
 
@@ -42,6 +43,7 @@ class Loop {
 		std::queue<std::function<void()>> m_commands;
 
 		std::map<int, std::function<void()>> m_keyEvents;
+		std::function<void(double, double)> m_mouseMoveEvent;
 
 };
 

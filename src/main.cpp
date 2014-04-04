@@ -14,8 +14,43 @@ void ampelDemo() {
 	RenderID basic = w.createBasicRendering(cam);
 	basic.set();
 
+	bool running = true;
+	w.addKeyEvent(GLFW_KEY_ESCAPE, [&](){
+		w.close();
+		glfwTerminate();
+	});
 	w.addKeyEvent(GLFW_KEY_SPACE, [&](){
 		cam.rotate(0.05f, {0.f, 0.f, 1.f});
+	});
+	w.addKeyEvent(GLFW_KEY_W, [&](){
+		cam.move(glm::normalize(cam.getDir()) * 0.05f);
+	});
+	w.addKeyEvent(GLFW_KEY_S, [&](){
+		cam.move(-glm::normalize(cam.getDir()) * 0.05f);
+	});
+	w.addKeyEvent(GLFW_KEY_Q, [&](){
+		cam.move(glm::normalize(cam.getUp()) * 0.05f);
+	});
+	w.addKeyEvent(GLFW_KEY_E, [&](){
+		cam.move(-glm::normalize(cam.getUp()) * 0.05f);
+	});
+	w.addKeyEvent(GLFW_KEY_A, [&](){
+		cam.move(glm::normalize(glm::cross(cam.getUp(), cam.getDir())) * 0.05f);
+	});
+	w.addKeyEvent(GLFW_KEY_D, [&](){
+		cam.move(-glm::normalize(glm::cross(cam.getUp(), cam.getDir())) * 0.05f);
+	});
+
+	double oldX = -1.0, oldY = -1.0;
+	w.setMouseMoveEvent([&](double xpos, double ypos){
+		
+		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+			cam.yaw(-(oldX - xpos) * 0.001f);
+			cam.pitch((oldY - ypos) * 0.001f);
+		}
+		oldX = xpos;
+		oldY = ypos;
+
 	});
 
 	ObjectID red = w.createCircle({0.f, 1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.25f, 0.f, 0.f});
@@ -25,7 +60,7 @@ void ampelDemo() {
 
 	float step = 0.001f;
 	long count = 0;
-	while (1) {
+	while (running) {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 * step)));
 
@@ -45,14 +80,6 @@ void ampelDemo() {
 			orange.scaleColor(0.25f);
 			red.scaleColor(4.f);
 		}
-
-		// cam.rotate(0.01f, {0.f, 0.f, 1.f});
-
-		// cam.move({0.001f, 0.f, 0.f});
-
-		// if (count % 2000 == 0) cam.move({-2.f, 0.f, 0.f});
-
-		// cam.rotateAround(0.001f, {0.f, 1.f, 0.f}, {0.f, 0.f, 0.f});
 
 		++count;
 
