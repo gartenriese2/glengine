@@ -14,6 +14,10 @@ void ampelDemo() {
 	RenderID basic = w.createBasicRendering(cam);
 	basic.set();
 
+	w.addKeyEvent(GLFW_KEY_SPACE, [&](){
+		cam.rotate(0.05f, {0.f, 0.f, 1.f});
+	});
+
 	ObjectID red = w.createCircle({0.f, 1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.25f, 0.f, 0.f});
 	ObjectID orange = w.createCircle({0.f, 0.f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {1.0f, 0.5f, 0.f});
 	ObjectID green = w.createCircle({0.f, -1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.f, 0.25f, 0.f});
@@ -48,7 +52,7 @@ void ampelDemo() {
 
 		// if (count % 2000 == 0) cam.move({-2.f, 0.f, 0.f});
 
-		cam.rotateAround(0.001f, {0.f, 1.f, 0.f}, {0.f, 0.f, 0.f});
+		// cam.rotateAround(0.001f, {0.f, 1.f, 0.f}, {0.f, 0.f, 0.f});
 
 		++count;
 

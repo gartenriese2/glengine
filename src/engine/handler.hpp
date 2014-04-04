@@ -78,6 +78,9 @@ class WindowID {
 
 		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 
+		void addKeyEvent(int key, std::function<void()> f) { getLoop().addKeyEvent(key, f); }
+		void removeKeyEvent(int key) { getLoop().removeKeyEvent(key); }
+
 	private:
 
 		unsigned long m_id;

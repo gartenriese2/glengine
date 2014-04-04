@@ -20,6 +20,10 @@ class Camera {
 		int getWidth() const { return m_width; }
 		int getHeight() const { return m_height; }
 
+		const glm::vec3 & getPos() const { return m_pos; }
+		const glm::vec3 & getDir() const { return m_dir; }
+		const glm::vec3 & getUp() const { return m_up; }
+
 		void calculateView();
 
 		void reset();

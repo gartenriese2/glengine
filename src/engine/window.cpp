@@ -36,6 +36,8 @@ void Window::start() {
 	// // 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 	// }
 
+    glfwSetWindowUserPointer(m_window, this);
+
 	m_loop.start(m_window);
     glfwDestroyWindow(m_window);
 

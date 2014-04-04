@@ -15,7 +15,17 @@ Loop::Loop() {
 
 void Loop::start(GLFWwindow * window) {
 
-	glEnable(GL_DEPTH_TEST);
+	glfwSetKeyCallback(window, [](GLFWwindow * window, int key, int scancode, int action, int mods){
+		
+		// if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		// glfwSetWindowShouldClose(window, GL_TRUE);
+
+		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(window));
+		Loop & loop = win->getLoop();
+		if (loop.m_keyEvents.count(key) != 0 && (action == GLFW_PRESS || action == GLFW_REPEAT))
+			loop.m_keyEvents.at(key)();
+
+	});
 
 	while (!glfwWindowShouldClose(window))
 	{

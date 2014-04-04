@@ -30,6 +30,9 @@ class Loop {
 		void addCommand(std::function<void()>);
 		void emptyCommands();
 
+		void addKeyEvent(int key, std::function<void()> f) { m_keyEvents.emplace(key, f); }
+		void removeKeyEvent(int key) { m_keyEvents.erase(key); }
+
 	private:
 
 		void render();
@@ -37,6 +40,8 @@ class Loop {
 		std::shared_ptr<Render> m_rendering;
 		std::map<unsigned long, std::shared_ptr<Render>> m_createdRenderings;
 		std::queue<std::function<void()>> m_commands;
+
+		std::map<int, std::function<void()>> m_keyEvents;
 
 };
 
