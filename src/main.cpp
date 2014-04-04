@@ -42,6 +42,8 @@ void ampelDemo() {
 			red.scaleColor(4.f);
 		}
 
+		// cam.rotate(0.01f, {0.f, 0.f, 1.f});
+
 		// cam.move({0.001f, 0.f, 0.f});
 
 		// if (count % 2000 == 0) cam.move({-2.f, 0.f, 0.f});
