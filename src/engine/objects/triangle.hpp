@@ -1,7 +1,7 @@
 #ifndef _TRIANGLE_
 #define _TRIANGLE_
 
-#include "primitive.hpp"
+#include "object.hpp"
 #include "../glmincludes.hpp"
 #include "../debug.hpp"
 
@@ -10,7 +10,7 @@
 
 class ObjectInterface;
 
-class Triangle : public Primitive {
+class Triangle : public Object {
 
 	public:
 	
@@ -26,7 +26,7 @@ class Triangle : public Primitive {
 
 		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
-		Triangle(const Triangle & t) : Primitive(t) {}
+		Triangle(const Triangle & t) : Object(t) {}
 
 		std::shared_ptr<Object> getCopy();
 

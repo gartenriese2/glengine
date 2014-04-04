@@ -57,6 +57,10 @@ void ampelDemo() {
 
 	});
 
+	w.setScrollEvent([&](double xoffset, double yoffset){
+		cam.moveTo(cam.getPos() + static_cast<float>(yoffset) * glm::normalize(cam.getDir()));
+	});
+
 	ObjectID red = w.createCircle({0.f, 1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.25f, 0.f, 0.f});
 	ObjectID orange = w.createCircle({0.f, 0.f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {1.0f, 0.5f, 0.f});
 	ObjectID green = w.createCircle({0.f, -1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.f, 0.25f, 0.f});

@@ -84,8 +84,16 @@ class WindowID {
 		void removeKeyEvent(int key) { getLoop().removeKeyEvent(key); }
 		bool isKeyPressed(int key) { return GLFW_PRESS == glfwGetKey(m_window->getGLFWWindow(), key); }
 
+		void addMouseClickEvent(int key, std::function<void()> f) { getLoop().addMouseClickEvent(key, f); }
+		void removeMouseClickEvent(int key) { getLoop().removeMouseClickEvent(key); }
 		void setMouseMoveEvent(std::function<void(double, double)> f) { getLoop().setMouseMoveEvent(f); }
-		bool isLeftMouseButtonPressed() { return GLFW_PRESS == glfwGetMouseButton(m_window->getGLFWWindow(), GLFW_MOUSE_BUTTON_LEFT); }
+		void setScrollEvent(std::function<void(double, double)> f) { getLoop().setScrollEvent(f); }
+		bool isMouseButtonPressed(int key) { return GLFW_PRESS == glfwGetMouseButton(m_window->getGLFWWindow(), key); }
+		
+		bool isLeftMouseButtonPressed() { return isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT); }
+		bool isRightMouseButtonPressed() { return isMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT); }
+		bool isEscapePressed() { return isKeyPressed(GLFW_KEY_ESCAPE); }
+		bool isShiftPressed() { return isKeyPressed(GLFW_KEY_LEFT_SHIFT) || isKeyPressed(GLFW_KEY_RIGHT_SHIFT); }
 
 	private:
 
@@ -136,6 +144,7 @@ class CameraID {
 
 		void reset() { m_cam.reset(); }
 		void move(const glm::vec3 & change) { m_cam.move(change); }
+		void moveTo(const glm::vec3 & to) { m_cam.moveTo(to); }
 		void rotate(float radians, const glm::vec3 & axis) { m_cam.rotate(radians, axis); }
 		void rotateAround(float radians, const glm::vec3 & axis, const glm::vec3 & point)
 			{ m_cam.rotateAround(radians, axis, point); }
