@@ -23,7 +23,9 @@ class Window {
 		Loop & getLoop() { return m_loop; }
 		GLFWwindow * getGLFWWindow() { return m_window; }
 		unsigned int getWidth() const { return m_width; }
+		void setWidth(unsigned int w) { m_width = w; }
 		unsigned int getHeight() const { return m_height; }
+		void setHeight(unsigned int h) { m_height = h; }
 
 	protected:
 

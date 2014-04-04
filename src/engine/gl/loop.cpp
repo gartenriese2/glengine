@@ -84,3 +84,11 @@ void Loop::addObjectsToRender(unsigned long renderID, std::set<unsigned long> ob
 void Loop::removeObjectFromRender(unsigned long renderID, unsigned long objectID) {
 	m_createdRenderings.at(renderID)->removeObject(objectID);
 }
+
+void Loop::resizeRenderings(unsigned int width, unsigned int height) {
+
+	for (auto & r : m_createdRenderings) {
+		r.second->changeBaseSize(width, height);
+	}
+
+}

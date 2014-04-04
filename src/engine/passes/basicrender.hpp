@@ -18,6 +18,8 @@ class BasicRender : public Render {
 		void addObjects(std::set<unsigned long> vec) { m_basicPass.addObjects(vec); }
 		void removeObject(unsigned long id) { m_basicPass.removeObject(id); }
 
+		void changeBaseSize(unsigned int w, unsigned int h) { m_cam.resize(w, h); }
+
 	private:
 
 		Camera & m_cam;

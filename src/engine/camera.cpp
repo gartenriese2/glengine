@@ -9,22 +9,42 @@ Camera::Camera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & u
   : m_width(width),
   	m_height(height),
   	m_fov(fov),
+  	m_near(near),
+  	m_far(far),
   	m_pos(pos),
   	m_dir(glm::normalize(dir)),
   	m_up(glm::normalize(up)),
-  	m_initPos(pos),
+  	m_initPos(m_pos),
   	m_initDir(m_dir),
   	m_initUp(m_up)
 {
 
 	calculateView();
-	m_proj = glm::perspective(m_fov, static_cast<float>(width) / static_cast<float>(height), near, far);
+	calculateProj();
+
+}
+
+void Camera::resize(unsigned int width, unsigned int height) {
+
+	if (width == 0) width = 1;
+	if (height == 0) height = 1;
+
+	m_width = width;
+	m_height = height;
+
+	calculateProj();
 
 }
 
 void Camera::calculateView() {
 
 	m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
+
+}
+
+void Camera::calculateProj() {
+
+	m_proj = glm::perspective(m_fov, static_cast<float>(m_width) / static_cast<float>(m_height), m_near, m_far);
 
 }
 

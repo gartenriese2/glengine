@@ -38,6 +38,21 @@ void Window::start() {
 
     glfwSetWindowUserPointer(m_window, this);
 
+    glfwSetWindowSizeCallback(m_window, [](GLFWwindow * window, int width, int height){
+        
+        const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        width = (width > mode->width) ? mode->width : width;
+        height = (height > mode->height) ? mode->height : height;
+
+        Window * win = static_cast<Window *>(glfwGetWindowUserPointer(window));
+        win->setWidth(width);
+        win->setHeight(height);
+
+        Loop & loop = win->getLoop();
+        loop.resizeRenderings(width, height);
+    
+    });
+
 	m_loop.start(m_window);
     glfwDestroyWindow(m_window);
 

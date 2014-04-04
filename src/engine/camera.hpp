@@ -24,7 +24,9 @@ class Camera {
 		const glm::vec3 & getDir() const { return m_dir; }
 		const glm::vec3 & getUp() const { return m_up; }
 
+		void resize(unsigned int, unsigned int);
 		void calculateView();
+		void calculateProj();
 
 		void reset();
 		void move(const glm::vec3 &);
@@ -38,6 +40,8 @@ class Camera {
 		int m_height;
 
 		float m_fov;
+		float m_near;
+		float m_far;
 
 		glm::mat4 m_view;
 		glm::mat4 m_proj;

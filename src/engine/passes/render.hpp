@@ -17,6 +17,7 @@ class Render {
 		virtual void draw() = 0;
 		virtual void addObjects(std::set<unsigned long>) = 0;
 		virtual void removeObject(unsigned long) = 0;
+		virtual void changeBaseSize(unsigned int, unsigned int) = 0;
 
 };
 
