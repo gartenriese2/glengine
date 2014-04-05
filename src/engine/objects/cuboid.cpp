@@ -72,6 +72,46 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	m_colorBuffer.insertData(colors);
 	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
+	glm::vec3 nABED = glm::cross(b - a, d - a);
+	glm::vec3 nCADF = glm::cross(a - c, f - c);
+	glm::vec3 nGCFH = glm::cross(c - g, h - g);
+	glm::vec3 nBGHE = glm::cross(g - b, e - b);
+	glm::vec3 nDEHF = glm::cross(e - d, f - d);
+	glm::vec3 nGCAB = -glm::cross(c - g, b - g);
+
+	m_normalBuffer.insertData<GLfloat>({
+		nABED.x, nABED.y, nABED.z,
+		nABED.x, nABED.y, nABED.z,
+		nABED.x, nABED.y, nABED.z,
+		nABED.x, nABED.y, nABED.z,
+
+		nCADF.x, nCADF.y, nCADF.z,
+		nCADF.x, nCADF.y, nCADF.z,
+		nCADF.x, nCADF.y, nCADF.z,
+		nCADF.x, nCADF.y, nCADF.z,
+
+		nGCFH.x, nGCFH.y, nGCFH.z,
+		nGCFH.x, nGCFH.y, nGCFH.z,
+		nGCFH.x, nGCFH.y, nGCFH.z,
+		nGCFH.x, nGCFH.y, nGCFH.z,
+
+		nBGHE.x, nBGHE.y, nBGHE.z,
+		nBGHE.x, nBGHE.y, nBGHE.z,
+		nBGHE.x, nBGHE.y, nBGHE.z,
+		nBGHE.x, nBGHE.y, nBGHE.z,
+
+		nDEHF.x, nDEHF.y, nDEHF.z,
+		nDEHF.x, nDEHF.y, nDEHF.z,
+		nDEHF.x, nDEHF.y, nDEHF.z,
+		nDEHF.x, nDEHF.y, nDEHF.z,
+
+		nGCAB.x, nGCAB.y, nGCAB.z,
+		nGCAB.x, nGCAB.y, nGCAB.z,
+		nGCAB.x, nGCAB.y, nGCAB.z,
+		nGCAB.x, nGCAB.y, nGCAB.z,
+	});
+	m_normalBuffer.bindToVAO(m_vertexArray, 2);
+
 	m_indexBuffer.insertData({
 		 0,  1,  2,
 		 2,  3,  0,

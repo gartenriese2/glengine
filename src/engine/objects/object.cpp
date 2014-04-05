@@ -20,6 +20,7 @@ Object::Object()
 Object::Object(const Object & other)
   : m_vertexBuffer(other.m_vertexBuffer),
   	m_colorBuffer(other.m_colorBuffer),
+  	m_normalBuffer(other.m_normalBuffer),
   	m_indexBuffer(other.m_indexBuffer),
   	m_modelMatrix(other.m_modelMatrix),
   	m_scaleMatrix(other.m_scaleMatrix),
@@ -33,6 +34,7 @@ Object::Object(const Object & other)
 	glGenVertexArrays(1, &m_vertexArray);
 	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 	m_colorBuffer.bindToVAO(m_vertexArray, 1);
+	m_normalBuffer.bindToVAO(m_vertexArray, 2);
 	m_indexBuffer.bindToVAO(m_vertexArray);
 	
 }

@@ -8,7 +8,6 @@
 #include <initializer_list>
 
 class WindowID;
-class RenderID;
 
 class ObjectID {
 
@@ -39,6 +38,8 @@ class ObjectID {
 };
 
 class CameraID;
+class RenderID;
+class LightID;
 
 class WindowID {
 
@@ -82,8 +83,11 @@ class WindowID {
 		const ObjectID & createCopy(const ObjectID &);
 
 		const RenderID & createBasicRendering(CameraID &);
+		const RenderID & createNormalRendering(CameraID &);
 
 		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
+
+		const LightID & createLight(const glm::vec3 &, const glm::vec3 & = {1.f, 1.f, 1.f});
 
 		void addKeyEvent(int key, std::function<void()> f) { getLoop().addKeyEvent(key, f); }
 		void removeKeyEvent(int key) { getLoop().removeKeyEvent(key); }
@@ -107,6 +111,7 @@ class WindowID {
 		std::vector<ObjectID> m_objects;
 		std::vector<RenderID> m_renders;
 		std::vector<CameraID> m_cameras;
+		std::vector<LightID> m_lights;
 
 };
 
@@ -160,6 +165,32 @@ class CameraID {
 
 		unsigned long m_id;
 		Camera m_cam;
+
+};
+
+#include "light.hpp"
+
+class LightID {
+
+	public:
+
+		LightID(const Light &);
+
+		unsigned long operator()() const { return m_id; }
+
+		Light & getLight() { return m_light; }
+
+		const glm::vec3 & getDir() const { return m_light.getDir(); }
+		void setDir(const glm::vec3 & dir) { m_light.setDir(dir); }
+		const glm::vec3 & getColor() const { return m_light.getColor(); }
+		void setColor(const glm::vec3 & color) { m_light.setColor(color); }
+
+		void rotate(float radians, const glm::vec3 & axis) { m_light.rotate(radians, axis); }
+
+	private:
+
+		unsigned long m_id;
+		Light m_light;
 
 };
 

@@ -51,7 +51,7 @@ Shader::Shader(const std::string & file) {
 		tmp.reserve(logSize);
 		glGetShaderInfoLog(m_shader, logSize, NULL, &tmp[0]);
 
-		Debug::log("Shader compiling failed with the following error:\n");
+		Debug::log(file + ": Shader compiling failed with the following error:\n");
 		Debug::log(&tmp[0]);
 		exit(0);
 

@@ -36,6 +36,14 @@ void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & 
 	m_colorBuffer.insertData(colors);
 	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
+	glm::vec3 normal = glm::cross(b - a, c - a);
+	m_normalBuffer.insertData<GLfloat>({
+		normal.x, normal.y, normal.z,
+		normal.x, normal.y, normal.z,
+		normal.x, normal.y, normal.z
+	});
+	m_normalBuffer.bindToVAO(m_vertexArray, 2);
+
 }
 
 void Triangle::draw() const {

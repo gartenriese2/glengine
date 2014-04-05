@@ -5,6 +5,7 @@
 #include "objects/objectinterface.hpp"
 #include "gl/loop.hpp"
 #include "passes/basicrender.hpp"
+#include "passes/normalrender.hpp"
 
 /*
 *
@@ -275,11 +276,35 @@ const RenderID & WindowID::createBasicRendering(CameraID & camID) {
 
 }
 
+const RenderID & WindowID::createNormalRendering(CameraID & camID) {
+
+	m_renders.emplace_back(*this);
+	unsigned long id = m_renders.back()();
+	Loop & loop = m_window->getLoop();
+	Camera & cam = camID.getCam();
+
+	loop.addCommand([=, &loop, &cam](){
+		std::shared_ptr<Render> r(new NormalRender(cam));
+		loop.addRendering(id, r);
+	});
+
+	return m_renders.back();
+
+}
+
 const CameraID & WindowID::createCamera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & up) {
 
 	m_cameras.emplace_back(Camera(pos, dir, up, 45.f, m_window->getWidth(), m_window->getHeight(), 0.01f, 1000.f));
 
 	return m_cameras.back();
+
+}
+
+const LightID & WindowID::createLight(const glm::vec3 & dir, const glm::vec3 & color) {
+
+	m_lights.emplace_back(Light(dir, color));
+
+	return m_lights.back();
 
 }
 
@@ -347,5 +372,20 @@ CameraID::CameraID(const Camera & cam)
 
 	static unsigned long cameraID = 0;
 	m_id = ++cameraID;
+
+}
+
+/*
+*
+*	LightID
+*
+*/
+
+LightID::LightID(const Light & light)
+  : m_light(light)
+{
+
+	static unsigned long lightID = 0;
+	m_id = ++lightID;
 
 }

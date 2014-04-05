@@ -46,6 +46,7 @@ class Object {
 		GLuint m_vertexArray;
 		Buffer m_vertexBuffer;
 		Buffer m_colorBuffer;
+		Buffer m_normalBuffer;
 		IndexBuffer m_indexBuffer;
 
 		glm::mat4 m_modelMatrix;

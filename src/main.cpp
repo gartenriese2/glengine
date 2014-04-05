@@ -173,6 +173,7 @@ void test() {
 	WindowID w = e.createWindow(1280, 720);
 	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
 	RenderID basic = w.createBasicRendering(cam);
+	RenderID normal = w.createNormalRendering(cam);
 	basic.set();
 
 	addControls(w, cam);
@@ -187,16 +188,26 @@ void test() {
 		oldY = ypos;
 
 	});
+	bool n_toggled = false;
+	w.addKeyEvent(GLFW_KEY_N, [&](){
+		if (n_toggled) {
+			n_toggled = false;
+			basic.set();
+		} else {
+			n_toggled = true;
+			normal.set();
+		}
+	});
 
 	ObjectID cube = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, -1.f, -1.f}, {-1.f, 1.f, 1.f});
 	basic.addObjects({cube});
+	normal.addObjects({cube});
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;
 	while(1) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
-		// DEB
-		// red.rotate(6.28f * rotPerSecond * step, {0.f, 0.f, 1.f});
+		// cube.rotate(6.28f * rotPerSecond * step, {-1.f, 1.f, 1.f});
 	}
 
 }

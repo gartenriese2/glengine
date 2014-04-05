@@ -40,6 +40,18 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 	m_colorBuffer.insertData(colors);
 	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
+	glm::vec3 nA = glm::cross(b - a, d - a);
+	glm::vec3 nB = glm::cross(c - b, a - b);
+	glm::vec3 nC = glm::cross(d - c, b - c);
+	glm::vec3 nD = glm::cross(a - d, c - d);
+	m_normalBuffer.insertData<GLfloat>({
+		nA.x, nA.y, nA.z,
+		nB.x, nB.y, nB.z,
+		nC.x, nC.y, nC.z,
+		nD.x, nD.y, nD.z
+	});
+	m_normalBuffer.bindToVAO(m_vertexArray, 2);
+
 	m_indexBuffer.insertData({
 		0, 1, 2,
 		2, 3, 0

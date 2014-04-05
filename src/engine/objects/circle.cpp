@@ -34,10 +34,14 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 	setCenter({0.f, 0.f, 0.f});
 
 	std::vector<GLfloat> vertices {0.f, 0.f, 0.f};
+	std::vector<GLfloat> normals {0.f, 0.f, 1.f};
 	for (unsigned int i = 0; i < edges; ++i) {
 		vertices.emplace_back(glm::cos(i * 2*glm::pi<float>() / edges) * radius);
 		vertices.emplace_back(glm::sin(i * 2*glm::pi<float>() / edges) * radius);
 		vertices.emplace_back(0.f);
+		normals.emplace_back(0.f);
+		normals.emplace_back(0.f);
+		normals.emplace_back(1.f);
 	}
 
 	m_vertexBuffer.insertData<GLfloat>(vertices);
@@ -45,6 +49,9 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 
 	m_colorBuffer.insertData(colors);
 	m_colorBuffer.bindToVAO(m_vertexArray, 1);
+
+	m_normalBuffer.insertData<GLfloat>(normals);
+	m_normalBuffer.bindToVAO(m_vertexArray, 2);
 
 	std::vector<GLushort> indices;
 	for (unsigned int i = 0; i < edges + 1; ++i) {
