@@ -2,8 +2,6 @@
 
 #include "../debug.hpp"
 
-#include <vector>
-
 static constexpr unsigned int k_minEdges = 3;
 static constexpr unsigned int k_maxEdges = 1000;
 

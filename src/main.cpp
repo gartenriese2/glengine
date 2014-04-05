@@ -6,16 +6,8 @@
 
 Engine e;
 
-void ampelDemo() {
+void addControls(WindowID & w, CameraID & cam) {
 
-	// WindowID w = e.createFullscreenWindow(2560, 1440);
-	WindowID w = e.createWindow(1024, 768);
-
-	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
-	RenderID basic = w.createBasicRendering(cam);
-	basic.set();
-
-	bool running = true;
 	w.addKeyEvent(GLFW_KEY_ESCAPE, [&](){
 		w.close();
 		glfwTerminate();
@@ -45,6 +37,22 @@ void ampelDemo() {
 		cam.move(-glm::normalize(glm::cross(cam.getUp(), cam.getDir())) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.2f : 0.05f));
 	});
 
+	w.setScrollEvent([&](double xoffset, double yoffset){
+		cam.moveTo(cam.getPos() + static_cast<float>(yoffset) * glm::normalize(cam.getDir()));
+	});
+
+}
+
+void ampelDemo() {
+
+	// WindowID w = e.createFullscreenWindow(2560, 1440);
+	WindowID w = e.createWindow(1024, 768);
+
+	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
+	RenderID basic = w.createBasicRendering(cam);
+	basic.set();
+	
+	addControls(w, cam);
 	double oldX = -1.0, oldY = -1.0;
 	w.setMouseMoveEvent([&](double xpos, double ypos){
 		
@@ -57,10 +65,6 @@ void ampelDemo() {
 
 	});
 
-	w.setScrollEvent([&](double xoffset, double yoffset){
-		cam.moveTo(cam.getPos() + static_cast<float>(yoffset) * glm::normalize(cam.getDir()));
-	});
-
 	ObjectID red = w.createCircle({0.f, 1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.25f, 0.f, 0.f});
 	ObjectID orange = w.createCircle({0.f, 0.f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {1.0f, 0.5f, 0.f});
 	ObjectID green = w.createCircle({0.f, -1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.f, 0.25f, 0.f});
@@ -68,7 +72,7 @@ void ampelDemo() {
 
 	float step = 0.001f;
 	long count = 0;
-	while (running) {
+	while (1) {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 * step)));
 
@@ -166,30 +170,43 @@ void secondWindowDemo() {
 
 void test() {
 
-	WindowID w = e.createWindow(800, 800);
+	WindowID w = e.createWindow(1280, 720);
 	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
 	RenderID basic = w.createBasicRendering(cam);
 	basic.set();
 
-	ObjectID red = w.createTriangle({-0.5f, -0.5f, 0.f}, {0.5f, -0.5f, 0.f}, {0.f, 0.5f, 0.f});
-	basic.addObjects({red});
+	addControls(w, cam);
+	double oldX = -1.0, oldY = -1.0;
+	w.setMouseMoveEvent([&](double xpos, double ypos){
+		
+		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+			cam.yaw(-(oldX - xpos) * 0.001f);
+			cam.pitch((oldY - ypos) * 0.001f);
+		}
+		oldX = xpos;
+		oldY = ypos;
+
+	});
+
+	ObjectID cube = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, -1.f, -1.f}, {-1.f, 1.f, 1.f});
+	basic.addObjects({cube});
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;
 	while(1) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
 		// DEB
-		red.rotate(6.28f * rotPerSecond * step, {0.f, 0.f, 1.f});
+		// red.rotate(6.28f * rotPerSecond * step, {0.f, 0.f, 1.f});
 	}
 
 }
 
 int main() {
 
-	ampelDemo();
+	// ampelDemo();
 	// rotateDemo();
 	// secondWindowDemo();
-	// test();
+	test();
 
 	return 0;
 

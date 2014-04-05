@@ -3,6 +3,7 @@
 #include "triangle.hpp"
 #include "quadrilateral.hpp"
 #include "circle.hpp"
+#include "cuboid.hpp"
 #include "../debug.hpp"
 
 #include <algorithm>
@@ -80,6 +81,24 @@ void ObjectInterface::createCircle(unsigned long id, const glm::vec3 & center, c
 	std::lock_guard<std::mutex> lock(s_mutex);
 
 	return addObject(id, std::shared_ptr<Object>(new Circle(center, axis, radius, edges, colors)));
+
+}
+
+void ObjectInterface::createCuboid(unsigned long id, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
+			const glm::vec3 & d, const glm::vec3 & col) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Cuboid(a, b, c, d, col)));
+
+}
+
+void ObjectInterface::createCuboid(unsigned long id, const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
+			const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Cuboid(a, b, c, d, colors)));
 
 }
 

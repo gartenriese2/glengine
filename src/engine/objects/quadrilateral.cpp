@@ -31,9 +31,9 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 
 	m_vertexBuffer.insertData<GLfloat>({
 		a.x, a.y, a.z,
-	   b.x, b.y, b.z,
-	   c.x, c.y, c.z,
-	   d.x, d.y, d.z
+	   	b.x, b.y, b.z,
+	   	c.x, c.y, c.z,
+	   	d.x, d.y, d.z
 	});
 	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 

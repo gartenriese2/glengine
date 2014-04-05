@@ -229,6 +229,36 @@ const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec
 
 }
 
+const ObjectID & WindowID::createCuboid(const glm::vec3 & a, const glm::vec3 & b,
+	const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & color) {
+
+	m_objects.emplace_back(*this);
+	unsigned long id = m_objects.back()();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createCuboid(id, a, b, c, d, color);
+	});
+
+	return m_objects.back();
+
+}
+
+const ObjectID & WindowID::createCuboid(const glm::vec3 & a, const glm::vec3 & b,
+	const glm::vec3 & c, const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
+
+	m_objects.emplace_back(*this);
+	unsigned long id = m_objects.back()();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createCuboid(id, a, b, c, d, colors);
+	});
+
+	return m_objects.back();
+
+}
+
 const RenderID & WindowID::createBasicRendering(CameraID & camID) {
 
 	m_renders.emplace_back(*this);

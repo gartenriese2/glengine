@@ -30,6 +30,12 @@ class ObjectInterface {
 		static void createCircle(unsigned long, const glm::vec3 &, const glm::vec3 &, float, unsigned int,
 			const std::initializer_list<glm::vec3> & = {});
 
+		// CUBOID
+		static void createCuboid(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, const glm::vec3 &);
+		static void createCuboid(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
+
 		static void copyObject(unsigned long, unsigned long);
 
 

@@ -74,6 +74,11 @@ class WindowID {
 		const ObjectID & createCircle(const glm::vec3 &, const glm::vec3 &, float, unsigned int,
 			const std::initializer_list<glm::vec3> & = {});
 
+		const ObjectID & createCuboid(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, const glm::vec3 &);
+		const ObjectID & createCuboid(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
+
 		const ObjectID & createCopy(const ObjectID &);
 
 		const RenderID & createBasicRendering(CameraID &);

@@ -11,6 +11,10 @@
 static std::mutex s_mutex;
 
 Loop::Loop() {
+
+	m_mouseMoveEvent = [](double, double){};
+	m_scrollEvent = [](double, double){};
+
 }
 
 void Loop::start(GLFWwindow * window) {
