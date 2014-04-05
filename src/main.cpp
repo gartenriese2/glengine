@@ -200,6 +200,7 @@ void test() {
 	});
 
 	ObjectID cube = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, -1.f, -1.f}, {-1.f, 1.f, 1.f});
+	cube.scale({1.f, 0.5f, 1.f});
 	basic.addObjects({cube});
 	normal.addObjects({cube});
 
