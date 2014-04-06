@@ -16,7 +16,7 @@ void addControls(WindowID & w, CameraID & cam) {
 		cam.reset();
 	});
 	w.addKeyEvent(GLFW_KEY_SPACE, [&](){
-		cam.rotate(0.05f, {0.f, 0.f, 1.f});
+		cam.rotate(0.05f, cam.getDir());
 	});
 	w.addKeyEvent(GLFW_KEY_W, [&](){
 		cam.move(glm::normalize(cam.getDir()) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 0.2f : 0.05f));
@@ -171,7 +171,7 @@ void secondWindowDemo() {
 void test() {
 
 	WindowID w = e.createWindow(1280, 720);
-	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
+	CameraID cam = w.createCamera({0.f, 2.5f, 5.f}, {0.f, -0.5f, -1.f}, {0.f, 1.f, -0.5f});
 	RenderID basic = w.createBasicRendering(cam);
 	RenderID normal = w.createNormalRendering(cam);
 	basic.set();
