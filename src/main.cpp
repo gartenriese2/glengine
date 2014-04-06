@@ -199,16 +199,21 @@ void test() {
 		}
 	});
 
-	ObjectID cube = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, -1.f, -1.f}, {-1.f, 1.f, 1.f});
-	cube.scale({1.f, 0.5f, 1.f});
-	basic.addObjects({cube});
-	normal.addObjects({cube});
+	// ObjectID cube = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, -1.f, -1.f}, {-1.f, 1.f, 1.f});
+	// cube.scale({1.f, 0.5f, 1.f});
+	// basic.addObjects({cube});
+	// normal.addObjects({cube});
+
+	ObjectID sphere = w.createSphere({0.f, 0.f, 0.f}, 1.f, 40, 50);
+	sphere.scale({2.f, 0.5f, 1.f});
+	basic.addObjects({sphere});
+	normal.addObjects({sphere});
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;
 	while(1) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
-		// cube.rotate(6.28f * rotPerSecond * step, {-1.f, 1.f, 1.f});
+		sphere.rotate(6.28f * rotPerSecond * step, {0.f, 1.f, 0.f});
 	}
 
 }
