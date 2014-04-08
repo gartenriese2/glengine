@@ -348,9 +348,9 @@ const CameraID & WindowID::createCamera(const glm::vec3 & pos, const glm::vec3 &
 
 }
 
-const LightID & WindowID::createLight(const glm::vec3 & dir, const glm::vec3 & color) {
+const LightID & WindowID::createLight(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & color) {
 
-	m_lights.emplace_back(Light(dir, color));
+	m_lights.emplace_back(Light(pos, dir, color));
 
 	return m_lights.back();
 

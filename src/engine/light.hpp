@@ -7,8 +7,10 @@ class Light {
 
 	public:
 
-		Light(const glm::vec3 &, const glm::vec3 &);
+		Light(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 
+		const glm::vec3 & getPos() const { return m_pos; }
+		void setPos(const glm::vec3 & pos) { m_pos = pos; }
 		const glm::vec3 & getDir() const { return m_dir; }
 		void setDir(const glm::vec3 & dir) { m_dir = dir; }
 		const glm::vec3 & getColor() const { return m_color; }
@@ -19,16 +21,20 @@ class Light {
 		void setShiniess(float f) { m_shiniess = f; }
 		float getStrength() const { return m_strength; }
 		void setStrength(float f) { m_strength = f; }
+		float getAttenuation() const { return m_attenuation; }
+		void setAttenuation(float f) { m_attenuation = f; }
 
 		void rotate(float, const glm::vec3 &);
 
 	private:
 
+		glm::vec3 m_pos;
 		glm::vec3 m_dir;
 		glm::vec3 m_color;
 		float m_ambientTerm;
 		float m_shiniess;
 		float m_strength;
+		float m_attenuation;
 
 };
 

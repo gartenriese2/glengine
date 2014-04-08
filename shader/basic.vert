@@ -7,6 +7,7 @@ layout(location = 2) in vec3 inNormal;
 out vec4 color;
 out vec3 normal_View;
 out vec3 normal_World;
+out vec3 position_World;
 
 uniform mat4 MVP;
 uniform mat4 MV_IT;
@@ -18,5 +19,6 @@ void main() {
 	color = inColor;
 	normal_View = (MV_IT * vec4(inNormal, 1.f)).xyz;
 	normal_World = (M * vec4(inNormal, 1.f)).xyz;
+	position_World = (M * inPosition).xyz;
 
 }

@@ -93,7 +93,7 @@ class WindowID {
 
 		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 
-		const LightID & createLight(const glm::vec3 &, const glm::vec3 & = {1.f, 1.f, 1.f});
+		const LightID & createLight(const glm::vec3 &, const glm::vec3 &, const glm::vec3 & = {1.f, 1.f, 1.f});
 
 		void addKeyEvent(int key, std::function<void()> f) { getLoop().addKeyEvent(key, f); }
 		void removeKeyEvent(int key) { getLoop().removeKeyEvent(key); }
@@ -186,10 +186,15 @@ class LightID {
 
 		Light & getLight() { return m_light; }
 
+		const glm::vec3 & getPos() const { return m_light.getPos(); }
+		void moveTo(const glm::vec3 & to) { m_light.setPos(to); }
+		void move(const glm::vec3 & dis) { m_light.setPos(m_light.getPos() + dis); }
 		const glm::vec3 & getDir() const { return m_light.getDir(); }
 		void setDir(const glm::vec3 & dir) { m_light.setDir(dir); }
 		const glm::vec3 & getColor() const { return m_light.getColor(); }
 		void setColor(const glm::vec3 & color) { m_light.setColor(color); }
+		float getAttenuation() const { return m_light.getAttenuation(); }
+		void setAttenuation(float f) { m_light.setAttenuation(f); }
 
 		void rotate(float radians, const glm::vec3 & axis) { m_light.rotate(radians, axis); }
 

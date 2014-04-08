@@ -172,7 +172,8 @@ void test() {
 
 	WindowID w = e.createWindow(1280, 720);
 	CameraID cam = w.createCamera({0.f, 2.5f, 5.f}, {0.f, -0.5f, -1.f}, {0.f, 1.f, -0.5f});
-	LightID light = w.createLight({0.f, 0.f, -1.f});
+	LightID light = w.createLight({0.f, 0.f, 10.f}, {0.f, 0.f, -1.f});
+	light.setAttenuation(0.02f);
 	RenderID basic = w.createBasicRendering(cam);
 	RenderID normal = w.createNormalRendering(cam);
 	RenderID lighting = w.createBasicLightingRendering(cam, light);
@@ -201,6 +202,13 @@ void test() {
 		}
 	});
 
+	w.addKeyEvent(GLFW_KEY_I, [&](){
+		light.move(glm::normalize(light.getDir()) * 0.1f);
+	});
+	w.addKeyEvent(GLFW_KEY_K, [&](){
+		light.move(-glm::normalize(light.getDir()) * 0.1f);
+	});
+
 	// ObjectID cube = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, -1.f, -1.f}, {-1.f, 1.f, 1.f});
 	// cube.scale({1.f, 0.5f, 1.f});
 	// basic.addObjects({cube});
@@ -208,10 +216,12 @@ void test() {
 	// lighting.addObjects({cube});
 
 	ObjectID sphere = w.createSphere({0.f, 0.f, 0.f}, 1.f, 40, 50);
+	ObjectID wall = w.createQuadrilateral({-10.f, -10.f, -10.f}, {10.f, -10.f, -10.f}, {10.f, 10.f, -10.f},
+		{-10.f, 10.f, -10.f}, {0.5f, 0.5f, 0.5f});
 	sphere.scale({2.f, 0.5f, 1.f});
-	basic.addObjects({sphere});
-	normal.addObjects({sphere});
-	lighting.addObjects({sphere});
+	basic.addObjects({sphere, wall});
+	normal.addObjects({sphere, wall});
+	lighting.addObjects({sphere, wall});
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;
