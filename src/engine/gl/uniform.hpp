@@ -3,6 +3,7 @@
 
 #include "glincludes.hpp"
 #include "../glmincludes.hpp"
+#include "../debug.hpp"
 
 class Uniform {
 
@@ -17,6 +18,12 @@ class Uniform {
 		void operator=(const glm::mat4& mat) {
 		    if (m_loc != -1) {
 			    glUniformMatrix4fv(m_loc, 1, GL_FALSE, glm::value_ptr(mat));
+			}
+		}
+
+		void operator=(const glm::vec3 & vec) {
+		    if (m_loc != -1) {
+			    glUniform3fv(m_loc, 1, glm::value_ptr(vec));
 			}
 		}
 

@@ -7,6 +7,8 @@
 
 #include <set>
 
+class Light;
+
 class Pass {
 	
 	public:
@@ -17,7 +19,8 @@ class Pass {
 		Pass & operator=(const Pass &) = delete;
 		Pass & operator=(Pass &&) = delete;
 
-		virtual void draw(const Camera &) = 0;
+		virtual void draw(const Camera &) {}
+		virtual void draw(const Camera &, const Light &) {}
 
 		void addObjects(std::set<unsigned long> set) { m_objects.insert(set.cbegin(), set.cend()); }
 		void removeObject(unsigned long id) { m_objects.erase(id); }

@@ -172,9 +172,11 @@ void test() {
 
 	WindowID w = e.createWindow(1280, 720);
 	CameraID cam = w.createCamera({0.f, 2.5f, 5.f}, {0.f, -0.5f, -1.f}, {0.f, 1.f, -0.5f});
+	LightID light = w.createLight({0.f, 0.f, -1.f});
 	RenderID basic = w.createBasicRendering(cam);
 	RenderID normal = w.createNormalRendering(cam);
-	basic.set();
+	RenderID lighting = w.createBasicLightingRendering(cam, light);
+	lighting.set();
 
 	addControls(w, cam);
 	double oldX = -1.0, oldY = -1.0;
@@ -192,7 +194,7 @@ void test() {
 	w.addKeyEvent(GLFW_KEY_N, [&](){
 		if (n_toggled) {
 			n_toggled = false;
-			basic.set();
+			lighting.set();
 		} else {
 			n_toggled = true;
 			normal.set();
@@ -203,11 +205,13 @@ void test() {
 	// cube.scale({1.f, 0.5f, 1.f});
 	// basic.addObjects({cube});
 	// normal.addObjects({cube});
+	// lighting.addObjects({cube});
 
 	ObjectID sphere = w.createSphere({0.f, 0.f, 0.f}, 1.f, 40, 50);
 	sphere.scale({2.f, 0.5f, 1.f});
 	basic.addObjects({sphere});
 	normal.addObjects({sphere});
+	lighting.addObjects({sphere});
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;

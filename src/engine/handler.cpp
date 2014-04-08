@@ -6,6 +6,7 @@
 #include "gl/loop.hpp"
 #include "passes/basicrender.hpp"
 #include "passes/normalrender.hpp"
+#include "passes/basiclightingrender.hpp"
 
 /*
 *
@@ -315,6 +316,23 @@ const RenderID & WindowID::createNormalRendering(CameraID & camID) {
 
 	loop.addCommand([=, &loop, &cam](){
 		std::shared_ptr<Render> r(new NormalRender(cam));
+		loop.addRendering(id, r);
+	});
+
+	return m_renders.back();
+
+}
+
+const RenderID & WindowID::createBasicLightingRendering(CameraID & camID, LightID & lightID) {
+
+	m_renders.emplace_back(*this);
+	unsigned long id = m_renders.back()();
+	Loop & loop = m_window->getLoop();
+	Camera & cam = camID.getCam();
+	Light & light = lightID.getLight();
+
+	loop.addCommand([=, &loop, &cam, &light](){
+		std::shared_ptr<Render> r(new BasicLightingRender(cam, light));
 		loop.addRendering(id, r);
 	});
 

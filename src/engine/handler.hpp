@@ -89,6 +89,7 @@ class WindowID {
 
 		const RenderID & createBasicRendering(CameraID &);
 		const RenderID & createNormalRendering(CameraID &);
+		const RenderID & createBasicLightingRendering(CameraID &, LightID &);
 
 		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 

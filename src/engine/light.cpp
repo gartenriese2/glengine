@@ -2,7 +2,8 @@
 
 Light::Light(const glm::vec3 & dir, const glm::vec3 & color)
   : m_dir(dir),
-	m_color(color)
+	m_color(color),
+	m_ambientTerm(0.2f)
 {}
 
 void Light::rotate(float radians, const glm::vec3 & axis) {
