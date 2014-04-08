@@ -35,7 +35,9 @@ void BasicLighting::draw(const Camera & cam, const Light & light) {
 		m_program["ambientLight"] = light.getAmbientColor();
 		m_program["lightDir"] = light.getDir();
 		m_program["lightColor"] = light.getColor();
-		m_program["viewMat"] = cam.getViewMat();
+		m_program["viewDir"] = cam.getDir();
+		m_program["shininess"] = light.getShininess();
+		m_program["strength"] = light.getStrength();
 
 		ObjectInterface::draw(id);
 

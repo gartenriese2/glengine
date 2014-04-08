@@ -15,6 +15,10 @@ class Light {
 		void setColor(const glm::vec3 & color) { m_color = color; }
 		void setAmbientTerm(float f) { m_ambientTerm = f; }
 		const glm::vec3 getAmbientColor() const { return m_color * m_ambientTerm; }
+		float getShininess() const { return m_shiniess; }
+		void setShiniess(float f) { m_shiniess = f; }
+		float getStrength() const { return m_strength; }
+		void setStrength(float f) { m_strength = f; }
 
 		void rotate(float, const glm::vec3 &);
 
@@ -23,6 +27,8 @@ class Light {
 		glm::vec3 m_dir;
 		glm::vec3 m_color;
 		float m_ambientTerm;
+		float m_shiniess;
+		float m_strength;
 
 };
 
