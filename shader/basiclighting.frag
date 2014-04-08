@@ -28,11 +28,13 @@ void main() {
 	else specular = pow(specular, shininess) * strength;
 
 	float dist = length(position_World - lightPos);
-	float quadraticAttenuation = min(1.f, 1.f / (attenuation * dist * dist));
+	float linearAttenuation = attenuation * dist;
+	float quadraticAttenuation = attenuation * dist * dist;
+	float sumAttenuation = min(1.f, 1.f / (linearAttenuation + quadraticAttenuation));
 
-	vec3 scatteredLight = ambientLight + lightColor * diffuse * quadraticAttenuation;
+	vec3 scatteredLight = ambientLight + lightColor * diffuse * sumAttenuation;
 
-	vec3 reflectedLight = lightColor * specular * quadraticAttenuation;
+	vec3 reflectedLight = lightColor * specular * sumAttenuation;
 
 	result = vec4(min(color.rgb * scatteredLight + reflectedLight, vec3(1.f)), color.a);
 
