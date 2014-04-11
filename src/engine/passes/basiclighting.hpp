@@ -2,6 +2,9 @@
 #define _BASICLIGHTING_
 
 #include "pass.hpp"
+#include "../gl/shaderstoragebuffer.hpp"
+
+#include <vector>
 
 class BasicLighting : public Pass {
 
@@ -9,9 +12,12 @@ class BasicLighting : public Pass {
 
  		BasicLighting();
 
- 		void draw(const Camera &, const Light &);
+ 		void draw(const Camera &, const std::vector<std::shared_ptr<Light>>);
 
  	private:
+
+ 		ShaderStorageBuffer m_lightBuffer;
+ 		ShaderStorageBuffer m_materialBuffer;
 
 };
 

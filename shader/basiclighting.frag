@@ -1,4 +1,4 @@
-#version 420 core
+#version 430 core
 
 layout(location = 0) out vec4 result;
 
@@ -6,36 +6,94 @@ in vec4 color;
 in vec3 normal_World;
 in vec3 position_World;
 
-uniform vec3 ambientLight;
-uniform vec3 lightPos;
 uniform vec3 camPos;
-uniform vec3 lightColor;
 uniform vec3 viewDir;
-uniform float shininess;
-uniform float strength;
-uniform float attenuation;
+uniform int lightDataSize;
+
+struct lightData {
+	
+	vec4 bools; // isEnabled, isLocal, isSpot, 0
+	vec4 position;
+	vec4 color;
+	vec4 ambient;
+	vec4 direction;
+	vec4 attenuation; // constant, linear, quadratic, 0
+	vec4 spot; // spotCosCutoff, spotExponent, 0, 0
+	
+};
+
+struct materialData {
+
+	float shininess;
+	float strength;
+
+};
+
+layout(std430, binding = 0) buffer LightBuffer {
+	lightData lights[];
+};
+
+layout(std430, binding = 1) buffer MaterialBuffer {
+	materialData materials[];
+};
 
 void main() {
 
-	vec3 fragToLight = normalize(lightPos - position_World);
+	vec3 scatteredLight = vec3(0.f);
+	vec3 reflectedLight = vec3(0.f);
+
 	vec3 fragNormal = normalize(normal_World);
 	vec3 fragToCam = normalize(camPos - position_World);
 
-	float diffuse = max(0.f, dot(fragNormal, fragToLight));
-	
-	float specular = max(0.f, dot(reflect(-fragToLight, fragNormal), fragToCam));
-	if (diffuse == 0.f) specular = 0.f;
-	else specular = pow(specular, shininess) * strength;
+	for (int i = 0; i < lightDataSize; ++i) {
 
-	float dist = length(position_World - lightPos);
-	float linearAttenuation = attenuation * dist;
-	float quadraticAttenuation = attenuation * dist * dist;
-	float sumAttenuation = min(1.f, 1.f / (linearAttenuation + quadraticAttenuation));
+		if (lights[i].bools.x == 0.f) continue;
 
-	vec3 scatteredLight = ambientLight + lightColor * diffuse * sumAttenuation;
+		float diffuse = 0.f;
+		float specular = 0.f;
+		float attenuation = 1.f;
 
-	vec3 reflectedLight = lightColor * specular * sumAttenuation;
+		if (lights[i].bools.y == 0.f) {
+			// directional light
 
-	result = vec4(min(color.rgb * scatteredLight + reflectedLight, vec3(1.f)), color.a);
+			vec3 lightDir = normalize(-lights[i].direction.xyz);
+
+			diffuse = max(0.f, dot(fragNormal, lightDir));
+
+			specular = max(0.f, dot(reflect(-lightDir, fragNormal), fragToCam));
+
+		} else {
+			// local light
+
+			vec3 fragToLight = lights[i].position.xyz - position_World;
+			float dist = length(fragToLight);
+
+			attenuation = 1.f / (lights[i].attenuation.x
+										+ lights[i].attenuation.y * dist
+										+ lights[i].attenuation.z * dist * dist);
+
+			if (lights[i].bools.z == 1.f) {
+				// spot light
+
+				float spotCos = dot(normalize(fragToLight), normalize(-lights[i].direction.xyz));
+				if (spotCos < lights[i].spot.x) attenuation = 0.f;
+				else attenuation *= pow(spotCos, lights[i].spot.y);
+
+			}
+
+			diffuse = max(0.f, dot(fragNormal, -lights[i].direction.xyz));
+			specular = max(0.f, dot(reflect(lights[i].direction.xyz, fragNormal), fragToCam));
+
+		}
+
+		if (diffuse == 0.f) specular = 0.f;
+		else specular = pow(specular, materials[i].shininess) * materials[i].strength;
+
+		scatteredLight += lights[i].ambient.xyz * attenuation + lights[i].color.xyz * vec3(diffuse) * min(attenuation, 1.f);
+		reflectedLight += lights[i].color.xyz * vec3(specular) * attenuation;
+
+	}
+
+	result = vec4(min(color.rgb * scatteredLight + reflectedLight, 1.f), color.a);
 
 }

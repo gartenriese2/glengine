@@ -172,11 +172,15 @@ void test() {
 
 	WindowID w = e.createWindow(1280, 720);
 	CameraID cam = w.createCamera({0.f, 2.5f, 5.f}, {0.f, -0.5f, -1.f}, {0.f, 1.f, -0.5f});
-	LightID light = w.createLight({0.f, 0.f, 10.f}, {0.f, 0.f, -1.f});
-	light.setAttenuation(0.02f);
+	LightID light = w.createLight({10.f, 0.f, 0.f}, {-1.f, 0.f, -0.1f});
+	LightID spotlight = w.createLight({0.f, 0.f, -5.f}, {0.f, 0.f, -1.f});
+	ObjectID flashlight = w.createCuboid({-0.3f, -0.2f, -3.f}, {0.3f, -0.2f, -3.f},
+		{-0.3f, -0.2f, -5.f}, {-0.3f, 0.2f, -3.f}, {0.2f, 0.2f, 0.4f});
+	spotlight.setAsSpotLight();
+	spotlight.setSpotCutoff(0.1f);
 	RenderID basic = w.createBasicRendering(cam);
 	RenderID normal = w.createNormalRendering(cam);
-	RenderID lighting = w.createBasicLightingRendering(cam, light);
+	RenderID lighting = w.createBasicLightingRendering(cam, {spotlight, light});
 	lighting.set();
 
 	addControls(w, cam);
@@ -203,10 +207,12 @@ void test() {
 	});
 
 	w.addKeyEvent(GLFW_KEY_I, [&](){
-		light.move(glm::normalize(light.getDir()) * 0.1f);
+		spotlight.move(glm::normalize(spotlight.getDirection()) * 0.1f);
+		flashlight.move(0.1f, glm::normalize(spotlight.getDirection()));
 	});
 	w.addKeyEvent(GLFW_KEY_K, [&](){
-		light.move(-glm::normalize(light.getDir()) * 0.1f);
+		spotlight.move(-glm::normalize(spotlight.getDirection()) * 0.1f);
+		flashlight.move(0.1f, -glm::normalize(spotlight.getDirection()));
 	});
 
 	// ObjectID cube = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, -1.f, -1.f}, {-1.f, 1.f, 1.f});
@@ -219,9 +225,9 @@ void test() {
 	ObjectID wall = w.createQuadrilateral({-10.f, -10.f, -10.f}, {10.f, -10.f, -10.f}, {10.f, 10.f, -10.f},
 		{-10.f, 10.f, -10.f}, {0.5f, 0.5f, 0.5f});
 	sphere.scale({2.f, 0.5f, 1.f});
-	basic.addObjects({sphere, wall});
-	normal.addObjects({sphere, wall});
-	lighting.addObjects({sphere, wall});
+	basic.addObjects({sphere, wall, flashlight});
+	normal.addObjects({sphere, wall, flashlight});
+	lighting.addObjects({sphere, wall, flashlight});
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;

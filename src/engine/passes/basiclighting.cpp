@@ -11,9 +11,12 @@ BasicLighting::BasicLighting() {
 	m_program.attachShader(vert);
 	m_program.attachShader(frag);
 
+	m_lightBuffer.bindTo(0);
+	m_materialBuffer.bindTo(1);
+
 }
 
-void BasicLighting::draw(const Camera & cam, const Light & light) {
+void BasicLighting::draw(const Camera & cam, const std::vector<std::shared_ptr<Light>> lights) {
 
 	glViewport(0, 0, cam.getWidth(), cam.getHeight());
 
@@ -24,6 +27,29 @@ void BasicLighting::draw(const Camera & cam, const Light & light) {
 
 	m_program.use();
 
+	int size = lights.size();
+	std::vector<LightData> data;
+	for (const auto & light : lights) {
+		data.emplace_back(light->getData());
+	}	
+	m_lightBuffer.addData(data, size);
+struct materialData {
+
+	float shininess;
+	float strength;
+
+};
+
+materialData m,m2;
+m.shininess = 50.f;
+m.strength = 0.5f;
+m2.shininess = 50.f;
+m2.strength = 0.5f;
+std::vector<materialData> data2;
+data2.emplace_back(m);
+data2.emplace_back(m2);
+m_materialBuffer.addData(data2, 2);
+
 	for (auto id : m_objects) {
 
 		// vertex
@@ -32,14 +58,9 @@ void BasicLighting::draw(const Camera & cam, const Light & light) {
 		m_program["M"] = ObjectInterface::getModelMatrix(id);
 
 		// fragment
-		m_program["ambientLight"] = light.getAmbientColor();
-		m_program["lightPos"] = light.getPos();
 		m_program["camPos"] = cam.getPos();
-		m_program["lightColor"] = light.getColor();
 		m_program["viewDir"] = cam.getDir();
-		m_program["shininess"] = light.getShininess();
-		m_program["strength"] = light.getStrength();
-		m_program["attenuation"] = light.getAttenuation();
+		m_program["lightDataSize"] = size;
 
 		ObjectInterface::draw(id);
 

@@ -6,6 +6,8 @@
 #include "../debug.hpp"
 
 #include <set>
+#include <vector>
+#include <memory>
 
 class Light;
 
@@ -20,7 +22,7 @@ class Pass {
 		Pass & operator=(Pass &&) = delete;
 
 		virtual void draw(const Camera &) {}
-		virtual void draw(const Camera &, const Light &) {}
+		virtual void draw(const Camera &, const std::vector<std::shared_ptr<Light>>) {}
 
 		void addObjects(std::set<unsigned long> set) { m_objects.insert(set.cbegin(), set.cend()); }
 		void removeObject(unsigned long id) { m_objects.erase(id); }

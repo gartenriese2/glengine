@@ -2,6 +2,6 @@
 
 void BasicLightingRender::draw() {
 
-	m_basicLightingPass.draw(m_cam, m_light);
+	m_basicLightingPass.draw(m_cam, m_lights);
 
 }

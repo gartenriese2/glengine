@@ -323,16 +323,19 @@ const RenderID & WindowID::createNormalRendering(CameraID & camID) {
 
 }
 
-const RenderID & WindowID::createBasicLightingRendering(CameraID & camID, LightID & lightID) {
+const RenderID & WindowID::createBasicLightingRendering(CameraID & camID, const std::vector<LightID> lightIDs) {
 
 	m_renders.emplace_back(*this);
 	unsigned long id = m_renders.back()();
 	Loop & loop = m_window->getLoop();
 	Camera & cam = camID.getCam();
-	Light & light = lightID.getLight();
+	std::vector<std::shared_ptr<Light>> lights;
+	for (const auto & ids : lightIDs) {
+		lights.emplace_back(ids.getLight());
+	}
 
-	loop.addCommand([=, &loop, &cam, &light](){
-		std::shared_ptr<Render> r(new BasicLightingRender(cam, light));
+	loop.addCommand([=, &loop, &cam](){
+		std::shared_ptr<Render> r(new BasicLightingRender(cam, lights));
 		loop.addRendering(id, r);
 	});
 
@@ -350,7 +353,7 @@ const CameraID & WindowID::createCamera(const glm::vec3 & pos, const glm::vec3 &
 
 const LightID & WindowID::createLight(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & color) {
 
-	m_lights.emplace_back(Light(pos, dir, color));
+	m_lights.emplace_back(std::shared_ptr<Light>(new Light(pos, dir, color)));
 
 	return m_lights.back();
 
@@ -429,7 +432,7 @@ CameraID::CameraID(const Camera & cam)
 *
 */
 
-LightID::LightID(const Light & light)
+LightID::LightID(const std::shared_ptr<Light> light)
   : m_light(light)
 {
 

@@ -89,7 +89,7 @@ class WindowID {
 
 		const RenderID & createBasicRendering(CameraID &);
 		const RenderID & createNormalRendering(CameraID &);
-		const RenderID & createBasicLightingRendering(CameraID &, LightID &);
+		const RenderID & createBasicLightingRendering(CameraID &, const std::vector<LightID>);
 
 		const CameraID & createCamera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &);
 
@@ -180,28 +180,47 @@ class LightID {
 
 	public:
 
-		LightID(const Light &);
+		LightID(const std::shared_ptr<Light>);
 
 		unsigned long operator()() const { return m_id; }
 
-		Light & getLight() { return m_light; }
+		const std::shared_ptr<Light> getLight() const { return m_light; }
 
-		const glm::vec3 & getPos() const { return m_light.getPos(); }
-		void moveTo(const glm::vec3 & to) { m_light.setPos(to); }
-		void move(const glm::vec3 & dis) { m_light.setPos(m_light.getPos() + dis); }
-		const glm::vec3 & getDir() const { return m_light.getDir(); }
-		void setDir(const glm::vec3 & dir) { m_light.setDir(dir); }
-		const glm::vec3 & getColor() const { return m_light.getColor(); }
-		void setColor(const glm::vec3 & color) { m_light.setColor(color); }
-		float getAttenuation() const { return m_light.getAttenuation(); }
-		void setAttenuation(float f) { m_light.setAttenuation(f); }
+		void enable() { m_light->enable(); }
+		void disable() { m_light->disable(); }
 
-		void rotate(float radians, const glm::vec3 & axis) { m_light.rotate(radians, axis); }
+		void setAsDirectionalLight() { m_light->setAsDirectionalLight(); }
+		void setAsLocalLight() { m_light->setAsLocalLight(); }
+		void setAsSpotLight() { m_light->setAsSpotLight(); }
+
+		const glm::vec3 getPosition() const { return m_light->getPosition(); }
+		void moveTo(const glm::vec3 & to) { m_light->setPosition(to); }
+		void move(const glm::vec3 & dis) { m_light->setPosition(m_light->getPosition() + dis); }
+
+		const glm::vec3 getDirection() const { return m_light->getDirection(); }
+		void setDirection(const glm::vec3 & dir) { m_light->setDirection(dir); }
+		void rotate(float radians, const glm::vec3 & axis) { m_light->rotate(radians, axis); }
+
+		const glm::vec3 getColor() const { return m_light->getColor(); }
+		void setColor(const glm::vec3 & color) { m_light->setColor(color); }
+
+		float getAmbientTerm() const { return m_light->getAmbientTerm(); }
+		void setAmbientTerm(float f) { m_light->setAmbientTerm(f); }
+
+		const glm::vec3 getAttenuations() const { return m_light->getAttenuations(); }
+		void setConstantAttenuation(float f) { m_light->setConstantAttenuation(f); }
+		void setLinearAttenuation(float f) { m_light->setLinearAttenuation(f); }
+		void setQuadraticAttenuation(float f) { m_light->setQuadraticAttenuation(f); }
+
+		float getSpotCutoff() const { return m_light->getSpotCutoff(); }
+		float getSpotExponent() const { return m_light->getSpotExponent(); }
+		void setSpotCutoff(float f) { m_light->setSpotCutoff(f); }
+		void setSpotExponent(float f) { m_light->setSpotExponent(f); }
 
 	private:
 
 		unsigned long m_id;
-		Light m_light;
+		std::shared_ptr<Light> m_light;
 
 };
 

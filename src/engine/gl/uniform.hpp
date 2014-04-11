@@ -9,6 +9,12 @@ class Uniform {
 
  	public:
 
+ 		void operator=(const int val) {
+		    if (m_loc != -1) {
+			    glUniform1i(m_loc, val);
+			}
+		}
+
  		void operator=(const float val) {
 		    if (m_loc != -1) {
 			    glUniform1f(m_loc, val);

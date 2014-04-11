@@ -6,12 +6,14 @@
 #include "../camera.hpp"
 
 #include <set>
+#include <vector>
+#include <memory>
 
 class BasicLightingRender : public Render {
 
 	public:
 
-		BasicLightingRender(Camera & cam, Light & light) : m_cam(cam), m_light(light) {}
+		BasicLightingRender(Camera & cam, std::vector<std::shared_ptr<Light>> lights) : m_cam(cam), m_lights(lights) {}
 
 		void draw();
 
@@ -23,7 +25,7 @@ class BasicLightingRender : public Render {
 	private:
 
 		Camera & m_cam;
-		Light & m_light;
+		std::vector<std::shared_ptr<Light>> m_lights;
 		BasicLighting m_basicLightingPass;
 
 };
