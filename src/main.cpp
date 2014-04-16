@@ -174,8 +174,9 @@ void test() {
 	CameraID cam = w.createCamera({0.f, 2.5f, 5.f}, {0.f, -0.5f, -1.f}, {0.f, 1.f, -0.5f});
 	LightID light = w.createLight({10.f, 0.f, 0.f}, {-1.f, 0.f, -0.1f});
 	LightID spotlight = w.createLight({0.f, 0.f, -5.f}, {0.f, 0.f, -1.f});
-	ObjectID flashlight = w.createCuboid({-0.3f, -0.2f, -3.f}, {0.3f, -0.2f, -3.f},
-		{-0.3f, -0.2f, -5.f}, {-0.3f, 0.2f, -3.f}, {0.2f, 0.2f, 0.4f});
+	// ObjectID flashlight = w.createCuboid({-0.3f, -0.2f, -3.f}, {0.3f, -0.2f, -3.f},
+	// 	{-0.3f, -0.2f, -5.f}, {-0.3f, 0.2f, -3.f}, {0.2f, 0.2f, 0.4f});
+	ObjectID flashlight = w.createCone({0.f, 0.f, -3.5f}, {0.f, 0.f, -1.f}, 1.5f, 0.3f, 0.3f, 50, {0.2f, 0.2f, 0.4f});
 	spotlight.setAsSpotLight();
 	spotlight.setSpotCutoff(0.1f);
 	RenderID basic = w.createBasicRendering(cam);
@@ -289,8 +290,8 @@ int main() {
 	// ampelDemo();
 	// rotateDemo();
 	// secondWindowDemo();
-	// test();
-	coneTest();
+	test();
+	// coneTest();
 
 	return 0;
 

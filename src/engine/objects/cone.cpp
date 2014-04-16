@@ -165,20 +165,27 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 
 	}
 
-	// rotating vertices and normals
-	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.f),
-		glm::acos(glm::dot(axis, {0.f, 0.f, 1.f}) / glm::length(axis)),
-		glm::cross(-axis, {0.f, 0.f, 1.f}));
-	for (unsigned int i = 0; i < vertices.size(); i += 3) {
-		glm::vec4 rotVert = rotationMatrix * glm::vec4(vertices[i], vertices[i + 1], vertices[i + 2], 1.f);
-		vertices[i] = rotVert.x;
-		vertices[i + 1] = rotVert.y;
-		vertices[i + 2] = rotVert.z;
+	if (axis != glm::vec3(0.f, 0.f, -1.f)) {
+		// rotating vertices and normals
+		glm::mat4 rotationMatrix;
+		if (axis == glm::vec3(0.f, 0.f, 1.f)) {
+			rotationMatrix = glm::rotate(glm::mat4(1.f), glm::pi<float>(), {0.f, 1.f, 0.f});
+		} else {
+			rotationMatrix = glm::rotate(glm::mat4(1.f),
+				glm::acos(glm::dot(axis, {0.f, 0.f, 1.f}) / glm::length(axis)),
+				glm::cross(-axis, {0.f, 0.f, 1.f}));
+		}
+		for (unsigned int i = 0; i < vertices.size(); i += 3) {
+			glm::vec4 rotVert = rotationMatrix * glm::vec4(vertices[i], vertices[i + 1], vertices[i + 2], 1.f);
+			vertices[i] = rotVert.x;
+			vertices[i + 1] = rotVert.y;
+			vertices[i + 2] = rotVert.z;
 
-		glm::vec4 rotNorm = rotationMatrix * glm::vec4(normals[i], normals[i + 1], normals[i + 2], 1.f);
-		normals[i] = rotNorm.x;
-		normals[i + 1] = rotNorm.y;
-		normals[i + 2] = rotNorm.z;
+			glm::vec4 rotNorm = rotationMatrix * glm::vec4(normals[i], normals[i + 1], normals[i + 2], 1.f);
+			normals[i] = rotNorm.x;
+			normals[i + 1] = rotNorm.y;
+			normals[i + 2] = rotNorm.z;
+		}
 	}
 
 	m_vertexBuffer.insertData<GLfloat>(vertices);
