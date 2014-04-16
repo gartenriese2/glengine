@@ -5,6 +5,7 @@
 #include "circle.hpp"
 #include "cuboid.hpp"
 #include "sphere.hpp"
+#include "cone.hpp"
 #include "../debug.hpp"
 
 #include <algorithm>
@@ -100,6 +101,24 @@ void ObjectInterface::createCuboid(unsigned long id, const glm::vec3 & a, const 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
 	return addObject(id, std::shared_ptr<Object>(new Cuboid(a, b, c, d, colors)));
+
+}
+
+void ObjectInterface::createCone(unsigned long id, const glm::vec3 & base, const glm::vec3 & axis, float length,
+			float lowerRadius, float upperRadius, unsigned int sections, const glm::vec3 & col) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Cone(base, axis, length, lowerRadius, upperRadius, sections, col)));
+
+}
+
+void ObjectInterface::createCone(unsigned long id, const glm::vec3 & base, const glm::vec3 & axis, float length,
+			float lowerRadius, float upperRadius, unsigned int sections, const std::initializer_list<glm::vec3> & colors) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Cone(base, axis, length, lowerRadius, upperRadius, sections, colors)));
 
 }
 

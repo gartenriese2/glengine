@@ -3,7 +3,6 @@
 
 #include "object.hpp"
 #include "../glmincludes.hpp"
-#include "../debug.hpp"
 
 #include <initializer_list>
 #include <vector>

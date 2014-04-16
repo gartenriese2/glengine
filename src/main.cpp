@@ -238,12 +238,59 @@ void test() {
 
 }
 
+void coneTest() {
+
+	WindowID w = e.createWindow(1280, 720);
+	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
+	RenderID basic = w.createBasicRendering(cam);
+	RenderID normal = w.createNormalRendering(cam);
+
+	basic.set();
+
+	addControls(w, cam);
+	double oldX = -1.0, oldY = -1.0;
+	w.setMouseMoveEvent([&](double xpos, double ypos){
+		
+		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+			cam.yaw(-(oldX - xpos) * 0.001f);
+			cam.pitch((oldY - ypos) * 0.001f);
+		}
+		oldX = xpos;
+		oldY = ypos;
+
+	});
+	bool n_toggled = false;
+	w.addKeyEvent(GLFW_KEY_N, [&](){
+		if (n_toggled) {
+			n_toggled = false;
+			basic.set();
+		} else {
+			n_toggled = true;
+			normal.set();
+		}
+	});
+
+	ObjectID cone = w.createCone({0.f, 0.f, 0.f}, {1.f, -1.f, 1.f}, 2.f, 1.f, 1.f, 50);
+	cone.move(1.f, {1.f, 1.f, 0.f});
+	basic.addObjects({cone});
+	normal.addObjects({cone});
+
+	float step = 0.001f;
+	float rotPerSecond = 0.33f;
+	while(1) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
+		cone.rotate(6.28f * rotPerSecond * step, {1.f, 1.f, 0.f});
+	}
+
+}
+
 int main() {
 
 	// ampelDemo();
 	// rotateDemo();
 	// secondWindowDemo();
-	test();
+	// test();
+	coneTest();
 
 	return 0;
 
