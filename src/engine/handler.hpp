@@ -6,6 +6,15 @@
 
 #include <memory>
 #include <initializer_list>
+#include <vector>
+
+struct Material {
+	glm::vec3 emission;
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	float shininess;
+};
 
 class WindowID;
 
@@ -13,7 +22,7 @@ class ObjectID {
 
 	public:
 
-		ObjectID(WindowID &);
+		static std::shared_ptr<ObjectID> create(WindowID &);
 
 		bool operator==(const ObjectID & other) const { return this->m_id == other.m_id; }
 		bool operator<(const ObjectID & other) const { return this->m_id < other.m_id; }
@@ -30,10 +39,30 @@ class ObjectID {
 		void setColor(const glm::vec3 &);
 		void attachTo(const ObjectID &);
 
+		const glm::vec3 & getEmission() const { return m_material->emission; }
+		const glm::vec3 & getAmbient() const { return m_material->ambient; }
+		const glm::vec3 & getDiffuse() const { return m_material->diffuse; }
+		const glm::vec3 & getSpecular() const { return m_material->specular; }
+		float getShininess() const { return m_material->shininess; }
+
+		void setEmission(const glm::vec3 & val) { m_material->emission = val; }
+		void setAmbient(const glm::vec3 & val) { m_material->ambient = val; }
+		void setDiffuse(const glm::vec3 & val) { m_material->diffuse = val; }
+		void setSpecular(const glm::vec3 & val) { m_material->specular = val; }
+		void setShininess(const float val) { m_material->shininess = val; }
+
+		static const std::shared_ptr<ObjectID> getID(unsigned long);
+
 	private:
+
+		ObjectID(WindowID &);
 
 		unsigned long m_id;
 		WindowID & m_window;
+
+		std::shared_ptr<Material> m_material;
+
+		static std::vector<std::shared_ptr<ObjectID>> s_ids;
 
 };
 
@@ -56,7 +85,7 @@ class WindowID {
 		unsigned long operator()() const { return m_id; }
 
 		Loop & getLoop() { return m_window->getLoop(); }
-		bool hasObject(ObjectID id) const { return std::find(m_objects.cbegin(), m_objects.cend(), id) != m_objects.cend(); }
+		bool hasObject(const ObjectID &) const;
 
 		void close() { glfwSetWindowShouldClose(m_window->getGLFWWindow(), GL_TRUE); }
 
@@ -119,7 +148,7 @@ class WindowID {
 
 		unsigned long m_id;
 		std::shared_ptr<Window> m_window;
-		std::vector<ObjectID> m_objects;
+		std::vector<std::shared_ptr<ObjectID>> m_objects;
 		std::vector<RenderID> m_renders;
 		std::vector<CameraID> m_cameras;
 		std::vector<LightID> m_lights;

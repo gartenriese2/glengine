@@ -216,12 +216,6 @@ void test() {
 		flashlight.move(0.1f, -glm::normalize(spotlight.getDirection()));
 	});
 
-	// ObjectID cube = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, -1.f, -1.f}, {-1.f, 1.f, 1.f});
-	// cube.scale({1.f, 0.5f, 1.f});
-	// basic.addObjects({cube});
-	// normal.addObjects({cube});
-	// lighting.addObjects({cube});
-
 	ObjectID sphere = w.createSphere({0.f, 0.f, 0.f}, 1.f, 40, 50);
 	ObjectID wall = w.createQuadrilateral({-10.f, -10.f, -10.f}, {10.f, -10.f, -10.f}, {10.f, 10.f, -10.f},
 		{-10.f, 10.f, -10.f}, {0.5f, 0.5f, 0.5f});
@@ -229,6 +223,32 @@ void test() {
 	basic.addObjects({sphere, wall, flashlight});
 	normal.addObjects({sphere, wall, flashlight});
 	lighting.addObjects({sphere, wall, flashlight});
+
+	// gold
+	sphere.setAmbient({0.24725f, 0.1995f, 0.0745f});
+	sphere.setDiffuse({0.75164f, 0.60648f, 0.22648f});
+	sphere.setSpecular({0.628281f, 0.555802f, 0.366065f});
+	sphere.setShininess(51.2f);
+	sphere.setColor({1.f, 0.843f, 0.f});
+
+	// white plastic
+	wall.setAmbient({0.f, 0.f, 0.f});
+	wall.setDiffuse({0.55f, 0.55f, 0.55f});
+	wall.setSpecular({0.70f, 0.70f, 0.70f});
+	wall.setShininess(32.f);
+
+	// chrome
+	flashlight.setAmbient({0.25f, 0.25f, 0.25f});
+	flashlight.setDiffuse({0.4f, 0.4f, 0.4f});
+	flashlight.setSpecular({0.774597f, 0.774597f, 0.774597f});
+	flashlight.setShininess(0.6f * 128.f);
+
+	// w.addKeyEvent(GLFW_KEY_P, [&](){
+	// 	sphere.setAmbient(sphere.getAmbient() * 1.1f);
+	// });
+	// w.addKeyEvent(GLFW_KEY_O, [&](){
+	// 	sphere.setAmbient(sphere.getAmbient() * 0.9f);
+	// });
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;

@@ -8,18 +8,50 @@
 #include "passes/normalrender.hpp"
 #include "passes/basiclightingrender.hpp"
 
+#include <mutex>
+
+
+
 /*
 *
 *	ObjectID
 *
 */
 
+static std::mutex s_mutex;
+std::vector<std::shared_ptr<ObjectID>> ObjectID::s_ids = {};
+
+const std::shared_ptr<ObjectID> ObjectID::getID(unsigned long id) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+	std::shared_ptr<ObjectID> ptr = s_ids.at(id - 1);
+
+	return ptr;
+
+}
+
+std::shared_ptr<ObjectID> ObjectID::create(WindowID & win) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+	s_ids.emplace_back(new ObjectID(win));
+
+	return s_ids.back();
+
+}
+
 ObjectID::ObjectID(WindowID & win)
-  : m_window(win)
+  : m_window(win),
+  	m_material(new Material)
 {
 
 	static unsigned long objectID = 0;
 	m_id = ++objectID;
+
+	m_material->emission = glm::vec3(0.f);
+	m_material->ambient = glm::vec3(1.f);
+	m_material->diffuse = glm::vec3(1.f);
+	m_material->specular = glm::vec3(1.f);
+	m_material->shininess = 50.f;
 
 }
 
@@ -122,21 +154,36 @@ WindowID::WindowID(std::shared_ptr<Window> ptr)
 
 }
 
+bool WindowID::hasObject(const ObjectID & id) const {
+	
+	for (const auto & i : m_objects) {
+		
+		if ((*i)() == id()) return true;
+
+	}
+
+	return false;
+
+}
+
 const ObjectID & WindowID::createCopy(const ObjectID & id) {
 
 	// Only copy if it is an Object in the same window
 	if (hasObject(id)) {
-		m_objects.emplace_back(*this);
+
+		m_objects.emplace_back(ObjectID::create(*this));
 		unsigned long origid = id();
-		unsigned long copyid = m_objects.back()();
+		unsigned long copyid = (*m_objects.back())();
 		Loop & loop = m_window->getLoop();
 
 		loop.addCommand([=, &loop](){
 			ObjectInterface::copyObject(origid, copyid);
 		});
 
-		return m_objects.back();
+		return *m_objects.back();
+
 	}
+
 	return id;
 
 }
@@ -144,180 +191,180 @@ const ObjectID & WindowID::createCopy(const ObjectID & id) {
 const ObjectID & WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & color) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createTriangle(id, a, b, c, color);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 	
 }
 
 const ObjectID & WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const std::initializer_list<glm::vec3> & colors) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createTriangle(id, a, b, c, colors);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & color) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createQuadrilateral(id, a, b, c, d, color);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createQuadrilateral(id, a, b, c, d, colors);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec3 & axis, float radius,
 	unsigned int edges, const glm::vec3 & color) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCircle(id, center, axis, radius, edges, color);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec3 & axis, float radius,
 	unsigned int edges,	const std::initializer_list<glm::vec3> & colors) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCircle(id, center, axis, radius, edges, colors);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createCuboid(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & color) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCuboid(id, a, b, c, d, color);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createCuboid(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & d, const std::initializer_list<glm::vec3> & colors) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCuboid(id, a, b, c, d, colors);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createCone(const glm::vec3 & base, const glm::vec3 & axis, float length,
 	float lowerRadius, float upperRadius, unsigned int sections, const glm::vec3 & color) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCone(id, base, axis, length, lowerRadius, upperRadius, sections, color);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createCone(const glm::vec3 & base, const glm::vec3 & axis, float length,
 	float lowerRadius, float upperRadius, unsigned int sections, const std::initializer_list<glm::vec3> & colors) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCone(id, base, axis, length, lowerRadius, upperRadius, sections, colors);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createSphere(const glm::vec3 & center, float radius, unsigned int rings,
 	unsigned int sectors, const glm::vec3 & color) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createSphere(id, center, radius, rings, sectors, color);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 
 const ObjectID & WindowID::createSphere(const glm::vec3 & center, float radius, unsigned int rings,
 	unsigned int sectors,	const std::initializer_list<glm::vec3> & colors) {
 
-	m_objects.emplace_back(*this);
-	unsigned long id = m_objects.back()();
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createSphere(id, center, radius, rings, sectors, colors);
 	});
 
-	return m_objects.back();
+	return *m_objects.back();
 
 }
 

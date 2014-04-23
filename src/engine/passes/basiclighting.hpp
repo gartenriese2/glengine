@@ -17,7 +17,6 @@ class BasicLighting : public Pass {
  	private:
 
  		ShaderStorageBuffer m_lightBuffer;
- 		ShaderStorageBuffer m_materialBuffer;
 
 };
 

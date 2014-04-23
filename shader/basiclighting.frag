@@ -24,8 +24,11 @@ struct lightData {
 
 struct materialData {
 
+	vec3 emission;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
 	float shininess;
-	float strength;
 
 };
 
@@ -33,9 +36,7 @@ layout(std430, binding = 0) buffer LightBuffer {
 	lightData lights[];
 };
 
-layout(std430, binding = 1) buffer MaterialBuffer {
-	materialData materials[];
-};
+uniform	materialData material;
 
 void main() {
 
@@ -87,13 +88,14 @@ void main() {
 		}
 
 		if (diffuse == 0.f) specular = 0.f;
-		else specular = pow(specular, materials[i].shininess) * materials[i].strength;
+		else specular = pow(specular, material.shininess);
 
-		scatteredLight += lights[i].ambient.xyz * attenuation + lights[i].color.xyz * vec3(diffuse) * min(attenuation, 1.f);
-		reflectedLight += lights[i].color.xyz * vec3(specular) * attenuation;
+		scatteredLight += material.ambient * lights[i].ambient.xyz * attenuation
+						+ material.diffuse * lights[i].color.xyz * vec3(diffuse) * min(attenuation, 1.f);
+		reflectedLight += material.specular * lights[i].color.xyz * vec3(specular) * attenuation;
 
 	}
 
-	result = vec4(min(color.rgb * scatteredLight + reflectedLight, 1.f), color.a);
+	result = vec4(min(material.emission + color.rgb * scatteredLight + reflectedLight, 1.f), color.a);
 
 }

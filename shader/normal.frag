@@ -6,6 +6,6 @@ in vec3 normal_View;
 
 void main() {
 
-	result = normalize(vec4(normal_View, 1.f));
+	result = vec4(normalize(normal_View), 1.f);
 
 }

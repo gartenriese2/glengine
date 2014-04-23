@@ -3,6 +3,7 @@
 #include "../objects/objectinterface.hpp"
 #include "../debug.hpp"
 #include "../light.hpp"
+#include "../handler.hpp"
 
 BasicLighting::BasicLighting() {
 
@@ -12,7 +13,6 @@ BasicLighting::BasicLighting() {
 	m_program.attachShader(frag);
 
 	m_lightBuffer.bindTo(0);
-	m_materialBuffer.bindTo(1);
 
 }
 
@@ -33,34 +33,24 @@ void BasicLighting::draw(const Camera & cam, const std::vector<std::shared_ptr<L
 		data.emplace_back(light->getData());
 	}	
 	m_lightBuffer.addData(data, size);
-struct materialData {
-
-	float shininess;
-	float strength;
-
-};
-
-materialData m,m2;
-m.shininess = 50.f;
-m.strength = 0.5f;
-m2.shininess = 50.f;
-m2.strength = 0.5f;
-std::vector<materialData> data2;
-data2.emplace_back(m);
-data2.emplace_back(m2);
-m_materialBuffer.addData(data2, 2);
 
 	for (auto id : m_objects) {
 
 		// vertex
 		m_program["MVP"] = cam.getProjMat() * cam.getViewMat() * ObjectInterface::getModelMatrix(id);
 		m_program["MV_IT"] = glm::inverse(glm::transpose(cam.getViewMat() * ObjectInterface::getModelMatrix(id)));
+		m_program["M_IT"] = glm::inverse(glm::transpose(ObjectInterface::getModelMatrix(id)));
 		m_program["M"] = ObjectInterface::getModelMatrix(id);
 
 		// fragment
 		m_program["camPos"] = cam.getPos();
 		m_program["viewDir"] = cam.getDir();
 		m_program["lightDataSize"] = size;
+		m_program["material.emission"] = ObjectID::getID(id)->getEmission();
+		m_program["material.ambient"] = ObjectID::getID(id)->getAmbient();
+		m_program["material.diffuse"] = ObjectID::getID(id)->getDiffuse();
+		m_program["material.specular"] = ObjectID::getID(id)->getSpecular();
+		m_program["material.shininess"] = ObjectID::getID(id)->getShininess();
 
 		ObjectInterface::draw(id);
 

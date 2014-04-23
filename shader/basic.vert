@@ -11,6 +11,7 @@ out vec3 position_World;
 
 uniform mat4 MVP;
 uniform mat4 MV_IT;
+uniform mat4 M_IT;
 uniform mat4 M;
 
 void main() {
@@ -18,7 +19,7 @@ void main() {
 	gl_Position = MVP * inPosition;
 	color = inColor;
 	normal_View = (MV_IT * vec4(inNormal, 1.f)).xyz;
-	normal_World = (M * vec4(inNormal, 1.f)).xyz;
+	normal_World = (M_IT * vec4(inNormal, 1.f)).xyz;
 	position_World = (M * inPosition).xyz;
 
 }
