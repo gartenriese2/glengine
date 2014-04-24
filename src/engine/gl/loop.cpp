@@ -10,7 +10,9 @@
 
 static std::mutex s_mutex;
 
-Loop::Loop() {
+Loop::Loop()
+  : m_stop(false)
+{
 
 	m_mouseMoveEvent = [](double, double){};
 	m_scrollEvent = [](double, double){};
@@ -57,7 +59,7 @@ void Loop::start(GLFWwindow * window) {
 
 	});
 
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window) && !m_stop)
 	{
 
 		emptyCommands();

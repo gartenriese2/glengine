@@ -6,7 +6,8 @@ Window::Window(unsigned int width, unsigned int height, const std::string & titl
   : m_width(width),
 	m_height(height),
     m_title(title),
-    m_fullscreen(fullscreen)
+    m_fullscreen(fullscreen),
+    m_init(false)
 {
 }
 
@@ -53,6 +54,8 @@ void Window::start() {
         loop.resizeRenderings(width, height);
     
     });
+
+    m_init = true;
 
 	m_loop.start(m_window);
     glfwDestroyWindow(m_window);

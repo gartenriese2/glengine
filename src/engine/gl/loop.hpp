@@ -21,6 +21,7 @@ class Loop {
 		Loop & operator=(Loop &&) = delete;
 
 		void start(GLFWwindow *);
+		void stop() { m_stop = true; }
 
 		void addRendering(unsigned long id, std::shared_ptr<Render> render) { m_createdRenderings.emplace(id, render); }
 		const std::shared_ptr<Render> getRendering(unsigned long id) const { return m_createdRenderings.at(id); }
@@ -50,6 +51,8 @@ class Loop {
 		std::map<int, std::function<void()>> m_mouseClickEvents;
 		std::function<void(double, double)> m_mouseMoveEvent;
 		std::function<void(double, double)> m_scrollEvent;
+
+		bool m_stop;
 
 };
 

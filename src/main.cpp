@@ -305,13 +305,22 @@ void coneTest() {
 
 }
 
+void mapcity() {
+
+	WindowID w = e.createWindow(1280, 720);
+
+	while(1);
+	
+}
+
 int main() {
 
 	// ampelDemo();
 	// rotateDemo();
 	// secondWindowDemo();
-	test();
+	// test();
 	// coneTest();
+	mapcity();
 
 	return 0;
 

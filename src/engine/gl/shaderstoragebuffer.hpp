@@ -2,7 +2,6 @@
 #define _SHADERSTORAGEBUFFER_
 
 #include "glincludes.hpp"
-#include "../light.hpp"
 
 #include <vector>
 

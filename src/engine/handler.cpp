@@ -154,6 +154,12 @@ WindowID::WindowID(std::shared_ptr<Window> ptr)
 
 }
 
+WindowID::~WindowID() {
+
+	m_window->getLoop().stop();
+
+}
+
 bool WindowID::hasObject(const ObjectID & id) const {
 	
 	for (const auto & i : m_objects) {

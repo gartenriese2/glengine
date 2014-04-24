@@ -27,6 +27,8 @@ class Window {
 		unsigned int getHeight() const { return m_height; }
 		void setHeight(unsigned int h) { m_height = h; }
 
+		bool isInitialized() const { return m_init; }
+
 	protected:
 
 		void resize();
@@ -39,6 +41,7 @@ class Window {
 		Loop m_loop;
 
 		bool m_fullscreen;
+		bool m_init;
 
 	private:
 

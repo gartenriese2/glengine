@@ -27,7 +27,7 @@ class ObjectID {
 		bool operator==(const ObjectID & other) const { return this->m_id == other.m_id; }
 		bool operator<(const ObjectID & other) const { return this->m_id < other.m_id; }
 		unsigned long operator()() const { return m_id; }
-
+		
 		void rotate(float, const glm::vec3 &);
 		void rotateAround(float, const glm::vec3 &, const glm::vec3 &);
 		void rotateAround(float, const glm::vec3 &, const ObjectID &);
@@ -79,6 +79,7 @@ class WindowID {
 		WindowID(WindowID && other) { m_id = other.m_id; }
 		WindowID & operator=(const WindowID &) = delete;
 		WindowID & operator=(WindowID &&) = delete;
+		~WindowID();
 
 		bool operator==(const WindowID & other) const { return this->m_id == other.m_id; }
 		bool operator<(const WindowID & other) const { return this->m_id < other.m_id; }
