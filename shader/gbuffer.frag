@@ -1,9 +1,9 @@
 #version 420 core
 
 layout(location = 0) out vec4 outColor;
-layout(location = 1) out vec3 position;
+layout(location = 3) out vec3 position;
 layout(location = 2) out vec3 normal;
-layout(location = 3) out float depth;
+layout(location = 1) out float depth;
 
 in vec4 color;
 in vec3 normal_World;
@@ -14,6 +14,6 @@ void main() {
 	outColor = color;
 	position = position_World;
 	normal = normal_World;
-	depth = gl_FragCoord.z;
+	depth = (gl_FragCoord.z - 0.99f) * 100.f;
 
 }

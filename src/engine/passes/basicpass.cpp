@@ -6,8 +6,8 @@
 
 BasicPass::BasicPass() {
 
-	Shader vert("shader/basic.vert");
-	Shader frag("shader/basic.frag");
+	Shader vert(k_dir + "basic.vert");
+	Shader frag(k_dir + "basic.frag");
 	m_program.attachShader(vert);
 	m_program.attachShader(frag);
 

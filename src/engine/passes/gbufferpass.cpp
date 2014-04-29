@@ -7,8 +7,8 @@
 
 GBufferPass::GBufferPass() {
 
-	Shader vert("shader/basic.vert");
-	Shader frag("shader/gbuffer.frag");
+	Shader vert(k_dir + "basic.vert");
+	Shader frag(k_dir + "gbuffer.frag");
 	m_program.attachShader(vert);
 	m_program.attachShader(frag);
 

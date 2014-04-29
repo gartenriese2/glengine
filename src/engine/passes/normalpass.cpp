@@ -6,8 +6,8 @@
 
 NormalPass::NormalPass() {
 
-	Shader vert("shader/basic.vert");
-	Shader frag("shader/normal.frag");
+	Shader vert(k_dir + "basic.vert");
+	Shader frag(k_dir + "normal.frag");
 	m_program.attachShader(vert);
 	m_program.attachShader(frag);
 

@@ -44,7 +44,7 @@ void Camera::calculateView() {
 
 void Camera::calculateProj() {
 
-	m_proj = glm::perspective(m_fov, static_cast<float>(m_width) / static_cast<float>(m_height), m_near, m_far);
+	m_proj = glm::infinitePerspective(m_fov, static_cast<float>(m_width) / static_cast<float>(m_height), m_near);
 
 }
 

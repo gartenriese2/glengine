@@ -7,6 +7,7 @@
 #include <set>
 #include <vector>
 #include <memory>
+#include <string>
 
 class Light;
 class Camera;
@@ -33,6 +34,8 @@ class Pass {
 
 		Program m_program;
 		std::set<unsigned long> m_objects;
+
+		const std::string k_dir = "shader/";
 };
 
 #endif // _PASS_
