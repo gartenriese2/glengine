@@ -2,7 +2,7 @@
 #define _NORMALRENDER_
 
 #include "render.hpp"
-#include "normal.hpp"
+#include "normalpass.hpp"
 #include "../camera.hpp"
 
 #include <set>
@@ -23,7 +23,7 @@ class NormalRender : public Render {
 	private:
 
 		Camera & m_cam;
-		Normal m_normalPass;
+		NormalPass m_normalPass;
 
 };
 

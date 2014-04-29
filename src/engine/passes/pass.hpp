@@ -2,7 +2,6 @@
 #define _PASS_
 
 #include "../gl/program.hpp"
-#include "../camera.hpp"
 #include "../debug.hpp"
 
 #include <set>
@@ -10,6 +9,8 @@
 #include <memory>
 
 class Light;
+class Camera;
+class FBO;
 
 class Pass {
 	
@@ -23,6 +24,7 @@ class Pass {
 
 		virtual void draw(const Camera &) {}
 		virtual void draw(const Camera &, const std::vector<std::shared_ptr<Light>>) {}
+		virtual void draw(const Camera &, const FBO &) {}
 
 		void addObjects(std::set<unsigned long> set) { m_objects.insert(set.cbegin(), set.cend()); }
 		void removeObject(unsigned long id) { m_objects.erase(id); }

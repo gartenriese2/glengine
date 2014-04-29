@@ -1,9 +1,7 @@
 #include "loop.hpp"
 
 #include "program.hpp"
-#include "../passes/basic.hpp"
 #include "../debug.hpp"
-#include "../passes/basicrender.hpp"
 #include "../handler.hpp"
 
 #include <mutex>

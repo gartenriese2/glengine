@@ -1,11 +1,11 @@
-#include "basiclighting.hpp"
+#include "basiclightingpass.hpp"
 
 #include "../objects/objectinterface.hpp"
 #include "../debug.hpp"
 #include "../light.hpp"
 #include "../handler.hpp"
 
-BasicLighting::BasicLighting() {
+BasicLightingPass::BasicLightingPass() {
 
 	Shader vert("shader/basic.vert");
 	Shader frag("shader/basiclighting.frag");
@@ -16,7 +16,7 @@ BasicLighting::BasicLighting() {
 
 }
 
-void BasicLighting::draw(const Camera & cam, const std::vector<std::shared_ptr<Light>> lights) {
+void BasicLightingPass::draw(const Camera & cam, const std::vector<std::shared_ptr<Light>> lights) {
 
 	glViewport(0, 0, cam.getWidth(), cam.getHeight());
 

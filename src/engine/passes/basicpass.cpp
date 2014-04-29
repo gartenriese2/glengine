@@ -1,18 +1,19 @@
-#include "normal.hpp"
+#include "basicpass.hpp"
 
+#include "../camera.hpp"
 #include "../objects/objectinterface.hpp"
 #include "../debug.hpp"
 
-Normal::Normal() {
+BasicPass::BasicPass() {
 
 	Shader vert("shader/basic.vert");
-	Shader frag("shader/normal.frag");
+	Shader frag("shader/basic.frag");
 	m_program.attachShader(vert);
 	m_program.attachShader(frag);
 
 }
 
-void Normal::draw(const Camera & cam) {
+void BasicPass::draw(const Camera & cam) {
 
 	glViewport(0, 0, cam.getWidth(), cam.getHeight());
 
@@ -26,7 +27,6 @@ void Normal::draw(const Camera & cam) {
 	for (auto id : m_objects) {
 
 		m_program["MVP"] = cam.getProjMat() * cam.getViewMat() * ObjectInterface::getModelMatrix(id);
-		m_program["MV_IT"] = glm::inverse(glm::transpose(cam.getViewMat() * ObjectInterface::getModelMatrix(id)));
 		ObjectInterface::draw(id);
 
 	}

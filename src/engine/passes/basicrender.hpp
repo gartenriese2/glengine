@@ -2,7 +2,7 @@
 #define _BASICRENDER_
 
 #include "render.hpp"
-#include "basic.hpp"
+#include "basicpass.hpp"
 #include "../camera.hpp"
 
 #include <set>
@@ -23,7 +23,7 @@ class BasicRender : public Render {
 	private:
 
 		Camera & m_cam;
-		Basic m_basicPass;
+		BasicPass m_basicPass;
 
 };
 

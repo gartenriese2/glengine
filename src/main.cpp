@@ -305,11 +305,46 @@ void coneTest() {
 
 }
 
-void mapcity() {
+void fbo() {
 
 	WindowID w = e.createWindow(1280, 720);
+	CameraID cam = w.createCamera({0.f, 2.5f, 5.f}, {0.f, -0.5f, -1.f}, {0.f, 1.f, -0.5f});
+	RenderID gbuffer = w.createGBufferRendering(cam);
+	gbuffer.set();
 
-	while(1);
+	ObjectID sphere = w.createSphere({0.f, 0.f, 0.f}, 1.f, 40, 50);
+	sphere.scale({2.f, 0.5f, 1.f});
+	ObjectID wall = w.createQuadrilateral({-10.f, -10.f, -10.f}, {10.f, -10.f, -10.f}, {10.f, 10.f, -10.f},
+		{-10.f, 10.f, -10.f}, {0.5f, 0.5f, 0.5f});
+
+	gbuffer.addObjects({sphere, wall});
+
+	// gold
+	sphere.setAmbient({0.24725f, 0.1995f, 0.0745f});
+	sphere.setDiffuse({0.75164f, 0.60648f, 0.22648f});
+	sphere.setSpecular({0.628281f, 0.555802f, 0.366065f});
+	sphere.setShininess(51.2f);
+	sphere.setColor({1.f, 0.843f, 0.f});
+
+	addControls(w, cam);
+	double oldX = -1.0, oldY = -1.0;
+	w.setMouseMoveEvent([&](double xpos, double ypos){
+		
+		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+			cam.yaw(-(oldX - xpos) * 0.001f);
+			cam.pitch((oldY - ypos) * 0.001f);
+		}
+		oldX = xpos;
+		oldY = ypos;
+
+	});
+
+	float step = 0.001f;
+	float rotPerSecond = 0.33f;
+	while(1) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
+		sphere.rotate(6.28f * rotPerSecond * step, {0.f, 1.f, 0.f});
+	}
 	
 }
 
@@ -320,7 +355,7 @@ int main() {
 	// secondWindowDemo();
 	// test();
 	// coneTest();
-	mapcity();
+	fbo();
 
 	return 0;
 

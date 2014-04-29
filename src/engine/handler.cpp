@@ -7,6 +7,7 @@
 #include "passes/basicrender.hpp"
 #include "passes/normalrender.hpp"
 #include "passes/basiclightingrender.hpp"
+#include "passes/gbufferrender.hpp"
 
 #include <mutex>
 
@@ -155,8 +156,6 @@ WindowID::WindowID(std::shared_ptr<Window> ptr)
 }
 
 WindowID::~WindowID() {
-
-	m_window->getLoop().stop();
 
 }
 
@@ -419,6 +418,22 @@ const RenderID & WindowID::createBasicLightingRendering(CameraID & camID, const 
 
 	loop.addCommand([=, &loop, &cam](){
 		std::shared_ptr<Render> r(new BasicLightingRender(cam, lights));
+		loop.addRendering(id, r);
+	});
+
+	return m_renders.back();
+
+}
+
+const RenderID & WindowID::createGBufferRendering(CameraID & camID) {
+
+	m_renders.emplace_back(*this);
+	unsigned long id = m_renders.back()();
+	Loop & loop = m_window->getLoop();
+	Camera & cam = camID.getCam();
+
+	loop.addCommand([=, &loop, &cam](){
+		std::shared_ptr<Render> r(new GBufferRender(cam));
 		loop.addRendering(id, r);
 	});
 

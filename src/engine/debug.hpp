@@ -23,6 +23,10 @@ class Debug {
 			log("vec3: " + std::to_string(vec.x) + "|" + std::to_string(vec.y) + "|" + std::to_string(vec.z));
 		}
 
+		static void log(const glm::vec4 & vec) {
+			log("vec3: " + std::to_string(vec.x) + "|" + std::to_string(vec.y) + "|" + std::to_string(vec.z) + "|" + std::to_string(vec.w));
+		}
+
 		static void logGL();
 
 	protected:

@@ -2,7 +2,7 @@
 #define _BASICLIGHTINGRENDER_
 
 #include "render.hpp"
-#include "basiclighting.hpp"
+#include "basiclightingpass.hpp"
 #include "../camera.hpp"
 
 #include <set>
@@ -26,7 +26,7 @@ class BasicLightingRender : public Render {
 
 		Camera & m_cam;
 		std::vector<std::shared_ptr<Light>> m_lights;
-		BasicLighting m_basicLightingPass;
+		BasicLightingPass m_basicLightingPass;
 
 };
 

@@ -1,16 +1,16 @@
-#ifndef _BASICLIGHTING_
-#define _BASICLIGHTING_
+#ifndef _BASICLIGHTINGPASS_
+#define _BASICLIGHTINGPASS_
 
 #include "pass.hpp"
 #include "../gl/shaderstoragebuffer.hpp"
 
 #include <vector>
 
-class BasicLighting : public Pass {
+class BasicLightingPass : public Pass {
 
  	public:
 
- 		BasicLighting();
+ 		BasicLightingPass();
 
  		void draw(const Camera &, const std::vector<std::shared_ptr<Light>>);
 
@@ -20,4 +20,4 @@ class BasicLighting : public Pass {
 
 };
 
-#endif // _BASICLIGHTING_
+#endif // _BASICLIGHTINGPASS_
