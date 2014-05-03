@@ -443,7 +443,7 @@ const RenderID & WindowID::createGBufferRendering(CameraID & camID) {
 
 const CameraID & WindowID::createCamera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & up) {
 
-	m_cameras.emplace_back(Camera(pos, dir, up, 45.f, m_window->getWidth(), m_window->getHeight(), 0.01f, 1000.f));
+	m_cameras.emplace_back(Camera(pos, dir, up, glm::pi<float>() / 4.f, m_window->getWidth(), m_window->getHeight(), 0.01f));
 
 	return m_cameras.back();
 

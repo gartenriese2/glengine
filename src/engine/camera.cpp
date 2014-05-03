@@ -5,12 +5,11 @@
 #include <utility>
 
 Camera::Camera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & up, float fov,
-	int width, int height, float near, float far)
+	int width, int height, float near)
   : m_width(width),
   	m_height(height),
   	m_fov(fov),
   	m_near(near),
-  	m_far(far),
   	m_pos(pos),
   	m_dir(glm::normalize(dir)),
   	m_up(glm::normalize(up)),
@@ -47,21 +46,6 @@ void Camera::calculateProj() {
 	m_proj = glm::infinitePerspective(m_fov, static_cast<float>(m_width) / static_cast<float>(m_height), m_near);
 
 }
-
-// Camera::Camera(const glm::vec3 & pos, const glm::vec3 & look, const glm::vec3 & up, float left, float right, float top, float bottom) {
-
-// m_pos = pos;
-// m_dir = glm::normalize(look);
-// m_up = glm::normalize(up);
-
-// m_view = glm::lookAt(m_pos, m_pos + m_dir, m_up);
-// m_proj = glm::ortho(left, right, bottom, top);
-
-// m_initPos = m_pos;
-// m_initDir = m_dir;
-// m_initUp = m_up;
-
-// }
 
 void Camera::reset() {
 

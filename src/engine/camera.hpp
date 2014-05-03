@@ -8,7 +8,7 @@ class Camera {
 
 	public:
 
-		Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, int, int, float, float);
+		Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, int, int, float);
 		// Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, float, float, float);
 		Camera(const Camera &) = default;
 		Camera(Camera &&) = default;
@@ -41,7 +41,6 @@ class Camera {
 
 		float m_fov;
 		float m_near;
-		float m_far;
 
 		glm::mat4 m_view;
 		glm::mat4 m_proj;
