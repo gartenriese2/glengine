@@ -1,0 +1,42 @@
+#ifndef _SPLINE_
+#define _SPLINE_
+
+#include "object.hpp"
+#include "../glmincludes.hpp"
+
+#include <initializer_list>
+#include <vector>
+
+class ObjectInterface;
+
+class Spline : public Object {
+
+	public:
+	
+		Spline(Spline &&) = delete;
+		Spline & operator=(const Spline &) = delete;
+		Spline & operator=(Spline &&) = delete;
+
+		virtual ~Spline() {}
+
+	protected:
+
+		friend ObjectInterface;
+
+		Spline(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, float, float, unsigned int, const glm::vec3 &);
+		Spline(const Spline & t) : Object(t) {}
+
+		std::shared_ptr<Object> getCopy();
+
+		void draw() const;
+
+	private:
+
+		void init(const std::vector<glm::vec3> &, const glm::vec3 &, const glm::vec3 &);
+
+		unsigned int m_indices;
+
+};
+
+#endif // _SPLINE_

@@ -348,6 +348,30 @@ void fbo() {
 	
 }
 
+void spline() {
+
+	WindowID w = e.createWindow(1280, 720);
+	CameraID cam = w.createCamera({0.f, 2.5f, 5.f}, {0.f, -0.5f, -1.f}, {0.f, 1.f, -0.5f});
+	RenderID basic = w.createBasicRendering(cam);
+	basic.set();
+
+	ObjectID spline = w.createSpline({0.f, 0.f, 0.f}, {1.f, 0.f, 0.f}, {2.f, 2.f, 0.f}, {0.f, 1.f, 0.f},
+		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 100, {0.f, 1.f, 0.f});
+	ObjectID spline2 = w.createSpline({0.f, 0.f, 0.f}, {-1.f, 0.f, 0.f}, {0.f, -2.f, 0.f}, {1.f, 0.f, 0.f},
+		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 100, {0.f, 1.f, 0.f});
+	ObjectID spline3 = w.createSpline({0.f, -2.f, 0.f}, {2.f, 0.f, 0.f}, {4.f, -6.f, 0.f}, {0.f, -2.f, 0.f},
+		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 10, {0.f, 1.f, 0.f});
+	basic.addObjects({spline, spline2, spline3});
+
+	addControls(w, cam);
+
+	float step = 0.001f;
+	while(1) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
+	}
+
+}
+
 int main() {
 
 	// ampelDemo();
@@ -355,7 +379,8 @@ int main() {
 	// secondWindowDemo();
 	// test();
 	// coneTest();
-	fbo();
+	// fbo();
+	spline();
 
 	return 0;
 

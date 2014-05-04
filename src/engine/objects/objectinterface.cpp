@@ -6,6 +6,7 @@
 #include "cuboid.hpp"
 #include "sphere.hpp"
 #include "cone.hpp"
+#include "spline.hpp"
 #include "../debug.hpp"
 
 #include <algorithm>
@@ -137,6 +138,17 @@ void ObjectInterface::createSphere(unsigned long id, const glm::vec3 & center, f
 	std::lock_guard<std::mutex> lock(s_mutex);
 
 	return addObject(id, std::shared_ptr<Object>(new Sphere(center, radius, rings, sectors, colors)));
+
+}
+
+void ObjectInterface::createSpline(unsigned long id, const glm::vec3 & start, const glm::vec3 & dirStart,
+	const glm::vec3 & end, const glm::vec3 & dirEnd, const glm::vec3 & up, float widthStart, float widthEnd,
+	unsigned int steps,	const glm::vec3 & color) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Spline(start, dirStart, end, dirEnd, up,
+		widthStart, widthEnd, steps, color)));
 
 }
 

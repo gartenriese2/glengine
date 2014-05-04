@@ -120,6 +120,9 @@ class WindowID {
 		const ObjectID & createSphere(const glm::vec3 &, float, unsigned int, unsigned int,
 			const std::initializer_list<glm::vec3> & = {});
 
+		const ObjectID & createSpline(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, float, float, unsigned int, const glm::vec3 &);
+
 		const ObjectID & createCopy(const ObjectID &);
 
 		const RenderID & createBasicRendering(CameraID &);

@@ -48,6 +48,10 @@ class ObjectInterface {
 		static void createSphere(unsigned long, const glm::vec3 &, float, unsigned int, unsigned int,
 			const std::initializer_list<glm::vec3> & = {});
 
+		// SPLINE
+		static void createSpline(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
+			const glm::vec3 &, const glm::vec3 &, float, float, unsigned int, const glm::vec3 &);
+
 		static void copyObject(unsigned long, unsigned long);
 
 

@@ -373,6 +373,22 @@ const ObjectID & WindowID::createSphere(const glm::vec3 & center, float radius, 
 
 }
 
+const ObjectID & WindowID::createSpline(const glm::vec3 & start, const glm::vec3 & dirStart, const glm::vec3 & end,
+	const glm::vec3 & dirEnd, const glm::vec3 & up, float widthStart, float widthEnd, unsigned int steps,
+	const glm::vec3 & color) {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createSpline(id, start, dirStart, end, dirEnd, up, widthStart, widthEnd, steps, color);
+	});
+
+	return *m_objects.back();
+
+}
+
 const RenderID & WindowID::createBasicRendering(CameraID & camID) {
 
 	m_renders.emplace_back(*this);
