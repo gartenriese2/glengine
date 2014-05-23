@@ -372,6 +372,62 @@ void spline() {
 
 }
 
+void raytracing() {
+
+	WindowID w = e.createWindow(1280, 720);
+	CameraID cam = w.createCamera({0.f, 0.f, 10.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
+
+	addControls(w, cam);
+	double oldX = -1.0, oldY = -1.0;
+	w.setMouseMoveEvent([&](double xpos, double ypos){
+		
+		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+			cam.yaw(-(oldX - xpos) * 0.001f);
+			cam.pitch((oldY - ypos) * 0.001f);
+		}
+		oldX = xpos;
+		oldY = ypos;
+
+	});
+
+	LightID spotlight = w.createLight({0.f, 5.f, 0.f}, {0.f, -1.f, 0.f});
+	spotlight.setAsSpotLight();
+	spotlight.setSpotCutoff(0.1f);
+	spotlight.setSpotExponent(2.f);
+	// spotlight.setColor({0.f, 0.f, 1.f});
+	RenderID lighting = w.createRaytracingRendering(cam, {spotlight});
+	// RenderID lighting = w.createBasicLightingRendering(cam, {spotlight});
+	lighting.set();
+
+	ObjectID wallBack = w.createQuadrilateral({-5.f, -5.f, -5.f}, {5.f, -5.f, -5.f}, {5.f, 5.f, -5.f},
+		{-5.f, 5.f, -5.f}, {1.f, 1.f, 1.f});
+	ObjectID wallLeft = w.createQuadrilateral({-5.f, -5.f, 5.f}, {-5.f, -5.f, -5.f}, {-5.f, 5.f, -5.f},
+		{-5.f, 5.f, 5.f}, {0.f, 1.f, 0.f});
+	ObjectID wallRight = w.createQuadrilateral({5.f, -5.f, -5.f}, {5.f, -5.f, 5.f}, {5.f, 5.f, 5.f},
+		{5.f, 5.f, -5.f}, {1.f, 0.f, 0.f});
+	ObjectID floor = w.createQuadrilateral({-5.f, -5.f, 5.f}, {5.f, -5.f, 5.f}, {5.f, -5.f, -5.f},
+		{-5.f, -5.f, -5.f}, {1.f, 1.f, 1.f});
+	ObjectID ceiling = w.createQuadrilateral({-5.f, 5.f, -5.f}, {5.f, 5.f, -5.f}, {5.f, 5.f, 5.f},
+		{-5.f, 5.f, 5.f}, {1.f, 1.f, 1.f});
+
+	ObjectID lightbulb = w.createSphere({0.f, 4.9f, 0.f}, 0.2f, 20, 20, {1.f, 1.f, 1.f});
+
+	ObjectID cube = w.createCuboid({-4.f, -5.f, -1.f}, {-1.f, -5.f, -1.f}, {-4.f, -5.f, -4.f},
+		{-4.f, -2.f, -1.f}, {0.9f, 0.9f, 0.9f});
+	// cube.rotate(0.785f, {0.f, 1.f, 0.f});
+	ObjectID sphere = w.createSphere({2.5f, -3.f, -2.5f}, 2.f, 50, 50, {0.9f, 0.9f, 0.9f});
+
+	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, sphere, lightbulb});
+
+	
+
+	float step = 0.001f;
+	while(1) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
+	}
+
+}
+
 int main() {
 
 	// ampelDemo();
@@ -380,7 +436,8 @@ int main() {
 	// test();
 	// coneTest();
 	// fbo();
-	spline();
+	// spline();
+	raytracing();
 
 	return 0;
 

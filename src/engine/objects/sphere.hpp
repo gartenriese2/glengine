@@ -34,6 +34,8 @@ class Sphere : public Object {
 
 		void draw() const;
 
+		unsigned int getType() const { return SPHERE; }
+
 	private:
 
 		void init(const glm::vec3 &, float, unsigned int, unsigned int,

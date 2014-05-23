@@ -32,6 +32,8 @@ class Triangle : public Object {
 
 		void draw() const;
 
+		unsigned int getType() const { return TRIANGLE; }
+
 	private:
 
 		void init(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const std::vector<GLfloat> &);

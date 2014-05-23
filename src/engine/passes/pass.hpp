@@ -23,6 +23,7 @@ class Pass {
 		Pass & operator=(const Pass &) = delete;
 		Pass & operator=(Pass &&) = delete;
 
+		virtual void draw() {}
 		virtual void draw(const Camera &) {}
 		virtual void draw(const Camera &, const std::vector<std::shared_ptr<Light>>) {}
 		virtual void draw(const Camera &, const FBO &) {}

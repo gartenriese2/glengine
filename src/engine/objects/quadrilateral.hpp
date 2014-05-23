@@ -33,6 +33,8 @@ class Quadrilateral : public Object {
 
 		void draw() const;
 
+		unsigned int getType() const { return QUADRILATERAL; }
+
 	private:
 
 		void init(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,

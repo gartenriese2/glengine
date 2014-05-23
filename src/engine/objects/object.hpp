@@ -11,6 +11,8 @@
 
 class ObjectInterface;
 
+enum {QUADRILATERAL = 1, CIRCLE, CONE, CUBOID, SPHERE, SPLINE, TRIANGLE};
+
 class Object {
 
 	public:
@@ -43,11 +45,16 @@ class Object {
 
 		bool hasAttachments() const { return !m_attachedObjects.empty(); }
 
+		virtual const std::vector<glm::vec4> & getData() const { return m_data; }
+		virtual unsigned int getType() const = 0;
+
 		GLuint m_vertexArray;
 		Buffer m_vertexBuffer;
 		Buffer m_colorBuffer;
 		Buffer m_normalBuffer;
 		IndexBuffer m_indexBuffer;
+
+		std::vector<glm::vec4> m_data;
 
 		glm::mat4 m_modelMatrix;
 		glm::mat4 m_scaleMatrix;

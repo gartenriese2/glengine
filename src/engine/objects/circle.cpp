@@ -64,6 +64,8 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 	moveTo(center);
 	rotate(glm::acos(glm::dot(axis, {0.f, 0.f, 1.f}) / glm::length(axis)), glm::cross(axis, {0.f, 0.f, 1.f}));
 
+	m_data.insert(m_data.begin(), {glm::vec4(center, 0.f), glm::vec4(axis, 0.f), glm::vec4(radius), glm::vec4(edges)});
+
 }
 
 void Circle::draw() const {

@@ -69,6 +69,9 @@ class ObjectInterface {
 
 		static void attach(unsigned long, unsigned long);
 
+		static const std::vector<glm::vec4> & getObjectData(unsigned long);
+		static unsigned int getObjectType(unsigned long);
+
 	private:
 
 		static ObjectInterface & instance() { static ObjectInterface obj; return obj; }

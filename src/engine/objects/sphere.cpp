@@ -120,6 +120,8 @@ void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 
 	moveTo(center);
 
+	m_data.insert(m_data.begin(), {glm::vec4(center, 0.f), glm::vec4(radius), glm::vec4(rings), glm::vec4(sectors)});
+
 }
 
 void Sphere::draw() const {

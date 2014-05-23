@@ -335,3 +335,23 @@ void ObjectInterface::attach(unsigned long id, unsigned long attachment) {
 	}
 
 }
+
+const std::vector<glm::vec4> & ObjectInterface::getObjectData(unsigned long id) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	instance().checkID(id);
+
+	return instance().m_objects.at(id)->getData();
+
+}
+
+unsigned int ObjectInterface::getObjectType(unsigned long id) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	instance().checkID(id);
+
+	return instance().m_objects.at(id)->getType();
+
+}

@@ -8,6 +8,7 @@
 #include "passes/normalrender.hpp"
 #include "passes/basiclightingrender.hpp"
 #include "passes/gbufferrender.hpp"
+#include "passes/raytracingrender.hpp"
 
 #include <mutex>
 
@@ -450,6 +451,26 @@ const RenderID & WindowID::createGBufferRendering(CameraID & camID) {
 
 	loop.addCommand([=, &loop, &cam](){
 		std::shared_ptr<Render> r(new GBufferRender(cam));
+		loop.addRendering(id, r);
+	});
+
+	return m_renders.back();
+
+}
+
+const RenderID & WindowID::createRaytracingRendering(CameraID & camID, const std::vector<LightID> lightIDs) {
+
+	m_renders.emplace_back(*this);
+	unsigned long id = m_renders.back()();
+	Loop & loop = m_window->getLoop();
+	Camera & cam = camID.getCam();
+	std::vector<std::shared_ptr<Light>> lights;
+	for (const auto & ids : lightIDs) {
+		lights.emplace_back(ids.getLight());
+	}
+
+	loop.addCommand([=, &loop, &cam](){
+		std::shared_ptr<Render> r(new RaytracingRender(cam, lights));
 		loop.addRendering(id, r);
 	});
 

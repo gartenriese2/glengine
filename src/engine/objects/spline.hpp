@@ -31,6 +31,8 @@ class Spline : public Object {
 
 		void draw() const;
 
+		unsigned int getType() const { return SPLINE; }
+
 	private:
 
 		void init(const std::vector<glm::vec3> &, const glm::vec3 &, const glm::vec3 &);

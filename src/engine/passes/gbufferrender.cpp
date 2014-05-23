@@ -21,6 +21,33 @@ void GBufferRender::draw() {
 
 	m_gbufferPass.draw(m_cam, m_fbo);
 
+	m_fbo.bind(GL_READ_FRAMEBUFFER);
+
+	glDrawBuffer(GL_BACK);
+
+	glReadBuffer(GL_COLOR_ATTACHMENT0);
+	glBlitFramebuffer(0, 0, m_cam.getWidth(), m_cam.getHeight(),
+		0, m_cam.getHeight() / 2.f, m_cam.getWidth() / 2.f, m_cam.getHeight(),
+		GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+	glReadBuffer(GL_COLOR_ATTACHMENT1);
+
+	glBlitFramebuffer(0, 0, m_cam.getWidth(), m_cam.getHeight(),
+		m_cam.getWidth() / 2.f, m_cam.getHeight() / 2.f, m_cam.getWidth(), m_cam.getHeight(),
+		GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+	glReadBuffer(GL_COLOR_ATTACHMENT2);
+	glBlitFramebuffer(0, 0, m_cam.getWidth(), m_cam.getHeight(),
+		0, 0, m_cam.getWidth() / 2.f, m_cam.getHeight() / 2.f,
+		GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+	glReadBuffer(GL_COLOR_ATTACHMENT3);
+	glBlitFramebuffer(0, 0, m_cam.getWidth(), m_cam.getHeight(),
+		m_cam.getWidth() / 2.f, 0, m_cam.getWidth(), m_cam.getHeight() / 2.f,
+		GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+	m_fbo.unbind();
+
 }
 
 void GBufferRender::changeBaseSize(unsigned int w, unsigned int h) {
@@ -39,21 +66,21 @@ void GBufferRender::changeBaseSize(unsigned int w, unsigned int h) {
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, m_colorTex(), 0);
 	m_colorTex.unbind();
 
-	m_colorTex.bind();
+	m_depthTex.bind();
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 1, GL_TEXTURE_2D, m_depthTex(), 0);
-	m_colorTex.unbind();
+	m_depthTex.unbind();
 
-	m_colorTex.bind();
+	m_normalTex.bind();
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 2, GL_TEXTURE_2D, m_normalTex(), 0);
-	m_colorTex.unbind();
+	m_normalTex.unbind();
 
-	m_colorTex.bind();
+	m_positionTex.bind();
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 3, GL_TEXTURE_2D, m_positionTex(), 0);
-	m_colorTex.unbind();
+	m_positionTex.unbind();
 
-	m_colorTex.bind();
+	m_depthAttachment.bind();
 	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthAttachment(), 0);
-	m_colorTex.unbind();
+	m_depthAttachment.unbind();
 
 	GLenum err = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
 	if (err != GL_FRAMEBUFFER_COMPLETE) {

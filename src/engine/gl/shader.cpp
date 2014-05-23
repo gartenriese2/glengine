@@ -23,6 +23,8 @@ Shader::Shader(const std::string & file) {
 		m_shader = glCreateShader(GL_TESS_CONTROL_SHADER);
 	} else if (type == "eval") {
 		m_shader = glCreateShader(GL_TESS_EVALUATION_SHADER);
+	} else if (type == "comp") {
+		m_shader = glCreateShader(GL_COMPUTE_SHADER);
 	} else {
 		Debug::log("Not a valid shader file ending: " + type);
 		exit(0);

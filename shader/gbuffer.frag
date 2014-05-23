@@ -14,6 +14,6 @@ void main() {
 	outColor = color;
 	position = position_World;
 	normal = normal_World;
-	depth = (gl_FragCoord.z - 0.99f) * 100.f;
+	depth = gl_FragCoord.z;
 
 }

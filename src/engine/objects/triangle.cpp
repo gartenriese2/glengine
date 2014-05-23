@@ -44,6 +44,8 @@ void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & 
 	});
 	m_normalBuffer.bindToVAO(m_vertexArray, 2);
 
+	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(0.f)});
+
 }
 
 void Triangle::draw() const {

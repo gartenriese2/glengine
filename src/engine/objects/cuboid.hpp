@@ -34,6 +34,8 @@ class Cuboid : public Object {
 
 		void draw() const;
 
+		unsigned int getType() const { return CUBOID; }
+
 	private:
 
 		void init(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,

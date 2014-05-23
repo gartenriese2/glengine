@@ -257,6 +257,9 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 
 	moveTo(base + glm::normalize(axis) * length / 2.f);
 
+	m_data.insert(m_data.begin(), {glm::vec4(base, 0.f), glm::vec4(axis, 0.f),
+		glm::vec4(length, lowerRadius, upperRadius, 0.f), glm::vec4(sections)});
+
 }
 
 void Cone::draw() const {

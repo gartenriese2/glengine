@@ -31,6 +31,8 @@ class Cone : public Object {
 
 		void draw() const;
 
+		unsigned int getType() const { return CONE; }
+
 	private:
 
 		void init(const glm::vec3 &, const glm::vec3 &, float, float, float, unsigned int, const std::vector<GLfloat> &);

@@ -31,6 +31,8 @@ class Circle : public Object {
 
 		void draw() const;
 
+		unsigned int getType() const { return CIRCLE; }
+
 	private:
 
 		void init(const glm::vec3 &, const glm::vec3 &, float, unsigned int, const std::vector<GLfloat> &);

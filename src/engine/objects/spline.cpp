@@ -88,6 +88,8 @@ void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, con
 	m_indexBuffer.insertData(indices);
 	m_indexBuffer.bindToVAO(m_vertexArray);
 
+	m_data.insert(m_data.begin(), {glm::vec4(0.f), glm::vec4(0.f), glm::vec4(0.f), glm::vec4(0.f)});
+
 }
 
 void Spline::draw() const {

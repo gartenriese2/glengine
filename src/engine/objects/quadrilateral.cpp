@@ -58,6 +58,8 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 	});
 	m_indexBuffer.bindToVAO(m_vertexArray);
 
+	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(d, 0.f)});
+
 }
 
 void Quadrilateral::draw() const {
