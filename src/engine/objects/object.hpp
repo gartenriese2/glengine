@@ -13,6 +13,24 @@ class ObjectInterface;
 
 enum {QUADRILATERAL = 1, CIRCLE, CONE, CUBOID, SPHERE, SPLINE, TRIANGLE};
 
+struct Tri {
+	
+	glm::vec4 m_a, m_b, m_c;
+
+	Tri(const glm::vec4 & a, const glm::vec4 & b, const glm::vec4 & c) : m_a(a), m_b(b), m_c(c) {}
+
+	const glm::vec4 & A() const { return m_a; }
+	const glm::vec4 & B() const { return m_b; }
+	const glm::vec4 & C() const { return m_c; }
+
+	void mult(const glm::mat4 & mat) {
+		m_a = mat * m_a;
+		m_b = mat * m_b;
+		m_c = mat * m_c;
+	}
+
+};
+
 class Object {
 
 	public:
@@ -46,6 +64,7 @@ class Object {
 		bool hasAttachments() const { return !m_attachedObjects.empty(); }
 
 		virtual const std::vector<glm::vec4> & getData() const { return m_data; }
+		virtual const std::vector<Tri> & getTriangles() const { return m_triangles; }
 		virtual unsigned int getType() const = 0;
 
 		GLuint m_vertexArray;
@@ -55,6 +74,7 @@ class Object {
 		IndexBuffer m_indexBuffer;
 
 		std::vector<glm::vec4> m_data;
+		std::vector<Tri> m_triangles;
 
 		glm::mat4 m_modelMatrix;
 		glm::mat4 m_scaleMatrix;
@@ -71,6 +91,8 @@ class Object {
 
 		const std::vector<GLfloat> getColorVector(const std::initializer_list<glm::vec3> &, unsigned int) const;
 		const std::vector<GLfloat> getColorVector(const glm::vec3 &, unsigned int) const;
+
+		void fillTriangles(const std::vector<GLushort> &, const std::vector<GLfloat> &);
 
 };
 

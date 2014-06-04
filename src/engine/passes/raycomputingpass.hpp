@@ -23,7 +23,7 @@ class RaycomputingPass : public Pass {
 		Texture & m_directionTex;
 		Texture & m_result;
 
-		ShaderStorageBuffer m_objectBuffer;
+		ShaderStorageBuffer m_triangleBuffer;
 
 };
 

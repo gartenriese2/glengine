@@ -50,7 +50,7 @@ class ObjectInterface {
 
 		// SPLINE
 		static void createSpline(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
-			const glm::vec3 &, const glm::vec3 &, float, float, unsigned int, const glm::vec3 &);
+			const glm::vec3 &, const glm::vec3 &, float, float, unsigned int, float, const glm::vec3 &);
 
 		static void copyObject(unsigned long, unsigned long);
 
@@ -70,6 +70,7 @@ class ObjectInterface {
 		static void attach(unsigned long, unsigned long);
 
 		static const std::vector<glm::vec4> & getObjectData(unsigned long);
+		static const std::vector<Tri> & getObjectTriangles(unsigned long);
 		static unsigned int getObjectType(unsigned long);
 
 	private:

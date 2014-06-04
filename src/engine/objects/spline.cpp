@@ -6,13 +6,13 @@ static constexpr float k_minWidth = 0.1f;
 
 Spline::Spline(const glm::vec3 & start, const glm::vec3 & dirStart, const glm::vec3 & end,
 	const glm::vec3 & dirEnd, const glm::vec3 & up, float widthStart, float widthEnd, unsigned int steps,
-	const glm::vec3 & color) {
+	float smoothFactor, const glm::vec3 & color) {
 
 	if (steps < 2) steps = 2;
 	if (widthStart < k_minWidth) widthStart = k_minWidth;
 	if (widthEnd < k_minWidth) widthEnd = k_minWidth;
 
-	float smoothness = glm::length(end - start) / 10.f / ((glm::length(dirStart) + glm::length(dirEnd)) / 2.f);
+	float smoothness = glm::length(end - start) / smoothFactor / ((glm::length(dirStart) + glm::length(dirEnd)) / 2.f);
 
 	std::vector<glm::vec3> path;
 	for (unsigned int i = 0; i < steps; ++i) {
@@ -89,6 +89,28 @@ void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, con
 	m_indexBuffer.bindToVAO(m_vertexArray);
 
 	m_data.insert(m_data.begin(), {glm::vec4(0.f), glm::vec4(0.f), glm::vec4(0.f), glm::vec4(0.f)});
+
+	for (unsigned int i = 0; i < indices.size() - 2; i += 2) {
+
+		glm::vec4 a = glm::vec4(vertices[3 * indices[i + 1]],
+			vertices[3 * indices[i + 1] + 1], vertices[3 * indices[i + 1] + 2], 1.f);
+		glm::vec4 b = glm::vec4(vertices[3 * indices[i]],
+			vertices[3 * indices[i] + 1], vertices[3 * indices[i] + 2], 1.f);
+		glm::vec4 c = glm::vec4(vertices[3 * indices[i + 2]],
+			vertices[3 * indices[i + 2] + 1], vertices[3 * indices[i + 2] + 2], 1.f);
+		
+		m_triangles.emplace_back(a, b, c);
+
+		a = glm::vec4(vertices[3 * indices[i + 1]],
+			vertices[3 * indices[i + 1] + 1], vertices[3 * indices[i + 1] + 2], 1.f);
+		b = glm::vec4(vertices[3 * indices[i + 2]],
+			vertices[3 * indices[i + 2] + 1], vertices[3 * indices[i + 2] + 2], 1.f);
+		c = glm::vec4(vertices[3 * indices[i + 3]],
+			vertices[3 * indices[i] + 3], vertices[3 * indices[i] + 3], 1.f);
+		
+		m_triangles.emplace_back(a, b, c);
+
+	}
 
 }
 

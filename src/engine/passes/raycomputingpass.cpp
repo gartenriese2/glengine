@@ -14,7 +14,7 @@ RaycomputingPass::RaycomputingPass(Texture & positionTex, Texture & directionTex
 	Shader comp(k_dir + "raytracing.comp");
 	m_program.attachShader(comp);
 
-	m_objectBuffer.bindTo(0);
+	m_triangleBuffer.bindTo(0);
 
 }
 
@@ -35,48 +35,23 @@ void RaycomputingPass::draw(const Camera & cam, const FBO & fbo) {
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, m_directionTex());
 
-	struct Primitive {
-		glm::vec4 A, B, C, D;
-	};
-
-	struct Object {
-		Primitive p;
-		glm::vec4 type; // enum {QUADRILATERAL = 1, CIRCLE, CONE, CUBOID, SPHERE, SPLINE, TRIANGLE};
-	};
-
-	std::vector<Object> objVec;
+	std::vector<Tri> triVec;
 
 	for (auto id : m_objects) {
 
-		std::vector<glm::vec4> v = ObjectInterface::getObjectData(id);
 		glm::mat4 m = ObjectInterface::getModelMatrix(id);
-		Primitive p;
-		p.A = v[0];
-		p.B = v[1];
-		p.C = v[2];
-		p.D = v[3];
-		Object o;
-		o.p = p;
-		o.type = glm::vec4(ObjectInterface::getObjectType(id));
 
-		switch(static_cast<int>(o.type[0])) {
-			case 1:
-			case 4:
-				o.p.A = m * o.p.A;
-				o.p.B = m * o.p.B;
-				o.p.C = m * o.p.C;
-				o.p.D = m * o.p.D;
-				break;
-			default:
-				break;
+		for (Tri tri : ObjectInterface::getObjectTriangles(id)) {
+
+			tri.mult(m);
+			triVec.emplace_back(tri);
+
 		}
-
-		objVec.emplace_back(o);
 
 	}
 
-	m_objectBuffer.addData(objVec, objVec.size());
-	m_program["numObj"] = static_cast<int>(objVec.size());
+	m_triangleBuffer.addData(triVec, triVec.size());
+	m_program["numTri"] = static_cast<int>(triVec.size());
 
 	glDispatchCompute(cam.getWidth() / 16, cam.getHeight() / 16 , 1);
 	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);

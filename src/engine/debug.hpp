@@ -27,6 +27,16 @@ class Debug {
 			log("vec3: " + std::to_string(vec.x) + "|" + std::to_string(vec.y) + "|" + std::to_string(vec.z) + "|" + std::to_string(vec.w));
 		}
 
+		static void log(const glm::mat4 & mat) {
+			log("mat4:\n" 
+				+ std::to_string(mat[0][0]) + "\t|" + std::to_string(mat[0][1]) + "\t|" + std::to_string(mat[0][2]) + "\t|"
+				+ std::to_string(mat[0][3]) + "\n" + std::to_string(mat[1][0]) + "\t|" + std::to_string(mat[1][1]) + "\t|"
+				+ std::to_string(mat[1][2]) + "\t|" + std::to_string(mat[1][3]) + "\n" + std::to_string(mat[2][0]) + "\t|"
+				+ std::to_string(mat[2][1]) + "\t|" + std::to_string(mat[2][2]) + "\t|" + std::to_string(mat[2][3]) + "\n"
+				+ std::to_string(mat[3][0]) + "\t|" + std::to_string(mat[3][1]) + "\t|" + std::to_string(mat[3][2]) + "\t|"
+				+ std::to_string(mat[3][3]));
+		}
+
 		static void logGL();
 
 	protected:

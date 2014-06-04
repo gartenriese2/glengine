@@ -36,7 +36,7 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	glm::vec3 g = b + c - a;
 	glm::vec3 h = g + up;
 
-	m_vertexBuffer.insertData<GLfloat>({
+	std::vector<GLfloat> vertices {
 		a.x, a.y, a.z,
 	   	b.x, b.y, b.z,
 	   	e.x, e.y, e.z,
@@ -66,7 +66,9 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	   	c.x, c.y, c.z,
 	   	a.x, a.y, a.z,
 	   	b.x, b.y, b.z,
-	});
+	};
+
+	m_vertexBuffer.insertData<GLfloat>(vertices);
 	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 
 	m_colorBuffer.insertData(colors);
@@ -112,7 +114,7 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	});
 	m_normalBuffer.bindToVAO(m_vertexArray, 2);
 
-	m_indexBuffer.insertData({
+	std::vector<GLushort> indices {
 		 0,  1,  2,
 		 2,  3,  0,
 
@@ -130,10 +132,14 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 
 		20, 21, 22,
 		22, 23, 20
-	});
+	};
+
+	m_indexBuffer.insertData(indices);
 	m_indexBuffer.bindToVAO(m_vertexArray);
 
 	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(d, 0.f)});
+
+	fillTriangles(indices, vertices);
 
 }
 

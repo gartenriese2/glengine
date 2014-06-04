@@ -66,6 +66,18 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 
 	m_data.insert(m_data.begin(), {glm::vec4(center, 0.f), glm::vec4(axis, 0.f), glm::vec4(radius), glm::vec4(edges)});
 
+	for (unsigned int i = 1; i < indices.size() - 1; ++i) {
+
+		glm::vec4 a = glm::vec4(vertices[3 * indices[i]],
+			vertices[3 * indices[i] + 1], vertices[3 * indices[i] + 2], 1.f);
+		glm::vec4 b = glm::vec4(vertices[0], vertices[1], vertices[2], 1.f);
+		glm::vec4 c = glm::vec4(vertices[3 * indices[i + 1]],
+			vertices[3 * indices[i + 1] + 1], vertices[3 * indices[i + 1] + 2], 1.f);
+		
+		m_triangles.emplace_back(a, b, c);
+
+	}
+
 }
 
 void Circle::draw() const {

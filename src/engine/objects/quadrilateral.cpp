@@ -60,6 +60,9 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 
 	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(d, 0.f)});
 
+	m_triangles.emplace_back(glm::vec4(a.x, a.y, a.z, 1.f), glm::vec4(b.x, b.y, b.z, 1.f), glm::vec4(c.x, c.y, c.z, 1.f));
+	m_triangles.emplace_back(glm::vec4(a.x, a.y, a.z, 1.f), glm::vec4(c.x, c.y, c.z, 1.f), glm::vec4(d.x, d.y, d.z, 1.f));
+
 }
 
 void Quadrilateral::draw() const {

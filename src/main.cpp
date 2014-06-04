@@ -356,11 +356,11 @@ void spline() {
 	basic.set();
 
 	ObjectID spline = w.createSpline({0.f, 0.f, 0.f}, {1.f, 0.f, 0.f}, {2.f, 2.f, 0.f}, {0.f, 1.f, 0.f},
-		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 100, {0.f, 1.f, 0.f});
+		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 100, 100.f, {0.f, 1.f, 0.f});
 	ObjectID spline2 = w.createSpline({0.f, 0.f, 0.f}, {-1.f, 0.f, 0.f}, {0.f, -2.f, 0.f}, {1.f, 0.f, 0.f},
-		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 100, {0.f, 1.f, 0.f});
+		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 100, 100.f, {0.f, 1.f, 0.f});
 	ObjectID spline3 = w.createSpline({0.f, -2.f, 0.f}, {2.f, 0.f, 0.f}, {4.f, -6.f, 0.f}, {0.f, -2.f, 0.f},
-		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 10, {0.f, 1.f, 0.f});
+		{0.f, 0.f, 1.f}, 0.5f, 0.5f, 10, 100.f, {0.f, 1.f, 0.f});
 	basic.addObjects({spline, spline2, spline3});
 
 	addControls(w, cam);
@@ -410,16 +410,50 @@ void raytracing() {
 	ObjectID ceiling = w.createQuadrilateral({-5.f, 5.f, -5.f}, {5.f, 5.f, -5.f}, {5.f, 5.f, 5.f},
 		{-5.f, 5.f, 5.f}, {1.f, 1.f, 1.f});
 
-	ObjectID lightbulb = w.createSphere({0.f, 4.9f, 0.f}, 0.2f, 20, 20, {1.f, 1.f, 1.f});
+	ObjectID lightbulb = w.createSphere({0.f, 4.9f, 0.f}, 0.2f, 5, 5, {1.f, 1.f, 1.f});
 
 	ObjectID cube = w.createCuboid({-4.f, -5.f, -1.f}, {-1.f, -5.f, -1.f}, {-4.f, -5.f, -4.f},
 		{-4.f, -2.f, -1.f}, {0.9f, 0.9f, 0.9f});
-	// cube.rotate(0.785f, {0.f, 1.f, 0.f});
-	ObjectID sphere = w.createSphere({2.5f, -3.f, -2.5f}, 2.f, 50, 50, {0.9f, 0.9f, 0.9f});
+	cube.rotate(0.785f, {0.f, 1.f, 0.f});
+	ObjectID sphere = w.createSphere({2.5f, -3.f, -2.5f}, 2.f, 8, 8, {0.9f, 0.9f, 0.9f});
 
-	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, sphere, lightbulb});
+	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, sphere, lightbulb});	
 
-	
+	float step = 0.001f;
+	while(1) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
+	}
+
+}
+
+#include "mapcity/road.hpp"
+
+void mapcity() {
+
+	WindowID w = e.createWindow(1280, 720);
+	CameraID cam = w.createCamera({0.f, 200.f, 0.f}, {0.f, -1.f, 0.f}, {0.f, 0.f, -1.f});
+
+	w.addKeyEvent(GLFW_KEY_W, [&](){
+		cam.move(glm::vec3(0.f, 0.f, -1.f) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 2.f : 0.5f));
+	});
+	w.addKeyEvent(GLFW_KEY_S, [&](){
+		cam.move(glm::vec3(0.f, 0.f, 1.f) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 2.f : 0.5f));
+	});
+	w.addKeyEvent(GLFW_KEY_A, [&](){
+		cam.move(glm::vec3(-1.f, 0.f, 0.f) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 2.f : 0.5f));
+	});
+	w.addKeyEvent(GLFW_KEY_D, [&](){
+		cam.move(glm::vec3(1.f, 0.f, 0.f) * (w.isKeyPressed(GLFW_KEY_LEFT_SHIFT) ? 2.f : 0.5f));
+	});
+
+	RenderID basic = w.createBasicRendering(cam);
+	basic.set();
+
+	ObjectID ground = w.createQuadrilateral({-200.f, 0.f, 200.f}, {200.f, 0.f, 200.f}, {200.f, 0.f, -200.f},
+		{-200.f, 0.f, -200.f}, {0.f, 0.7f, 0.f});
+	basic.addObjects({ground});
+
+	Road r1({{0.f, 50.f}, {0.f, -50.f}, {10.f, -60.f}, {60.f, -60.f}, {80.f, -80.f}}, w, basic);
 
 	float step = 0.001f;
 	while(1) {
@@ -438,6 +472,7 @@ int main() {
 	// fbo();
 	// spline();
 	raytracing();
+	// mapcity();
 
 	return 0;
 

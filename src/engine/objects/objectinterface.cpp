@@ -143,12 +143,12 @@ void ObjectInterface::createSphere(unsigned long id, const glm::vec3 & center, f
 
 void ObjectInterface::createSpline(unsigned long id, const glm::vec3 & start, const glm::vec3 & dirStart,
 	const glm::vec3 & end, const glm::vec3 & dirEnd, const glm::vec3 & up, float widthStart, float widthEnd,
-	unsigned int steps,	const glm::vec3 & color) {
+	unsigned int steps,	float smooth, const glm::vec3 & color) {
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
 	return addObject(id, std::shared_ptr<Object>(new Spline(start, dirStart, end, dirEnd, up,
-		widthStart, widthEnd, steps, color)));
+		widthStart, widthEnd, steps, smooth, color)));
 
 }
 
@@ -343,6 +343,16 @@ const std::vector<glm::vec4> & ObjectInterface::getObjectData(unsigned long id) 
 	instance().checkID(id);
 
 	return instance().m_objects.at(id)->getData();
+
+}
+
+const std::vector<Tri> & ObjectInterface::getObjectTriangles(unsigned long id) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	instance().checkID(id);
+
+	return instance().m_objects.at(id)->getTriangles();
 
 }
 

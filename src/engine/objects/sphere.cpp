@@ -122,6 +122,8 @@ void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 
 	m_data.insert(m_data.begin(), {glm::vec4(center, 0.f), glm::vec4(radius), glm::vec4(rings), glm::vec4(sectors)});
 
+	fillTriangles(indices, vertices);
+
 }
 
 void Sphere::draw() const {

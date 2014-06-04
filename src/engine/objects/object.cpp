@@ -201,3 +201,20 @@ const std::vector<GLfloat> Object::getColorVector(const glm::vec3 & color, unsig
 	return v;
 
 }
+
+void Object::fillTriangles(const std::vector<GLushort> & indices, const std::vector<GLfloat> & vertices) {
+
+	for (unsigned int i = 0; i < indices.size(); i += 3) {
+
+		glm::vec4 a = glm::vec4(vertices[3 * indices[i]],
+			vertices[3 * indices[i] + 1], vertices[3 * indices[i] + 2], 1.f);
+		glm::vec4 b = glm::vec4(vertices[3 * indices[i + 1]],
+			vertices[3 * indices[i + 1] + 1], vertices[3 * indices[i + 1] + 2], 1.f);
+		glm::vec4 c = glm::vec4(vertices[3 * indices[i + 2]],
+			vertices[3 * indices[i + 2] + 1], vertices[3 * indices[i + 2] + 2], 1.f);
+
+		m_triangles.emplace_back(a, b, c);
+
+	}
+	
+}
