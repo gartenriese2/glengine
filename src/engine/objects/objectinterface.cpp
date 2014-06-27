@@ -152,6 +152,15 @@ void ObjectInterface::createSpline(unsigned long id, const glm::vec3 & start, co
 
 }
 
+void ObjectInterface::createSpline(unsigned long id, const std::vector<glm::vec3> & path, const glm::vec3 & up,
+	float width, const glm::vec3 & color) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	return addObject(id, std::shared_ptr<Object>(new Spline(path, up, width, color)));
+
+}
+
 void ObjectInterface::copyObject(unsigned long orig, unsigned long copy) {
 
 	std::lock_guard<std::mutex> lock(s_mutex);

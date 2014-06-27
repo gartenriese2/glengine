@@ -8,7 +8,7 @@ RaytracingRender::RaytracingRender(Camera & cam, std::vector<std::shared_ptr<Lig
   	m_reflectedTex(cam.getWidth(), cam.getHeight(), GL_RGB32F),
   	m_depthAttachment(cam.getWidth(), cam.getHeight(), GL_DEPTH_COMPONENT32F),
   	m_result(cam.getWidth(), cam.getHeight(), GL_RGBA32F),
-  	m_raycomputingPass(m_positionTex, m_reflectedTex, m_result),
+  	m_raycomputingPass(m_positionTex, m_reflectedTex, m_colorTex, m_result),
   	m_texturePass(m_result)
 {
 
@@ -21,9 +21,9 @@ RaytracingRender::RaytracingRender(Camera & cam, std::vector<std::shared_ptr<Lig
 
 void RaytracingRender::draw() {
 
-	m_raycastingPass.draw(m_cam, m_fbo);
+	m_raycastingPass.draw(m_cam, m_fbo, m_lights);
 
-	m_raycomputingPass.draw(m_cam, m_fbo);
+	m_raycomputingPass.draw(m_cam, m_lights);
 
 	m_texturePass.draw();
 

@@ -390,7 +390,7 @@ void raytracing() {
 
 	});
 
-	LightID spotlight = w.createLight({0.f, 5.f, 0.f}, {0.f, -1.f, 0.f});
+	LightID spotlight = w.createLight({0.f, 4.9f, 0.f}, {0.f, -1.f, 0.f});
 	spotlight.setAsSpotLight();
 	spotlight.setSpotCutoff(0.1f);
 	spotlight.setSpotExponent(2.f);
@@ -413,20 +413,25 @@ void raytracing() {
 	ObjectID lightbulb = w.createSphere({0.f, 4.9f, 0.f}, 0.2f, 5, 5, {1.f, 1.f, 1.f});
 
 	ObjectID cube = w.createCuboid({-4.f, -5.f, -1.f}, {-1.f, -5.f, -1.f}, {-4.f, -5.f, -4.f},
-		{-4.f, -2.f, -1.f}, {0.9f, 0.9f, 0.9f});
+		{-4.f, -2.f, -1.f}, {0.f, 0.f, 0.9f});
 	cube.rotate(0.785f, {0.f, 1.f, 0.f});
-	ObjectID sphere = w.createSphere({2.5f, -3.f, -2.5f}, 2.f, 8, 8, {0.9f, 0.9f, 0.9f});
+	ObjectID cube2 = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, 1.f, 1.f},
+		{-1.f, -1.f, -1.f}, {0.9f, 0.9f, 0.f});
+	// ObjectID sphere = w.createSphere({2.5f, -3.f, -2.5f}, 2.f, 12, 12, {0.9f, 0.9f, 0.9f});
 
-	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, sphere, lightbulb});	
+	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, cube2});	
 
 	float step = 0.001f;
+	float rotPerSecond = 0.33f;
 	while(1) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
+		cube2.rotate(6.28f * rotPerSecond * step, {0.f, 1.f, 0.f});
 	}
 
 }
 
 #include "mapcity/road.hpp"
+#include "mapcity/path.hpp"
 
 void mapcity() {
 
@@ -453,7 +458,18 @@ void mapcity() {
 		{-200.f, 0.f, -200.f}, {0.f, 0.7f, 0.f});
 	basic.addObjects({ground});
 
-	Road r1({{0.f, 50.f}, {0.f, -50.f}, {10.f, -60.f}, {60.f, -60.f}, {80.f, -80.f}}, w, basic);
+	// Road r1({{0.f, 50.f}, {0.f, -50.f}, {10.f, -60.f}, {60.f, -60.f}, {80.f, -80.f}}, w, basic);
+
+	std::vector<glm::vec3> pts {{-10.f, 0.1f, 0.f}, {0.f, 0.1f, 0.f}, {30.f, 0.1f, 0.f}, {50.f, 0.1f, 20.f},
+		{50.f, 0.1f, 50.f}, {50.f, 0.1f, 60.f}};
+	Path p0(Path::createPathFromControlPoints(pts[0], pts[1], pts[2], pts[3]));
+	Path p1(Path::createPathFromControlPoints(pts[1], pts[2], pts[3], pts[4]));
+	Path p2(Path::createPathFromControlPoints(pts[2], pts[3], pts[4], pts[5]));
+
+	ObjectID testpath0 = p0.createObjectID(w);
+	ObjectID testpath1 = p1.createObjectID(w);
+	ObjectID testpath2 = p2.createObjectID(w);
+	basic.addObjects({testpath0, testpath1, testpath2});
 
 	float step = 0.001f;
 	while(1) {
@@ -471,8 +487,8 @@ int main() {
 	// coneTest();
 	// fbo();
 	// spline();
-	raytracing();
-	// mapcity();
+	// raytracing();
+	mapcity();
 
 	return 0;
 

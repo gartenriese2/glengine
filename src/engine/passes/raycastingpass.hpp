@@ -2,11 +2,7 @@
 #define _RAYCASTINGPASS_
 
 #include "pass.hpp"
-#include "../gl/buffer.hpp"
-#include "../gl/indexbuffer.hpp"
-#include "../gl/texture.hpp"
-
-#include "../gl/program.hpp"
+#include "../gl/shaderstoragebuffer.hpp"
 
 class FBO;
 
@@ -16,11 +12,11 @@ class RaycastingPass : public Pass {
 
 		RaycastingPass();
 
-		void draw(const Camera &, const FBO &);
+		void draw(const Camera &, const FBO &, const std::vector<std::shared_ptr<Light>>);
 
 	private:
 
-		Program m_compProg;
+		ShaderStorageBuffer m_lightBuffer;
 
 };
 

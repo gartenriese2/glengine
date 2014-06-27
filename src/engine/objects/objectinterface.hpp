@@ -51,6 +51,8 @@ class ObjectInterface {
 		// SPLINE
 		static void createSpline(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const glm::vec3 &, float, float, unsigned int, float, const glm::vec3 &);
+		static void createSpline(unsigned long, const std::vector<glm::vec3> &, const glm::vec3 &, float,
+			const glm::vec3 &);
 
 		static void copyObject(unsigned long, unsigned long);
 

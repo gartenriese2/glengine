@@ -390,6 +390,21 @@ const ObjectID & WindowID::createSpline(const glm::vec3 & start, const glm::vec3
 
 }
 
+const ObjectID & WindowID::createSpline(const std::vector<glm::vec3> & path, const glm::vec3 & up, float width,
+	const glm::vec3 & color) {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createSpline(id, path, up, width, color);
+	});
+
+	return *m_objects.back();
+
+}
+
 const RenderID & WindowID::createBasicRendering(CameraID & camID) {
 
 	m_renders.emplace_back(*this);

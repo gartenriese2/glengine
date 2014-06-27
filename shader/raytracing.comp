@@ -4,13 +4,14 @@ layout(local_size_x = 16, local_size_y = 16) in;
 
 uniform int windowWidth;
 uniform int windowHeight;
-uniform int numObj;
 uniform int numTri;
+uniform int numLights;
 
 uniform sampler2D positionTex;
 uniform sampler2D directionTex;
+uniform sampler2D colorTex;
 
-layout (r11f_g11f_b10f, binding = 2) uniform image2D outputTexture;
+layout (r11f_g11f_b10f, binding = 3) uniform image2D outputTexture;
 
 struct Ray {
 	vec3 origin;
@@ -21,8 +22,24 @@ struct Tri {
 	vec4 a, b, c;
 };
 
-layout(std430) buffer TriangleBuffer {
+struct Light {
+	
+	vec4 bools; // isEnabled, isLocal, isSpot, 0
+	vec4 position;
+	vec4 color;
+	vec4 ambient;
+	vec4 direction;
+	vec4 attenuation; // constant, linear, quadratic, 0
+	vec4 spot; // spotCosCutoff, spotExponent, 0, 0
+	
+};
+
+layout(std430, binding = 0) buffer TriangleBuffer {
 	Tri triangles[];
+};
+
+layout(std430, binding = 1) buffer LightBuffer {
+	Light lights[];
 };
 
 Ray initRay(uint x, uint y) {
@@ -34,6 +51,8 @@ Ray initRay(uint x, uint y) {
 	
 	return r;
 }
+
+const float INFINITY = 10000.f;
 
 float hitTriangle(Ray ray, Tri tri) {
 
@@ -51,7 +70,7 @@ float hitTriangle(Ray ray, Tri tri) {
 	vec3 h = cross(d, e2);
 	float a = dot(e1, h);
 	if (abs(a) < EPSILON) {
-		return 1001.f;
+		return INFINITY + 1.f;
 	}
 
 	float f = 1.f / a;
@@ -59,14 +78,14 @@ float hitTriangle(Ray ray, Tri tri) {
 	float u = f * dot(s, h);
 
 	if (u < 0.f || u > 1.f) {
-		return 1001.f;
+		return INFINITY + 1.f;
 	}
 
 	vec3 q = cross(s, e1);
 	float v = f * dot(d, q);
 
 	if (v < 0.f || u + v > 1.f) {
-		return 1001.f;
+		return INFINITY + 1.f;
 	}
 
 	float t = f * dot(e2, q);
@@ -75,7 +94,43 @@ float hitTriangle(Ray ray, Tri tri) {
 		return t;
 	}
 
-	return 1001.f;
+	return INFINITY + 1.f;
+
+}
+
+vec4 calculateColor(Ray ray, uint x, uint y) {
+
+	vec4 color = vec4(texelFetch(colorTex, ivec2(x, y), 0).xyz, 1.f) * 0.1f;
+
+	vec3 scatteredLight = vec3(0.f);
+	vec3 reflectedLight = vec3(0.f);
+
+	for (int i = 0; i < numLights; ++i) {
+
+		// turned off
+		if (lights[i].bools.x == 0.f) continue;
+
+		Ray rayToLight;
+		rayToLight.origin = ray.origin;
+		rayToLight.dir = normalize(lights[i].position.xyz - ray.origin);
+
+		float hit = INFINITY;
+		float tmp;
+		for (int i = 0; i < numTri; ++i) {
+			tmp = hitTriangle(rayToLight, triangles[i]);
+			if (tmp < hit && tmp > 0.f) {
+				hit = tmp;
+			}
+		}
+
+		float distanceToLight = length(lights[i].position.xyz - ray.origin);
+		if (distanceToLight > hit) continue; // in shadow
+
+		color = vec4(texelFetch(colorTex, ivec2(x, y), 0).xyz, 1.f);
+
+	}
+
+	return color;
 
 }
 
@@ -86,30 +141,26 @@ void main() {
 
 	if (x < windowWidth && y < windowHeight) {
 		
-		vec4 color = vec4(1.0f, 0.0f, 0.0f, 0.0f);
+		
 
 		//Initialize the ray
 		Ray r = initRay(x, y);
 
-		float hit = 1000.f;
-		int objHit = -1;
-		float tmp;
+		vec4 color = calculateColor(r, x, y);
 
-		for (int i = 0; i < numTri; ++i) {
-			tmp = hitTriangle(r, triangles[i]);
-			if (tmp < hit && tmp > 0.f) {
-				hit = tmp;
-				objHit = i;
-			}
-		}
+		// float hit = INFINITY;
+		// int triHit = -1;
+		// float tmp;
 
-		if (hit < 1000.f) {
-			imageStore(outputTexture, ivec2(x, y), vec4(hit / 20.f));
-		} else {
-			imageStore(outputTexture, ivec2(x, y), vec4(0.f, 0.f, 0.f, 0.f));
-		}
+		// for (int i = 0; i < numTri; ++i) {
+		// 	tmp = hitTriangle(r, triangles[i]);
+		// 	if (tmp < hit && tmp > 0.f) {
+		// 		hit = tmp;
+		// 		triHit = i;
+		// 	}
+		// }
 
-		// imageStore(outputTexture, ivec2(x, y), vec4(triangles[1].b));
+		imageStore(outputTexture, ivec2(x, y), color);
 
 	}
 

@@ -4,6 +4,8 @@
 #include "../objects/objectinterface.hpp"
 #include "../gl/fbo.hpp"
 #include "../debug.hpp"
+#include "../light.hpp"
+#include "../handler.hpp"
 
 RaycastingPass::RaycastingPass() {
 
@@ -14,7 +16,7 @@ RaycastingPass::RaycastingPass() {
 
 }
 
-void RaycastingPass::draw(const Camera & cam, const FBO & fbo) {
+void RaycastingPass::draw(const Camera & cam, const FBO & fbo, const std::vector<std::shared_ptr<Light>> lights) {
 
 	fbo.bind();
 
@@ -30,13 +32,31 @@ void RaycastingPass::draw(const Camera & cam, const FBO & fbo) {
 
 	m_program.use();
 
+	m_lightBuffer.bindTo(0);
+
+	int size = lights.size();
+	std::vector<LightData> data;
+	for (const auto & light : lights) {
+		data.emplace_back(light->getData());
+	}	
+	m_lightBuffer.addData(data, size);
+
 	m_program["camPos"] = cam.getPos();
+	m_program["viewDir"] = cam.getDir();
+	m_program["lightDataSize"] = size;
 
 	for (auto id : m_objects) {
 
 		m_program["MVP"] = cam.getProjMat() * cam.getViewMat() * ObjectInterface::getModelMatrix(id);
 		m_program["M_IT"] = glm::inverse(glm::transpose(ObjectInterface::getModelMatrix(id)));
 		m_program["M"] = ObjectInterface::getModelMatrix(id);
+
+		m_program["material.emission"] = ObjectID::getID(id)->getEmission();
+		m_program["material.ambient"] = ObjectID::getID(id)->getAmbient();
+		m_program["material.diffuse"] = ObjectID::getID(id)->getDiffuse();
+		m_program["material.specular"] = ObjectID::getID(id)->getSpecular();
+		m_program["material.shininess"] = ObjectID::getID(id)->getShininess();
+
 		ObjectInterface::draw(id);
 
 	}

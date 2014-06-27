@@ -23,7 +23,7 @@ void BasicLightingPass::draw(const Camera & cam, const std::vector<std::shared_p
 	glEnable(GL_DEPTH_TEST);
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0, 0, 0, 1);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
 
 	m_program.use();
 

@@ -45,6 +45,27 @@ Spline::Spline(const glm::vec3 & start, const glm::vec3 & dirStart, const glm::v
 
 }
 
+Spline::Spline(const std::vector<glm::vec3> & path, const glm::vec3 & up, float width, const glm::vec3 & color) {
+
+	if (path.size() < 2) exit(-1);
+
+	std::vector<glm::vec3> tangents;
+	tangents.emplace_back(glm::normalize(path[1] - path[0]));
+	for (unsigned int i = 1; i < path.size() - 1; ++i) {
+		tangents.emplace_back(glm::normalize(path[i + 1] - path[i - 1]));
+	}
+	tangents.emplace_back(glm::normalize(path[path.size() - 1] - path[path.size() - 2]));
+
+	std::vector<glm::vec3> vertices;
+	for (unsigned int i = 0; i < path.size(); ++i) {
+		vertices.emplace_back(path[i] - width * glm::normalize(glm::cross(tangents[i], up)));
+		vertices.emplace_back(path[i] + width * glm::normalize(glm::cross(tangents[i], up)));
+	}
+
+	init(vertices, up, color);
+
+}
+
 std::shared_ptr<Object> Spline::getCopy() {
 
 	return std::shared_ptr<Object>(new Spline(*this));

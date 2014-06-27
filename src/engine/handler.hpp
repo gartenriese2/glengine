@@ -122,6 +122,7 @@ class WindowID {
 
 		const ObjectID & createSpline(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, float, float, unsigned int, float, const glm::vec3 &);
+		const ObjectID & createSpline(const std::vector<glm::vec3> &, const glm::vec3 &, float, const glm::vec3 &);
 
 		const ObjectID & createCopy(const ObjectID &);
 
