@@ -1,8 +1,6 @@
 #include "segment.hpp"
 #include "../engine/debug.hpp"
 
-constexpr float EPSILON = 0.001f;
-
 Segment::Segment(const Node & a, const Node & b)
   : m_a(a),
   	m_b(b)
@@ -18,13 +16,16 @@ float Segment::getLength() const {
 
 bool Segment::intersects(const Segment & other) const {
 
+	if (m_a.getTile() == m_b.getTile() && other.getA().getTile() == other.getB().getTile()
+		&& m_a.getTile() != other.getA().getTile()) return false;
+
 	float radiusA = getLength() / 2.f;
 	float radiusB = other.getLength() / 2.f;
 
 	Node centerA = (m_a + m_b) / 2.f;
 	Node centerB = (other.getA() + other.getB()) / 2.f;
 
-	if (centerA.getDistance(centerB) > radiusA + radiusB) {
+	if (centerA.getDistance(centerB) > radiusA + radiusB + EPSILON) {
 		// definitely not intersecting
 		return false;
 	}
@@ -68,8 +69,24 @@ float Segment::getClosestDistance(const Segment & other) const {
 
 }
 
-Node Segment::getIntersection(const Segment & other) const {
+const Node Segment::getIntersection(const Segment & other) const {
 
 	return getShortestConnection(other).getA();
+
+}
+
+float Segment::getDistance(const Node & node) const {
+
+	return glm::length(glm::cross(node() - m_a(), node() - m_b())) / glm::length(m_b() - m_a());
+
+}
+
+const Segment Segment::split(const Node & node) {
+
+	if (getDistance(node) > EPSILON) return {m_a, m_a};
+
+	Segment seg{m_a, node};
+	m_a = node;
+	return seg;
 
 }

@@ -15,7 +15,11 @@ class Segment {
 		float getLength() const;
 
 		bool intersects(const Segment &) const;
-		Node getIntersection(const Segment &) const;
+		const Node getIntersection(const Segment &) const;
+
+		float getDistance(const Node &) const;
+
+		const Segment split(const Node &);
 
 	private:
 

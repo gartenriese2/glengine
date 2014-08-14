@@ -30,13 +30,15 @@ void Window::start() {
 	if (GLEW_OK != err) {
 		Debug::log("Cound not initialize GLEW!");
 		Debug::log(glewGetErrorString(err));
+        return;
 	}
 
-	// if (glewIsSupported("GL_ARB_debug_output")) {
-	// 	// glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-	// 	// glDebugMessageCallback(&Window::debugCallback, stderr);
-	// // 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
-	// }
+	if (glewIsSupported("GL_ARB_debug_output")) {
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+		glDebugMessageCallback(&Window::debugCallback, stderr);
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, 0, GL_TRUE);
+		glEnable(GL_DEBUG_OUTPUT/*_SYNCHRONOUS_ARB*/);
+	}
 
     glfwSetWindowUserPointer(m_window, this);
 
@@ -63,8 +65,8 @@ void Window::start() {
 }
 
 void Window::debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
-                     GLsizei length, const GLchar *message, GLvoid *userParam) {
-    
+                     GLsizei length, const GLchar * message, const void * userParam) {
+
     (void)length;
     FILE *outFile = (FILE*)userParam;
     char finalMessage[256];

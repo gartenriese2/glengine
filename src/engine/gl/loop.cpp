@@ -9,7 +9,7 @@
 static std::mutex s_mutex;
 
 Loop::Loop()
-  : m_stop(false)
+  : m_stop{false}
 {
 
 	m_mouseMoveEvent = [](double, double){};

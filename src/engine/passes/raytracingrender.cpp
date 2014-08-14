@@ -42,21 +42,21 @@ void RaytracingRender::changeBaseSize(unsigned int w, unsigned int h) {
 	m_reflectedTex.resize(w, h);
 	m_depthAttachment.resize(w, h);
 
-	m_colorTex.bind();
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 0, GL_TEXTURE_2D, m_colorTex(), 0);
-	m_colorTex.unbind();
+	// m_colorTex.bind();
+	glNamedFramebufferTexture(m_fbo, GL_COLOR_ATTACHMENT0 + 0, m_colorTex, 0);
+	// m_colorTex.unbind();
 
-	m_positionTex.bind();
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 1, GL_TEXTURE_2D, m_positionTex(), 0);
-	m_positionTex.unbind();
+	// m_positionTex.bind();
+	glNamedFramebufferTexture(m_fbo, GL_COLOR_ATTACHMENT0 + 1, m_positionTex, 0);
+	// m_positionTex.unbind();
 
-	m_reflectedTex.bind();
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + 2, GL_TEXTURE_2D, m_reflectedTex(), 0);
-	m_reflectedTex.unbind();
+	// m_reflectedTex.bind();
+	glNamedFramebufferTexture(m_fbo, GL_COLOR_ATTACHMENT0 + 2, m_reflectedTex, 0);
+	// m_reflectedTex.unbind();
 
-	m_depthAttachment.bind();
-	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthAttachment(), 0);
-	m_depthAttachment.unbind();
+	// m_depthAttachment.bind();
+	glNamedFramebufferTexture(m_fbo, GL_DEPTH_ATTACHMENT, m_depthAttachment, 0);
+	// m_depthAttachment.unbind();
 
 	GLenum err = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
 	if (err != GL_FRAMEBUFFER_COMPLETE) {

@@ -22,8 +22,8 @@ void RaycastingPass::draw(const Camera & cam, const FBO & fbo, const std::vector
 
 	glViewport(0, 0, cam.getWidth(), cam.getHeight());
 
-	GLenum db[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
-	glDrawBuffers(3, db);
+	GLenum db[3] {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
+	glNamedFramebufferDrawBuffers(fbo, 3, db);
 
 	glEnable(GL_DEPTH_TEST);
 

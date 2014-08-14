@@ -12,14 +12,16 @@ class FBO {
 		FBO();
 		~FBO();
 
+		operator GLuint() const { return m_name; }
+
 		void bind(GLenum = GL_FRAMEBUFFER) const;
 		void unbind(GLenum = GL_FRAMEBUFFER) const;
 		void attachColorTexture(const Texture &, GLenum = GL_FRAMEBUFFER);
 		void attachDepthTexture(const Texture &, GLenum = GL_FRAMEBUFFER);
 
-	private:
-
 		void checkError(GLenum = GL_FRAMEBUFFER) const;
+
+	private:		
 
 		GLuint m_name;
 		unsigned int m_colorAttachments;

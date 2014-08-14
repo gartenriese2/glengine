@@ -4,25 +4,19 @@
 
 Buffer::Buffer() {
 
-	glGenBuffers(1, &m_name);
+	glCreateBuffers(1, &m_name);
 
 }
 
 Buffer::Buffer(const Buffer & other) {
 
-	glGenBuffers(1, &m_name);
-
-	other.bind(GL_COPY_READ_BUFFER);
-	bind(GL_COPY_WRITE_BUFFER);
+	glCreateBuffers(1, &m_name);
 
 	GLint size = 0;
-	glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &size);
+	glGetNamedBufferParameteriv(other, GL_BUFFER_SIZE, &size);
 
-	glBufferData(GL_COPY_WRITE_BUFFER, size, nullptr, GL_STATIC_DRAW);
-	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, size);
-
-	other.unbind(GL_COPY_READ_BUFFER);
-	unbind(GL_COPY_WRITE_BUFFER);
+	glNamedBufferData(m_name, size, nullptr, GL_STATIC_DRAW);
+	glCopyNamedBufferSubData(other, m_name, 0, 0, size);
 
 }
 
@@ -34,11 +28,9 @@ Buffer::~Buffer() {
 
 GLint Buffer::getSize() {
 
-	GLint size = 0;
+	GLint size {0};
 
-	bind(GL_COPY_READ_BUFFER);
-	glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &size);
-	unbind(GL_COPY_READ_BUFFER);
+	glGetNamedBufferParameteriv(m_name, GL_BUFFER_SIZE, &size);
 
 	return size / sizeof(GLfloat) / 3;
 
@@ -61,8 +53,9 @@ void Buffer::bindToVAO(GLuint vao, unsigned int index) {
 	glBindVertexArray(vao);
 
 	bind();
+	// glVertexArrayVertexBuffer(vao, index, m_name, 0, 0);
 	glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, 0, (void *) 0);
-	glEnableVertexAttribArray(index);
+	glEnableVertexArrayAttrib(vao, index);
 	unbind();
 
 	glBindVertexArray(0);

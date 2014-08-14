@@ -10,16 +10,13 @@ class Texture {
 		Texture(unsigned int, unsigned int, GLenum = GL_RGBA32F);
 		~Texture();
 
-		GLuint operator()() const { return m_name; }
-
-		void bind() const;
-		void unbind() const;
+		operator GLuint() const { return m_name; }
 		
 		void resize(unsigned int, unsigned int);
 
 	private:
 
-		const GLenum m_target = GL_TEXTURE_2D;
+		const GLenum m_target {GL_TEXTURE_2D};
 
 		GLuint m_name;
 		unsigned int m_width;

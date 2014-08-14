@@ -4,10 +4,10 @@
 #include "../debug.hpp"
 
 FBO::FBO()
-  : m_colorAttachments(0)
+  : m_colorAttachments{0}
 {
 
-	glGenFramebuffers(1, &m_name);
+	glCreateFramebuffers(1, &m_name);
 
 }
 
@@ -31,29 +31,21 @@ void FBO::unbind(GLenum target) const {
 
 void FBO::attachColorTexture(const Texture & tex, GLenum target) {
 
-	bind(target);
-	tex.bind();
-	glFramebufferTexture2D(target, GL_COLOR_ATTACHMENT0 + m_colorAttachments++, GL_TEXTURE_2D, tex(), 0);
-	tex.unbind();
+	glNamedFramebufferTexture(m_name, GL_COLOR_ATTACHMENT0 + m_colorAttachments++, tex, 0);
 	checkError(target);
-	unbind(target);
 
 }
 
 void FBO::attachDepthTexture(const Texture & tex, GLenum target) {
 
-	bind(target);
-	tex.bind();
-	glFramebufferTexture2D(target, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, tex(), 0);
-	tex.unbind();
+	glNamedFramebufferTexture(m_name, GL_DEPTH_ATTACHMENT, tex, 0);
 	checkError(target);
-	unbind(target);
 
 }
 
 void FBO::checkError(GLenum target) const {
 
-	GLenum err = glCheckFramebufferStatus(target);
+	GLenum err = glCheckNamedFramebufferStatus(m_name, target);
 	if (err != GL_FRAMEBUFFER_COMPLETE) {
 		switch(err) {
 			case GL_FRAMEBUFFER_UNDEFINED:

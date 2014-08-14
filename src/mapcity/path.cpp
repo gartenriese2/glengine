@@ -1,14 +1,31 @@
 #include "path.hpp"
 
-Path::Path(const std::vector<glm::vec3> & nodes)
-  : m_points(nodes)
-{
+#include <algorithm>
+
+Path::Path(const std::vector<glm::vec3> & nodes) {
+
+	assert(nodes.size() >= 2);
 
 	for (unsigned int i = 0; i < nodes.size() - 1; ++i) {
 
 		m_segments.emplace_back(nodes[i], nodes[i + 1]);
+		m_nodes.emplace_back(nodes[i]);
 
 	}
+
+	m_nodes.emplace_back(nodes.back());
+
+}
+
+const std::vector<glm::vec3> Path::getPoints() const {
+
+	std::vector<glm::vec3> pts;
+
+	for (const auto & node : m_nodes) {
+		pts.emplace_back(node);
+	}
+
+	return pts;
 
 }
 
@@ -40,9 +57,38 @@ const std::vector<Node> Path::getIntersections(const Path & other) const {
 
 }
 
-ObjectID Path::createObjectID(WindowID & win) {
+bool Path::join(const Path & path) {
 
-	return win.createSpline(m_points, {0.f, 1.f, 0.f}, 4.f, {0.8f, 0.8f, 0.f});
+	if (!intersects(path)) return false;
+
+	Node frontThis = m_nodes.front();
+	Node frontOther = path.m_nodes.front();
+	Node backThis = m_nodes.back();
+	Node backOther = path.m_nodes.back();
+
+	if (frontThis == frontOther) {
+
+		m_nodes.insert(m_nodes.begin(), path.m_nodes.end(), path.m_nodes.begin() + 1);
+		m_segments.insert(m_segments.begin(), path.m_segments.end(), path.m_segments.begin());
+
+	} else if (frontThis == backOther) {
+
+		m_nodes.insert(m_nodes.begin(), path.m_nodes.begin(), path.m_nodes.end() - 1);
+		m_segments.insert(m_segments.begin(), path.m_segments.begin(), path.m_segments.end());
+
+	} else if (backThis == frontOther) {
+
+		m_nodes.insert(m_nodes.end(), path.m_nodes.begin() + 1, path.m_nodes.end());
+		m_segments.insert(m_segments.end(), path.m_segments.begin(), path.m_segments.end());
+		
+	} else if (backThis == backOther) {
+
+		m_nodes.insert(m_nodes.end(), path.m_nodes.end() - 1, path.m_nodes.begin());
+		m_segments.insert(m_segments.end(), path.m_segments.end(), path.m_segments.begin());
+
+	} else return false;
+
+	return true;
 
 }
 
@@ -73,5 +119,22 @@ const Path Path::createPathFromControlPoints(const glm::vec3 & a, const glm::vec
 	nodes.emplace_back(c);
 
 	return Path(nodes);
+
+}
+
+const Path Path::createPathFromControlPoints(const std::vector<glm::vec3> & pts) {
+
+	assert(pts.size() >= 4);
+
+	Path path = createPathFromControlPoints(pts[0], pts[1], pts[2], pts[3]);
+
+	for (unsigned int i = 1; i < pts.size() - 3; ++i) {
+
+		Path tmp = createPathFromControlPoints(pts[i], pts[i + 1], pts[i + 2], pts[i + 3]);
+		path.join(tmp);
+
+	}
+
+	return path;
 
 }

@@ -432,6 +432,7 @@ void raytracing() {
 
 #include "mapcity/road.hpp"
 #include "mapcity/path.hpp"
+#include "mapcity/grid.hpp"
 
 void mapcity() {
 
@@ -460,16 +461,15 @@ void mapcity() {
 
 	// Road r1({{0.f, 50.f}, {0.f, -50.f}, {10.f, -60.f}, {60.f, -60.f}, {80.f, -80.f}}, w, basic);
 
-	std::vector<glm::vec3> pts {{-10.f, 0.1f, 0.f}, {0.f, 0.1f, 0.f}, {30.f, 0.1f, 0.f}, {50.f, 0.1f, 20.f},
-		{50.f, 0.1f, 50.f}, {50.f, 0.1f, 60.f}};
-	Path p0(Path::createPathFromControlPoints(pts[0], pts[1], pts[2], pts[3]));
-	Path p1(Path::createPathFromControlPoints(pts[1], pts[2], pts[3], pts[4]));
-	Path p2(Path::createPathFromControlPoints(pts[2], pts[3], pts[4], pts[5]));
+	Path p0(Path::createPathFromControlPoints({{-10.f, 0.1f, 0.f}, {0.f, 0.1f, 0.f}, {30.f, 0.1f, 0.f}, {50.f, 0.1f, 20.f},
+		{50.f, 0.1f, 50.f}, {50.f, 0.1f, 60.f}}));
 
-	ObjectID testpath0 = p0.createObjectID(w);
-	ObjectID testpath1 = p1.createObjectID(w);
-	ObjectID testpath2 = p2.createObjectID(w);
-	basic.addObjects({testpath0, testpath1, testpath2});
+	Path p3(Path::createPathFromControlPoints({1.f, 0.1f, 30.f}, {10.f, 0.1f, 20.f}, {40.f, 0.1f, -10.f},
+		{50.f, 0.1f, -20.f}));
+
+	ObjectID testpath0 = w.createSpline(p0.getPoints(), {0.f, 1.f, 0.f}, 0.1f, {0.8f, 0.8f, 0.f});
+	ObjectID testpath3 = w.createSpline(p3.getPoints(), {0.f, 1.f, 0.f}, 0.1f, {0.8f, 0.8f, 0.f});
+	basic.addObjects({testpath0, testpath3});
 
 	float step = 0.001f;
 	while(1) {
@@ -480,7 +480,7 @@ void mapcity() {
 
 int main() {
 
-	// ampelDemo();
+	ampelDemo();
 	// rotateDemo();
 	// secondWindowDemo();
 	// test();
@@ -488,7 +488,7 @@ int main() {
 	// fbo();
 	// spline();
 	// raytracing();
-	mapcity();
+	// mapcity();
 
 	return 0;
 

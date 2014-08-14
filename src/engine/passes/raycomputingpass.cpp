@@ -21,22 +21,22 @@ void RaycomputingPass::draw(const Camera & cam, const std::vector<std::shared_pt
 
 	m_program.use();
 
-	glBindImageTexture(3, m_result(), 0, false, 0, GL_READ_WRITE, GL_RGBA32F);
+	glBindImageTexture(3, m_result, 0, false, 0, GL_READ_WRITE, GL_RGBA32F);
 
 	m_program["windowWidth"] = cam.getWidth();
 	m_program["windowHeight"] = cam.getHeight();
 
 	m_program["positionTex"] = 0;
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_positionTex());
+	glBindTexture(GL_TEXTURE_2D, m_positionTex);
 
 	m_program["directionTex"] = 1;
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_directionTex());
+	glBindTexture(GL_TEXTURE_2D, m_directionTex);
 
 	m_program["colorTex"] = 2;
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, m_colorTex());
+	glBindTexture(GL_TEXTURE_2D, m_colorTex);
 
 	m_triangleBuffer.bindTo(0);
 	m_lightBuffer.bindTo(1);

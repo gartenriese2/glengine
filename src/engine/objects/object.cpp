@@ -6,14 +6,14 @@
 static const glm::vec3 k_defaultColor {1.f, 0.f, 0.f};
 
 Object::Object()
-  : m_modelMatrix(glm::mat4(1.f)),
-  	m_scaleMatrix(glm::mat4(1.f)),
-  	m_rotationMatrix(glm::mat4(1.f)),
-  	m_translationMatrix(glm::mat4(1.f)),
-  	m_actualScale(1.f)
+  : m_modelMatrix{glm::mat4(1.f)},
+  	m_scaleMatrix{glm::mat4(1.f)},
+  	m_rotationMatrix{glm::mat4(1.f)},
+  	m_translationMatrix{glm::mat4(1.f)},
+  	m_actualScale{1.f}
 {
 
-	glGenVertexArrays(1, &m_vertexArray);
+	glCreateVertexArrays(1, &m_vertexArray);
 
 }
 
@@ -31,7 +31,7 @@ Object::Object(const Object & other)
   	m_actualScale(other.m_actualScale)
 {
 
-	glGenVertexArrays(1, &m_vertexArray);
+	glCreateVertexArrays(1, &m_vertexArray);
 	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 	m_normalBuffer.bindToVAO(m_vertexArray, 2);
@@ -125,19 +125,16 @@ void Object::scale(const glm::vec3 & val) {
 void Object::scaleColor(float scale) {
 
 	GLint size = m_colorBuffer.getSize();
-	m_colorBuffer.bind(GL_COPY_WRITE_BUFFER);
 	
-	GLfloat * data = (GLfloat *) glMapBuffer(GL_COPY_WRITE_BUFFER, GL_READ_WRITE);
+	GLfloat * data = (GLfloat *) glMapNamedBuffer(m_colorBuffer, GL_READ_WRITE);
 	if (data != (GLfloat *) NULL) {
 		for(GLint i = 0; i < 3 * size; ++i) {
         	data[i] *= scale;
         }
-		glUnmapBuffer(GL_COPY_WRITE_BUFFER);
+		glUnmapNamedBuffer(m_colorBuffer);
 	} else {
 		Debug::log("glMapBuffer failed!");
 	}
-
-	m_colorBuffer.unbind(GL_COPY_WRITE_BUFFER);
 
 }
 

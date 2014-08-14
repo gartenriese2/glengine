@@ -20,9 +20,8 @@ class IndexBuffer : public Buffer {
 		void bind(GLenum = GL_ELEMENT_ARRAY_BUFFER) const;
 		void unbind(GLenum = GL_ELEMENT_ARRAY_BUFFER) const;
 
-		void insertData(const std::vector<GLushort> & data, GLenum target = GL_ELEMENT_ARRAY_BUFFER, GLenum usage = GL_STATIC_DRAW) {
-			bind(target);
-			glBufferData(target, data.size() * sizeof(GLushort), &data[0], usage);
+		void insertData(const std::vector<GLushort> & data, GLenum usage = GL_STATIC_DRAW) {
+			glNamedBufferData(m_name, data.size() * sizeof(GLushort), &data[0], usage);
 		}
 
 		void bindToVAO(GLuint);

@@ -7,22 +7,22 @@
 
 class Shader {
 
-  	public:
+	public:
 
-  		Shader(const std::string &);
-  		Shader(const Shader &) = delete;
+		Shader(const std::string &);
+		Shader(const Shader &) = delete;
 		Shader(Shader &&) = delete;
 		Shader & operator=(const Shader &) = delete;
 		Shader & operator=(Shader &&) = delete;
-  		~Shader();
+		~Shader();
 
-  		GLuint operator()() const { return m_shader; }
+		GLuint operator()() const { return m_shader; }
 
-  	private:
+	private:
 
-  		GLuint m_shader;
+		GLuint m_shader;
 
-  		const std::string getShaderCode(const std::string &) const;
+		const std::string getShaderCode(const std::string &) const;
 
 };
 
