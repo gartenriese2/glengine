@@ -5,6 +5,7 @@
 #include "../glmincludes.hpp"
 #include "../gl/buffer.hpp"
 #include "../gl/indexbuffer.hpp"
+#include "../gl/vao.hpp"
 
 #include <vector>
 #include <initializer_list>
@@ -68,6 +69,7 @@ class Object {
 		virtual unsigned int getType() const = 0;
 
 		GLuint m_vertexArray;
+		gl::VAO m_vao;
 		Buffer m_vertexBuffer;
 		Buffer m_colorBuffer;
 		Buffer m_normalBuffer;
