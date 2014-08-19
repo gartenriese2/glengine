@@ -3,6 +3,8 @@
 
 #include "glincludes.hpp"
 
+#include <vector>
+
 namespace gl {
 
 class VBO {
@@ -11,9 +13,15 @@ class VBO {
 
 		VBO();
 		VBO(GLuint, GLenum = GL_FLOAT, bool = GL_FALSE);
+		VBO(const VBO &);
+		VBO(VBO &&);
+		VBO & operator=(const VBO &) &;
+		IBO & operator=(IBO &&) &;
 		~VBO();
 
 		operator GLuint() const { return m_name; }
+
+		bool isValid() const;
 
 		GLuint getSize() const { return m_size; }
 		GLenum getType() const { return m_type; }

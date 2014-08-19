@@ -32,6 +32,7 @@ IBO::IBO(IBO && other)
   : m_name{0}
 {
 
+	glDeleteBuffers(1, &m_name);
 	std::swap(m_name, other.m_name);
 
 }
@@ -57,10 +58,12 @@ IBO & IBO::operator=(IBO && other) & {
 	if (this != &other) {
 
 		if (isValid()) {
+			
 			glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
+			glDeleteBuffers(1, &m_name);
+			
 		}
 
-		m_name = 0;
 		std::swap(m_name, other.m_name);
 
 	}
@@ -71,6 +74,7 @@ IBO & IBO::operator=(IBO && other) & {
 
 IBO::~IBO() {
 
+	glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
 	glDeleteBuffers(1, &m_name);
 
 }

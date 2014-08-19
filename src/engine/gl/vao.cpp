@@ -25,7 +25,7 @@ VAO & VAO::operator=(VAO && other) & {
 
 	if (this != &other) {
 
-		m_name = 0;
+		glDeleteVertexArrays(1, &m_name);
 		std::swap(m_name, other.m_name);
 
 	}

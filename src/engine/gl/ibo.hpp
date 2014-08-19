@@ -13,8 +13,8 @@ class IBO {
 
 		IBO();
 		IBO(const IBO &);
-		IBO & operator=(const IBO &) &;
 		IBO(IBO &&);
+		IBO & operator=(const IBO &) &;
 		IBO & operator=(IBO &&) &;
 		~IBO();
 
