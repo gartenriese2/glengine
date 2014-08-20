@@ -2,12 +2,10 @@
 #define _RAYCOMPUTINGPASS_
 
 #include "pass.hpp"
-#include "../gl/buffer.hpp"
-#include "../gl/indexbuffer.hpp"
-#include "../gl/texture.hpp"
 #include "../gl/shaderstoragebuffer.hpp"
 
 class FBO;
+class Texture;
 
 class RaycomputingPass : public Pass {
 

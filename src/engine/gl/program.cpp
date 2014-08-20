@@ -52,7 +52,7 @@ void Program::link() {
 		glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &logSize);
 
 		std::vector<char> tmp;
-		tmp.reserve(logSize);
+		tmp.reserve(static_cast<size_t>(logSize));
 		glGetProgramInfoLog(m_program, logSize, NULL, &tmp[0]);
 
 		Debug::log("Program linking failed with the following error:\n");
@@ -73,7 +73,7 @@ void Program::link() {
 	GLint size = 1;
 	GLsizei length = 1;
 	GLenum type = 0;
-	for (GLuint i = 0; i < numUniforms; ++i) {
+	for (GLuint i = 0; i < static_cast<GLuint>(numUniforms); ++i) {
 		
 		glGetActiveUniform(m_program, i, maxLength, &length, &size, &type, buffer.get());
 		m_uniforms.emplace(std::string(buffer.get()), i);

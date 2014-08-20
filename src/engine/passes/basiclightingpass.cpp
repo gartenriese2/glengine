@@ -18,7 +18,7 @@ BasicLightingPass::BasicLightingPass() {
 
 void BasicLightingPass::draw(const Camera & cam, const std::vector<std::shared_ptr<Light>> lights) {
 
-	glViewport(0, 0, cam.getWidth(), cam.getHeight());
+	glViewport(0, 0, static_cast<GLsizei>(cam.getWidth()), static_cast<GLsizei>(cam.getHeight()));
 
 	glEnable(GL_DEPTH_TEST);
 	
@@ -27,12 +27,12 @@ void BasicLightingPass::draw(const Camera & cam, const std::vector<std::shared_p
 
 	m_program.use();
 
-	int size = lights.size();
+	size_t size = lights.size();
 	std::vector<LightData> data;
 	for (const auto & light : lights) {
 		data.emplace_back(light->getData());
 	}	
-	m_lightBuffer.addData(data, size);
+	m_lightBuffer.addData(data, static_cast<unsigned int>(size));
 
 	for (auto id : m_objects) {
 

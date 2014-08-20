@@ -30,7 +30,7 @@ class Program {
 		GLuint m_program;
 		bool m_linked;
 
-		std::map<const std::string, GLuint> m_uniforms;
+		std::map<const std::string, GLint> m_uniforms;
 
 };
 

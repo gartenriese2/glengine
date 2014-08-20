@@ -2,33 +2,24 @@
 #define _IBO_
 
 #include "glincludes.hpp"
+#include "buffer.hpp"
 
 #include <vector>
 
 namespace gl {
 
-class IBO {
+class IBO : public gl::Buffer {
 
 	public:
 
-		IBO();
+		IBO() {}
 		IBO(const IBO &);
-		IBO(IBO &&);
+		IBO(IBO &&) {}
 		IBO & operator=(const IBO &) &;
-		IBO & operator=(IBO &&) &;
-		~IBO();
-
-		operator GLuint() const { return m_name; }
-
-		bool isValid() const;
-
-		GLuint getSize() const;
+		IBO & operator=(IBO &&) { return *this; }
+		~IBO() {}
 
 		void insertData(const std::vector<GLushort> &);
-
-	private:
-
-		GLuint m_name;
 
 };
 

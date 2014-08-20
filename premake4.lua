@@ -25,7 +25,9 @@ project "main"
     end
 
     flags {"Symbols"}
-    buildoptions {"-std=c++11", "-Wall", "-pedantic"}
+    buildoptions {"-std=c++11", "-Wall", "-pedantic", "-Wextra", "-Werror", "-Wno-unused-value",
+        "-Wno-unused-parameter", "-Wno-unused-function", "-Wuninitialized", "-Wshadow",
+        "-Wconversion", "-Wswitch-default", "-Winit-self", "-Wunreachable-code"}
     links {"glfw3", "pthread", "X11", "Xrandr", "Xxf86vm", "Xi", "GL", "GLEW"}
 
     if (use_clang) then

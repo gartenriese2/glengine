@@ -46,7 +46,7 @@ class Window {
 	private:
 
 		static void debugCallback(GLenum, GLenum, GLuint, GLenum, GLsizei, const GLchar *, const void *);
-		static void formatDebugOutput(char outStr[], size_t, GLenum, GLenum, GLuint, GLenum, const char *);
+		static const std::string formatDebugOutput(GLenum, GLenum, GLuint, GLenum, const std::string &);
 
 };
 

@@ -2,6 +2,7 @@
 #define _VAO_
 
 #include "glincludes.hpp"
+#include "globject.hpp"
 
 #include <string>
 
@@ -10,7 +11,7 @@ namespace gl {
 class VBO;
 class IBO;
 
-class VAO {
+class VAO : public gl::Object {
 
 	public:
 
@@ -19,10 +20,7 @@ class VAO {
 		VAO & operator=(VAO &&) &;
 		~VAO();
 
-		operator GLuint() const { return m_name; }
-
-		const std::string getLabel() const;
-		void setLabel(const std::string &);
+		bool isValid() const;
 
 		void attachVBO(const gl::VBO &, GLuint, GLuint);
 		void attachIBO(const gl::IBO &);
@@ -34,8 +32,6 @@ class VAO {
 
 		void attachBuffer(GLuint, GLint, GLenum, bool, GLuint, GLuint, GLsizei, GLuint);
 		void attachIndexBuffer(GLuint);
-
-		GLuint m_name;
 
 };
 

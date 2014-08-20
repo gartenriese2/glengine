@@ -95,7 +95,7 @@ void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 		}
 	}
 
-	unsigned int start = vertices.size() / 3.f - 1 - sectors;
+	unsigned int start = static_cast<unsigned int>(vertices.size()) / 3 - 1 - sectors;
 	for(unsigned int s = 0; s < sectors; s++) {
 
 		indices.emplace_back(start + s);
@@ -104,19 +104,15 @@ void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 
 	}
 
-	m_indices = indices.size();
+	m_indices = static_cast<unsigned int>(indices.size());
 
-	m_vertexBuffer.insertData<GLfloat>(vertices);
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
+	m_vertexBuffer.insertData(vertices);
 
 	m_colorBuffer.insertData(colors);
-	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
-	m_normalBuffer.insertData<GLfloat>(normals);
-	m_normalBuffer.bindToVAO(m_vertexArray, 2);
+	m_normalBuffer.insertData(normals);
 
 	m_indexBuffer.insertData(indices);
-	m_indexBuffer.bindToVAO(m_vertexArray);
 
 	moveTo(center);
 
@@ -128,8 +124,8 @@ void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 
 void Sphere::draw() const {
 
-	glBindVertexArray(m_vertexArray);
-	glDrawElements(GL_TRIANGLES, m_indices * 3, GL_UNSIGNED_SHORT, (void*)0);
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indices) * 3, GL_UNSIGNED_SHORT, (void*)0);
 	glBindVertexArray(0);
 
 }

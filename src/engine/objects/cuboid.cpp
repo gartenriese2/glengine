@@ -68,11 +68,10 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	   	b.x, b.y, b.z,
 	};
 
-	m_vertexBuffer.insertData<GLfloat>(vertices);
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
+	m_vertexBuffer.insertData(vertices);
+	
 
 	m_colorBuffer.insertData(colors);
-	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
 	glm::vec3 nABED = glm::cross(b - a, d - a);
 	glm::vec3 nCADF = glm::cross(a - c, f - c);
@@ -81,7 +80,7 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	glm::vec3 nDEHF = glm::cross(e - d, f - d);
 	glm::vec3 nGCAB = -glm::cross(c - g, b - g);
 
-	m_normalBuffer.insertData<GLfloat>({
+	m_normalBuffer.insertData({
 		nABED.x, nABED.y, nABED.z,
 		nABED.x, nABED.y, nABED.z,
 		nABED.x, nABED.y, nABED.z,
@@ -112,7 +111,6 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 		nGCAB.x, nGCAB.y, nGCAB.z,
 		nGCAB.x, nGCAB.y, nGCAB.z,
 	});
-	m_normalBuffer.bindToVAO(m_vertexArray, 2);
 
 	std::vector<GLushort> indices {
 		 0,  1,  2,
@@ -135,7 +133,6 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	};
 
 	m_indexBuffer.insertData(indices);
-	m_indexBuffer.bindToVAO(m_vertexArray);
 
 	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(d, 0.f)});
 
@@ -145,7 +142,7 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 
 void Cuboid::draw() const {
 
-	glBindVertexArray(m_vertexArray);
+	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, (void*)0);
 	glBindVertexArray(0);
 

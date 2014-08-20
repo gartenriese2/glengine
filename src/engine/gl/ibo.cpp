@@ -4,20 +4,10 @@
 
 namespace gl {
 
-IBO::IBO()
-  : m_name{0}
-{
-	glCreateBuffers(1, &m_name);
-}
-
-IBO::IBO(const IBO & other)
-  : m_name{0}
-{
-
-	glCreateBuffers(1, &m_name);
+IBO::IBO(const IBO & other) {
 
 	if (other.isValid()) {
-		
+
 		GLint size {0};
 		glGetNamedBufferParameteriv(other, GL_BUFFER_SIZE, &size);
 
@@ -25,16 +15,7 @@ IBO::IBO(const IBO & other)
 		glCopyNamedBufferSubData(other, m_name, 0, 0, size);
 
 	}
-
-}
-
-IBO::IBO(IBO && other)
-  : m_name{0}
-{
-
-	glDeleteBuffers(1, &m_name);
-	std::swap(m_name, other.m_name);
-
+	
 }
 
 IBO & IBO::operator=(const IBO & other) & {
@@ -53,54 +34,10 @@ IBO & IBO::operator=(const IBO & other) & {
 
 }
 
-IBO & IBO::operator=(IBO && other) & {
-
-	if (this != &other) {
-
-		if (isValid()) {
-			
-			glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
-			glDeleteBuffers(1, &m_name);
-			
-		}
-
-		std::swap(m_name, other.m_name);
-
-	}
-
-	return *this;
-
-}
-
-IBO::~IBO() {
-
-	glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
-	glDeleteBuffers(1, &m_name);
-
-}
-
-bool IBO::isValid() const {
-
-	return glIsBuffer(m_name);
-
-}
-
-GLuint IBO::getSize() const {
-
-	GLint size {0};
-
-	if (isValid()){
-		glGetNamedBufferParameteriv(m_name, GL_BUFFER_SIZE, &size);
-	}
-
-	return size;
-
-}
-
 void IBO::insertData(const std::vector<GLushort> & data) {
 
 	if (isValid()) {
-		glNamedBufferData(m_name, data.size() * sizeof(GLushort), &data[0], GL_STATIC_DRAW);
+		glNamedBufferData(m_name, static_cast<GLsizeiptr>(data.size() * sizeof(GLushort)), &data[0], GL_STATIC_DRAW);
 	}
 
 }

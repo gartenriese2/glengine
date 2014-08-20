@@ -10,7 +10,7 @@ Texture::Texture(unsigned int width, unsigned int height, GLenum format)
 {
 
 	glCreateTextures(m_target, 1, &m_name);
-	glTextureStorage2D(m_name, 1, m_format, m_width, m_height);
+	glTextureStorage2D(m_name, 1, m_format, static_cast<GLsizei>(m_width), static_cast<GLsizei>(m_height));
 
 }
 
@@ -27,6 +27,6 @@ void Texture::resize(unsigned int width, unsigned int height) {
 
 	glDeleteTextures(1, &m_name);
 	glCreateTextures(m_target, 1, &m_name);
-	glTextureStorage2D(m_name, 1, m_format, m_width, m_height);
+	glTextureStorage2D(m_name, 1, m_format, static_cast<GLsizei>(m_width), static_cast<GLsizei>(m_height));
 
 }

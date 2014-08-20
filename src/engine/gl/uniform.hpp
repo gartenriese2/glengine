@@ -15,6 +15,18 @@ class Uniform {
 			}
 		}
 
+		void operator=(const unsigned int val) {
+		    if (m_loc != -1) {
+			    glUniform1ui(m_loc, val);
+			}
+		}
+
+		void operator=(const size_t val) {
+		    if (m_loc != -1) {
+			    glUniform1ui(m_loc, static_cast<GLuint>(val));
+			}
+		}
+
  		void operator=(const float val) {
 		    if (m_loc != -1) {
 			    glUniform1f(m_loc, val);
@@ -36,9 +48,9 @@ class Uniform {
  	private:
 
  		friend class Program;
-    	explicit Uniform(GLuint loc) : m_loc{loc} {}
+    	explicit Uniform(GLint loc) : m_loc{loc} {}
 
-    	GLuint m_loc;
+    	GLint m_loc;
 
 };
 

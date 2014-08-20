@@ -8,7 +8,7 @@ class Camera {
 
 	public:
 
-		Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, int, int, float);
+		Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, unsigned int, unsigned int, float);
 		// Camera(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, float, float, float, float);
 		Camera(const Camera &) = default;
 		Camera(Camera &&) = default;
@@ -17,8 +17,8 @@ class Camera {
 		const glm::mat4 & getViewMat() const { return m_view; }
 		const glm::mat4 & getProjMat() const { return m_proj; }
 
-		int getWidth() const { return m_width; }
-		int getHeight() const { return m_height; }
+		unsigned int getWidth() const { return m_width; }
+		unsigned int getHeight() const { return m_height; }
 
 		const glm::vec3 & getPos() const { return m_pos; }
 		const glm::vec3 & getDir() const { return m_dir; }
@@ -36,8 +36,8 @@ class Camera {
 
 	private:
 
-		int m_width;
-		int m_height;
+		unsigned int m_width;
+		unsigned int m_height;
 
 		float m_fov;
 		float m_near;

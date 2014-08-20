@@ -18,7 +18,7 @@ void GBufferPass::draw(const Camera & cam, const FBO & fbo) {
 
 	fbo.bind();
 
-	glViewport(0, 0, cam.getWidth(), cam.getHeight());
+	glViewport(0, 0, static_cast<GLsizei>(cam.getWidth()), static_cast<GLsizei>(cam.getHeight()));
 
 	GLenum db[4] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
 	glDrawBuffers(4, db);

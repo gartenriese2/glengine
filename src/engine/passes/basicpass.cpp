@@ -15,7 +15,7 @@ BasicPass::BasicPass() {
 
 void BasicPass::draw(const Camera & cam) {
 
-	glViewport(0, 0, cam.getWidth(), cam.getHeight());
+	glViewport(0, 0, static_cast<GLsizei>(cam.getWidth()), static_cast<GLsizei>(cam.getHeight()));
 
 	glEnable(GL_DEPTH_TEST);
 	

@@ -2,62 +2,97 @@
 
 #include "../debug.hpp"
 
-Buffer::Buffer() {
+namespace gl {
+
+Buffer::Buffer()
+  : gl::Object(GL_BUFFER)
+{
 
 	glCreateBuffers(1, &m_name);
 
 }
 
-Buffer::Buffer(const Buffer & other) {
+Buffer::Buffer(const Buffer & other)
+  : gl::Object(GL_BUFFER)
+{
 
 	glCreateBuffers(1, &m_name);
 
-	GLint size = 0;
-	glGetNamedBufferParameteriv(other, GL_BUFFER_SIZE, &size);
+}
 
-	glNamedBufferData(m_name, size, nullptr, GL_STATIC_DRAW);
-	glCopyNamedBufferSubData(other, m_name, 0, 0, size);
+Buffer::Buffer(Buffer && other)
+  : gl::Object(GL_BUFFER)
+{
+
+	if (isValid()) {
+		
+		glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
+		glDeleteBuffers(1, &m_name);
+
+	}
+
+	std::swap(m_name, other.m_name);
+
+}
+
+Buffer & Buffer::operator=(const Buffer & other) {
+
+	if (!isValid()) {
+
+		glCreateBuffers(1, &m_name);
+
+	}
+
+	return *this;
+
+};
+
+Buffer & Buffer::operator=(Buffer && other) & {
+
+	if (this != &other) {
+
+		if (isValid()) {
+			
+			glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
+			glDeleteBuffers(1, &m_name);
+
+		}
+
+		std::swap(m_name, other.m_name);
+
+	}
+
+	return *this;
 
 }
 
 Buffer::~Buffer() {
 
-	glDeleteBuffers(1, &m_name);
+	if (isValid()) {
+		
+		glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
+		glDeleteBuffers(1, &m_name);
+
+	}
 
 }
 
-GLint Buffer::getSize() {
+bool Buffer::isValid() const {
+
+	return glIsBuffer(m_name);
+
+}
+
+GLuint Buffer::getSize() const {
 
 	GLint size {0};
 
-	glGetNamedBufferParameteriv(m_name, GL_BUFFER_SIZE, &size);
+	if (isValid()){
+		glGetNamedBufferParameteriv(m_name, GL_BUFFER_SIZE, &size);
+	}
 
-	return size / sizeof(GLfloat) / 3;
-
-}
-
-void Buffer::bind(GLenum target) const {
-
-	glBindBuffer(target, m_name);
+	return static_cast<GLuint>(size);
 
 }
-
-void Buffer::unbind(GLenum target) const {
-
-	glBindBuffer(target, 0);
-
-}
-
-void Buffer::bindToVAO(GLuint vao, unsigned int index) {
-
-	glBindVertexArray(vao);
-
-	bind();
-	// glVertexArrayVertexBuffer(vao, index, m_name, 0, 0);
-	glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, 0, (void *) 0);
-	glEnableVertexArrayAttrib(vao, index);
-	unbind();
-
-	glBindVertexArray(0);
 
 }

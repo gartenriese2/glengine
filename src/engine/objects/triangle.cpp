@@ -26,23 +26,20 @@ void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & 
 
 	setCenter((a + b + c) / 3.f);
 
-	m_vertexBuffer.insertData<GLfloat>({
+	m_vertexBuffer.insertData({
 		a.x, a.y, a.z,
 		b.x, b.y, b.z,
 		c.x, c.y, c.z
 	});
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 
 	m_colorBuffer.insertData(colors);
-	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
 	glm::vec3 normal = glm::cross(b - a, c - a);
-	m_normalBuffer.insertData<GLfloat>({
+	m_normalBuffer.insertData({
 		normal.x, normal.y, normal.z,
 		normal.x, normal.y, normal.z,
 		normal.x, normal.y, normal.z
 	});
-	m_normalBuffer.bindToVAO(m_vertexArray, 2);
 
 	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(0.f)});
 
@@ -52,7 +49,7 @@ void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & 
 
 void Triangle::draw() const {
 
-	glBindVertexArray(m_vertexArray);
+	glBindVertexArray(m_vao);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glBindVertexArray(0);
 

@@ -5,7 +5,7 @@
 #include <utility>
 
 Camera::Camera(const glm::vec3 & pos, const glm::vec3 & dir, const glm::vec3 & up, float fov,
-	int width, int height, float near)
+	unsigned int width, unsigned int height, float near)
   : m_width(width),
   	m_height(height),
   	m_fov(fov),

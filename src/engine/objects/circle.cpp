@@ -44,14 +44,11 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 		normals.emplace_back(1.f);
 	}
 
-	m_vertexBuffer.insertData<GLfloat>(vertices);
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
+	m_vertexBuffer.insertData(vertices);
 
 	m_colorBuffer.insertData(colors);
-	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
-	m_normalBuffer.insertData<GLfloat>(normals);
-	m_normalBuffer.bindToVAO(m_vertexArray, 2);
+	m_normalBuffer.insertData(normals);
 
 	std::vector<GLushort> indices;
 	for (unsigned int i = 0; i < edges + 1; ++i) {
@@ -59,7 +56,6 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 	}
 	indices.emplace_back(1);
 	m_indexBuffer.insertData(indices);
-	m_indexBuffer.bindToVAO(m_vertexArray);
 
 	moveTo(center);
 	rotate(glm::acos(glm::dot(axis, {0.f, 0.f, 1.f}) / glm::length(axis)), glm::cross(axis, {0.f, 0.f, 1.f}));
@@ -82,8 +78,8 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 
 void Circle::draw() const {
 
-	glBindVertexArray(m_vertexArray);
-	glDrawElements(GL_TRIANGLE_FAN, m_indices * 3, GL_UNSIGNED_SHORT, (void*)0);
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLE_FAN, static_cast<GLsizei>(m_indices) * 3, GL_UNSIGNED_SHORT, (void*)0);
 	glBindVertexArray(0);
 
 }

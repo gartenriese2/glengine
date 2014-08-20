@@ -6,15 +6,19 @@
 static const glm::vec3 k_defaultColor {1.f, 0.f, 0.f};
 
 Object::Object()
-  : m_modelMatrix{glm::mat4(1.f)},
+  : m_vertexBuffer{3},
+  	m_colorBuffer{3},
+  	m_normalBuffer{3},
+  	m_modelMatrix{glm::mat4(1.f)},
   	m_scaleMatrix{glm::mat4(1.f)},
   	m_rotationMatrix{glm::mat4(1.f)},
   	m_translationMatrix{glm::mat4(1.f)},
   	m_actualScale{1.f}
 {
-
-	glCreateVertexArrays(1, &m_vertexArray);
-
+	m_vao.attachIBO(m_indexBuffer);
+	m_vao.attachVBO(m_vertexBuffer, 0, 0);
+	m_vao.attachVBO(m_colorBuffer, 1, 1);
+	m_vao.attachVBO(m_normalBuffer, 2, 2);
 }
 
 Object::Object(const Object & other)
@@ -30,19 +34,10 @@ Object::Object(const Object & other)
   	m_actualPosition(other.m_actualPosition),
   	m_actualScale(other.m_actualScale)
 {
-
-	glCreateVertexArrays(1, &m_vertexArray);
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
-	m_colorBuffer.bindToVAO(m_vertexArray, 1);
-	m_normalBuffer.bindToVAO(m_vertexArray, 2);
-	m_indexBuffer.bindToVAO(m_vertexArray);
-	
-}
-
-Object::~Object() {
-
-	glDeleteVertexArrays(1, & m_vertexArray);
-
+	m_vao.attachIBO(m_indexBuffer);
+	m_vao.attachVBO(m_vertexBuffer, 0, 0);
+	m_vao.attachVBO(m_colorBuffer, 1, 1);
+	m_vao.attachVBO(m_normalBuffer, 2, 2);
 }
 
 void Object::rotate(float radians, const glm::vec3 & axis) {
@@ -124,11 +119,12 @@ void Object::scale(const glm::vec3 & val) {
 
 void Object::scaleColor(float scale) {
 
-	GLint size = m_colorBuffer.getSize();
+	GLuint size = m_colorBuffer.getSize() / sizeof(GLfloat);
 	
 	GLfloat * data = (GLfloat *) glMapNamedBuffer(m_colorBuffer, GL_READ_WRITE);
-	if (data != (GLfloat *) NULL) {
-		for(GLint i = 0; i < 3 * size; ++i) {
+
+	if (data != (GLfloat *) nullptr) {
+		for(GLuint i = 0; i < size; ++i) {
         	data[i] *= scale;
         }
 		glUnmapNamedBuffer(m_colorBuffer);
@@ -140,13 +136,13 @@ void Object::scaleColor(float scale) {
 
 void Object::setColor(const std::initializer_list<glm::vec3> & colors) {
 
-	m_colorBuffer.insertData(getColorVector(colors, m_colorBuffer.getSize()));
+	m_colorBuffer.insertData(getColorVector(colors, static_cast<unsigned int>(m_colorBuffer.getSize())));
 
 }
 
 void Object::setColor(const glm::vec3 & color) {
 
-	m_colorBuffer.insertData(getColorVector(color, m_colorBuffer.getSize()));
+	m_colorBuffer.insertData(getColorVector(color, static_cast<unsigned int>(m_colorBuffer.getSize())));
 
 }
 
@@ -171,7 +167,7 @@ const std::vector<GLfloat> Object::getColorVector(const std::initializer_list<gl
 
 	}
 
-	for (unsigned int i = v.size() / 3; i < maxSize; ++i) {
+	for (unsigned int i = static_cast<unsigned int>(v.size()) / 3; i < maxSize; ++i) {
 		
 		v.emplace_back(k_defaultColor[0]);
 		v.emplace_back(k_defaultColor[1]);

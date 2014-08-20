@@ -2,10 +2,10 @@
 
 layout(local_size_x = 16, local_size_y = 16) in;
 
-uniform int windowWidth;
-uniform int windowHeight;
+uniform uint windowWidth;
+uniform uint windowHeight;
 uniform int numTri;
-uniform int numLights;
+uniform uint numLights;
 
 uniform sampler2D positionTex;
 uniform sampler2D directionTex;

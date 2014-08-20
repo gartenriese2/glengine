@@ -2,13 +2,14 @@
 
 #include "vbo.hpp"
 #include "ibo.hpp"
+#include "../debug.hpp"
 
 #include <utility>
 
 namespace gl {
 
 VAO::VAO()
-  : m_name{0}
+  : gl::Object(GL_VERTEX_ARRAY)
 {
 
 	glCreateVertexArrays(1, &m_name);
@@ -16,16 +17,24 @@ VAO::VAO()
 }
 
 VAO::VAO(VAO && other)
-  : m_name{0}
+  : gl::Object(GL_VERTEX_ARRAY)
 {
+
+	glDeleteVertexArrays(1, &m_name);
 	std::swap(m_name, other.m_name);
+
 }
 
 VAO & VAO::operator=(VAO && other) & {
 
 	if (this != &other) {
 
-		glDeleteVertexArrays(1, &m_name);
+		if (isValid()) {
+
+			glDeleteVertexArrays(1, &m_name);
+
+		}
+		
 		std::swap(m_name, other.m_name);
 
 	}
@@ -40,26 +49,14 @@ VAO::~VAO() {
 
 }
 
-const std::string VAO::getLabel() const {
-
-	const unsigned int size {64};
-	char label[size];
-	GLsizei len[size];
-	glGetObjectLabel(GL_VERTEX_ARRAY, m_name, size, len, label);
-
-	return label;
-
-}
-
-void VAO::setLabel(const std::string & name) {
-	
-	glObjectLabel(GL_VERTEX_ARRAY, m_name, name.size(), name.c_str());
-
+bool VAO::isValid() const {
+	return glIsVertexArray(m_name);
 }
 
 void VAO::attachVBO(const gl::VBO & vbo, GLuint index, GLuint attribindex) {
 
-	attachBuffer(index, vbo.getSize(), vbo.getType(), vbo.normalized(), 0, vbo, 0, attribindex);
+	attachBuffer(index, static_cast<GLint>(vbo.getSize()), vbo.getType(), vbo.normalized(),
+		0, vbo, static_cast<GLsizei>(vbo.getSize() * vbo.getTypeSize()), attribindex);
 
 }
 
@@ -72,15 +69,24 @@ void VAO::attachIBO(const gl::IBO & ibo) {
 void VAO::attachBuffer(GLuint index, GLint size, GLenum type, bool normalized,
 	GLuint offset, GLuint buffer, GLsizei stride, GLuint attribindex) {
 
-	glVertexArrayAttribFormat(m_name, index, size, type, normalized, offset);
-	glVertexArrayVertexBuffer(m_name, index, buffer, offset, stride);
-	glVertexArrayAttribBinding(m_name, attribindex, index);
+	if (isValid()) {
+
+		glEnableVertexArrayAttrib(m_name, attribindex);
+		glVertexArrayAttribFormat(m_name, index, size, type, normalized, offset);
+		glVertexArrayVertexBuffer(m_name, index, buffer, offset, stride);
+		glVertexArrayAttribBinding(m_name, attribindex, index);
+
+	}
 
 }
 
 void VAO::attachIndexBuffer(GLuint buffer) {
 
-	glVertexArrayElementBuffer(m_name, buffer);
+	if (isValid()) {
+
+		glVertexArrayElementBuffer(m_name, buffer);
+
+	}
 
 }
 

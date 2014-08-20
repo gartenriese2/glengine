@@ -42,21 +42,13 @@ void RaytracingRender::changeBaseSize(unsigned int w, unsigned int h) {
 	m_reflectedTex.resize(w, h);
 	m_depthAttachment.resize(w, h);
 
-	// m_colorTex.bind();
 	glNamedFramebufferTexture(m_fbo, GL_COLOR_ATTACHMENT0 + 0, m_colorTex, 0);
-	// m_colorTex.unbind();
 
-	// m_positionTex.bind();
 	glNamedFramebufferTexture(m_fbo, GL_COLOR_ATTACHMENT0 + 1, m_positionTex, 0);
-	// m_positionTex.unbind();
 
-	// m_reflectedTex.bind();
 	glNamedFramebufferTexture(m_fbo, GL_COLOR_ATTACHMENT0 + 2, m_reflectedTex, 0);
-	// m_reflectedTex.unbind();
 
-	// m_depthAttachment.bind();
 	glNamedFramebufferTexture(m_fbo, GL_DEPTH_ATTACHMENT, m_depthAttachment, 0);
-	// m_depthAttachment.unbind();
 
 	GLenum err = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
 	if (err != GL_FRAMEBUFFER_COMPLETE) {

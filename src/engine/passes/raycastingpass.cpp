@@ -20,7 +20,7 @@ void RaycastingPass::draw(const Camera & cam, const FBO & fbo, const std::vector
 
 	fbo.bind();
 
-	glViewport(0, 0, cam.getWidth(), cam.getHeight());
+	glViewport(0, 0, static_cast<GLsizei>(cam.getWidth()), static_cast<GLsizei>(cam.getHeight()));
 
 	GLenum db[3] {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
 	glNamedFramebufferDrawBuffers(fbo, 3, db);
@@ -34,12 +34,12 @@ void RaycastingPass::draw(const Camera & cam, const FBO & fbo, const std::vector
 
 	m_lightBuffer.bindTo(0);
 
-	int size = lights.size();
+	size_t size = lights.size();
 	std::vector<LightData> data;
 	for (const auto & light : lights) {
 		data.emplace_back(light->getData());
 	}	
-	m_lightBuffer.addData(data, size);
+	m_lightBuffer.addData(data, static_cast<unsigned int>(size));
 
 	m_program["camPos"] = cam.getPos();
 	m_program["viewDir"] = cam.getDir();

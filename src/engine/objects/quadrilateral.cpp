@@ -29,34 +29,30 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 
 	setCenter((a + b + c + d) / 4.f);
 
-	m_vertexBuffer.insertData<GLfloat>({
+	m_vertexBuffer.insertData({
 		a.x, a.y, a.z,
 	   	b.x, b.y, b.z,
 	   	c.x, c.y, c.z,
 	   	d.x, d.y, d.z
 	});
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
 
 	m_colorBuffer.insertData(colors);
-	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
 	glm::vec3 nA = glm::cross(b - a, d - a);
 	glm::vec3 nB = glm::cross(c - b, a - b);
 	glm::vec3 nC = glm::cross(d - c, b - c);
 	glm::vec3 nD = glm::cross(a - d, c - d);
-	m_normalBuffer.insertData<GLfloat>({
+	m_normalBuffer.insertData({
 		nA.x, nA.y, nA.z,
 		nB.x, nB.y, nB.z,
 		nC.x, nC.y, nC.z,
 		nD.x, nD.y, nD.z
 	});
-	m_normalBuffer.bindToVAO(m_vertexArray, 2);
 
 	m_indexBuffer.insertData({
 		0, 1, 2,
 		2, 3, 0
 	});
-	m_indexBuffer.bindToVAO(m_vertexArray);
 
 	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(d, 0.f)});
 
@@ -67,7 +63,7 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 
 void Quadrilateral::draw() const {
 
-	glBindVertexArray(m_vertexArray);
+	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
 	glBindVertexArray(0);
 

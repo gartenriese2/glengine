@@ -21,26 +21,22 @@ void GBufferRender::draw() {
 
 	m_gbufferPass.draw(m_cam, m_fbo);
 
-	glNamedFramebufferReadBuffer(m_fbo, GL_COLOR_ATTACHMENT0);
-	glBlitNamedFramebuffer(m_fbo, 0, 
-		0, 0, m_cam.getWidth(), m_cam.getHeight(),
-		0, m_cam.getHeight() / 2.f, m_cam.getWidth() / 2.f, m_cam.getHeight(),
-		GL_COLOR_BUFFER_BIT, GL_LINEAR);
+	m_fbo.blit(GL_COLOR_ATTACHMENT0, 0, 0, static_cast<GLint>(m_cam.getWidth()),
+		static_cast<GLint>(m_cam.getHeight()), 0, static_cast<GLint>(m_cam.getHeight()) / 2,
+		static_cast<GLint>(m_cam.getWidth()) / 2, static_cast<GLint>(m_cam.getHeight()));
 
-	glNamedFramebufferReadBuffer(m_fbo, GL_COLOR_ATTACHMENT1);
-	glBlitNamedFramebuffer(m_fbo, 0, 0, 0, m_cam.getWidth(), m_cam.getHeight(),
-		m_cam.getWidth() / 2.f, m_cam.getHeight() / 2.f, m_cam.getWidth(), m_cam.getHeight(),
-		GL_COLOR_BUFFER_BIT, GL_LINEAR);
+	m_fbo.blit(GL_COLOR_ATTACHMENT1, 0, 0, static_cast<GLint>(m_cam.getWidth()),
+		static_cast<GLint>(m_cam.getHeight()), static_cast<GLint>(m_cam.getWidth()) / 2,
+		static_cast<GLint>(m_cam.getHeight()) / 2, static_cast<GLint>(m_cam.getWidth()),
+		static_cast<GLint>(m_cam.getHeight()));
 
-	glNamedFramebufferReadBuffer(m_fbo, GL_COLOR_ATTACHMENT2);
-	glBlitNamedFramebuffer(m_fbo, 0, 0, 0, m_cam.getWidth(), m_cam.getHeight(),
-		0, 0, m_cam.getWidth() / 2.f, m_cam.getHeight() / 2.f,
-		GL_COLOR_BUFFER_BIT, GL_LINEAR);
+	m_fbo.blit(GL_COLOR_ATTACHMENT2, 0, 0, static_cast<GLint>(m_cam.getWidth()), 
+		static_cast<GLint>(m_cam.getHeight()), 0, 0, static_cast<GLint>(m_cam.getWidth()) / 2,
+		static_cast<GLint>(m_cam.getHeight()) / 2);
 
-	glNamedFramebufferReadBuffer(m_fbo, GL_COLOR_ATTACHMENT3);
-	glBlitNamedFramebuffer(m_fbo, 0, 0, 0, m_cam.getWidth(), m_cam.getHeight(),
-		m_cam.getWidth() / 2.f, 0, m_cam.getWidth(), m_cam.getHeight() / 2.f,
-		GL_COLOR_BUFFER_BIT, GL_LINEAR);
+	m_fbo.blit(GL_COLOR_ATTACHMENT3, 0, 0, static_cast<GLint>(m_cam.getWidth()), 
+		static_cast<GLint>(m_cam.getHeight()), static_cast<GLint>(m_cam.getWidth()) / 2, 0, 
+		static_cast<GLint>(m_cam.getWidth()), static_cast<GLint>(m_cam.getHeight()) / 2);
 
 }
 

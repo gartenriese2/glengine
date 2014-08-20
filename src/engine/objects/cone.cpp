@@ -188,14 +188,11 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 		}
 	}
 
-	m_vertexBuffer.insertData<GLfloat>(vertices);
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
+	m_vertexBuffer.insertData(vertices);
 
 	m_colorBuffer.insertData(colors);
-	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
-	m_normalBuffer.insertData<GLfloat>(normals);
-	m_normalBuffer.bindToVAO(m_vertexArray, 2);
+	m_normalBuffer.insertData(normals);
 
 	std::vector<GLushort> indices;
 	if (lowerRadius > 0.f) {
@@ -252,8 +249,8 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 
 
 	m_indexBuffer.insertData(indices);
-	m_indexBuffer.bindToVAO(m_vertexArray);
-	m_indices = indices.size();
+
+	m_indices = static_cast<unsigned int>(indices.size());
 
 	moveTo(base + glm::normalize(axis) * length / 2.f);
 
@@ -266,8 +263,8 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 
 void Cone::draw() const {
 
-	glBindVertexArray(m_vertexArray);
-	glDrawElements(GL_TRIANGLES, m_indices, GL_UNSIGNED_SHORT, (void*)0);
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indices), GL_UNSIGNED_SHORT, (void*)0);
 	glBindVertexArray(0);
 
 }

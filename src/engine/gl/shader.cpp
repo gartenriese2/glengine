@@ -36,7 +36,7 @@ Shader::Shader(const std::string & file) {
 
 	const std::string code = getShaderCode(file);
 	const char * charcode = code.c_str();
-	const GLint len = code.size();
+	const GLint len = static_cast<GLint>(code.size());
 	glShaderSource(m_shader, 1, &charcode, &len);
 
 	glCompileShader(m_shader);
@@ -50,7 +50,7 @@ Shader::Shader(const std::string & file) {
 		glGetShaderiv(m_shader, GL_INFO_LOG_LENGTH, &logSize);
 
 		std::vector<char> tmp;
-		tmp.reserve(logSize);
+		tmp.reserve(static_cast<size_t>(logSize));
 		glGetShaderInfoLog(m_shader, logSize, NULL, &tmp[0]);
 
 		Debug::log(file + ": Shader compiling failed with the following error:\n");

@@ -10,7 +10,7 @@ in vec3 position_World;
 
 uniform vec3 camPos;
 uniform vec3 viewDir;
-uniform int lightDataSize;
+uniform uint lightDataSize;
 
 struct lightData {
 	

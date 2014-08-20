@@ -53,8 +53,8 @@ void ampelDemo() {
 	basic.set();
 	
 	addControls(w, cam);
-	double oldX = -1.0, oldY = -1.0;
-	w.setMouseMoveEvent([&](double xpos, double ypos){
+	float oldX = -1.0, oldY = -1.0;
+	w.setMouseMoveEvent([&](float xpos, float ypos){
 		
 		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
@@ -157,7 +157,7 @@ void secondWindowDemo() {
 	q2.moveTo({2.f, 0.f, -1.f});
 
 	float step = 0.001f;
-	float rotPerSecond = 0.33;
+	float rotPerSecond = 0.33f;
 	while (1) {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 * step)));
@@ -185,10 +185,10 @@ void test() {
 	lighting.set();
 
 	addControls(w, cam);
-	double oldX = -1.0, oldY = -1.0;
-	w.setMouseMoveEvent([&](double xpos, double ypos){
+	float oldX = -1.0f, oldY = -1.0f;
+	w.setMouseMoveEvent([&](float xpos, float ypos){
 		
-		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+		if (oldX != -1.0f && oldY != -1.0f && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
 		}
@@ -269,10 +269,10 @@ void coneTest() {
 	basic.set();
 
 	addControls(w, cam);
-	double oldX = -1.0, oldY = -1.0;
-	w.setMouseMoveEvent([&](double xpos, double ypos){
+	float oldX = -1.0, oldY = -1.0;
+	w.setMouseMoveEvent([&](float xpos, float ypos){
 		
-		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+		if (oldX != -1.0f && oldY != -1.0f && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
 		}
@@ -327,10 +327,10 @@ void fbo() {
 	sphere.setColor({1.f, 0.843f, 0.f});
 
 	addControls(w, cam);
-	double oldX = -1.0, oldY = -1.0;
-	w.setMouseMoveEvent([&](double xpos, double ypos){
+	float oldX = -1.0f, oldY = -1.0f;
+	w.setMouseMoveEvent([&](float xpos, float ypos){
 		
-		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+		if (oldX != -1.0f && oldY != -1.0f && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
 		}
@@ -378,10 +378,10 @@ void raytracing() {
 	CameraID cam = w.createCamera({0.f, 0.f, 10.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
 
 	addControls(w, cam);
-	double oldX = -1.0, oldY = -1.0;
-	w.setMouseMoveEvent([&](double xpos, double ypos){
+	float oldX = -1.0f, oldY = -1.0f;
+	w.setMouseMoveEvent([&](float xpos, float ypos){
 		
-		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
+		if (oldX != -1.0f && oldY != -1.0f && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
 		}
@@ -480,15 +480,15 @@ void mapcity() {
 
 int main() {
 
-	ampelDemo();
-	// rotateDemo();
+	//ampelDemo();
+	//rotateDemo();
 	// secondWindowDemo();
 	// test();
-	// coneTest();
-	// fbo();
+	//coneTest();
+	//fbo();
 	// spline();
-	// raytracing();
-	// mapcity();
+	raytracing();
+	 //mapcity();
 
 	return 0;
 

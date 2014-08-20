@@ -5,7 +5,8 @@
 #include "../debug.hpp"
 
 TexturePass::TexturePass(Texture & tex)
-  : m_tex{tex}
+  : m_vertexBuffer{3},
+  	m_tex{tex}
 {
 
 	Shader vert {k_dir + "ssq.vert"};
@@ -13,25 +14,19 @@ TexturePass::TexturePass(Texture & tex)
 	m_program.attachShader(vert);
 	m_program.attachShader(frag);
 
-	glGenVertexArrays(1, &m_vertexArray);
-	m_vertexBuffer.insertData<GLfloat>({
+	m_vertexBuffer.insertData({
 		-1.f, -1.f, 0.f,
 	   	1.f, -1.f, 0.f,
 	   	1.f, 1.f, 0.f,
 	   	-1.f, 1.f, 0.f
 	});
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
+	m_vertexArray.attachVBO(m_vertexBuffer, 0, 0);
+	
 	m_indexBuffer.insertData({
 		0, 1, 2,
 		2, 3, 0
 	});
-	m_indexBuffer.bindToVAO(m_vertexArray);
-
-}
-
-TexturePass::~TexturePass() {
-
-	glDeleteVertexArrays(1, & m_vertexArray);
+	m_vertexArray.attachIBO(m_indexBuffer);
 
 }
 

@@ -74,7 +74,7 @@ std::shared_ptr<Object> Spline::getCopy() {
 
 void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, const glm::vec3 & color) {
 
-	m_indices = vert.size();
+	m_indices = static_cast<unsigned int>(vert.size());
 	setCenter((vert[0] + vert[1] + vert[m_indices - 2] + vert[m_indices - 1]) / 4.f);
 
 	std::vector<GLfloat> vertices;
@@ -92,14 +92,11 @@ void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, con
 		colors.emplace_back(color[2]);
 	}
 
-	m_vertexBuffer.insertData<GLfloat>(vertices);
-	m_vertexBuffer.bindToVAO(m_vertexArray, 0);
+	m_vertexBuffer.insertData(vertices);
 
 	m_colorBuffer.insertData(colors);
-	m_colorBuffer.bindToVAO(m_vertexArray, 1);
 
-	m_normalBuffer.insertData<GLfloat>(normals);
-	m_normalBuffer.bindToVAO(m_vertexArray, 2);
+	m_normalBuffer.insertData(normals);
 
 	std::vector<GLushort> indices;
 	for (unsigned int i = 0; i < m_indices; ++i) {
@@ -107,7 +104,6 @@ void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, con
 	}
 	
 	m_indexBuffer.insertData(indices);
-	m_indexBuffer.bindToVAO(m_vertexArray);
 
 	m_data.insert(m_data.begin(), {glm::vec4(0.f), glm::vec4(0.f), glm::vec4(0.f), glm::vec4(0.f)});
 
@@ -137,8 +133,8 @@ void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, con
 
 void Spline::draw() const {
 
-	glBindVertexArray(m_vertexArray);
-	glDrawElements(GL_TRIANGLE_STRIP, m_indices, GL_UNSIGNED_SHORT, (void*)0);
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLE_STRIP, static_cast<GLsizei>(m_indices), GL_UNSIGNED_SHORT, (void*)0);
 	glBindVertexArray(0);
 
 }

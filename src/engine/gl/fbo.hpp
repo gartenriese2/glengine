@@ -2,17 +2,18 @@
 #define _FBO_
 
 #include "glincludes.hpp"
+#include "globject.hpp"
 
 class Texture;
 
-class FBO {
+class FBO : public gl::Object {
 
 	public:
 
 		FBO();
 		~FBO();
 
-		operator GLuint() const { return m_name; }
+		bool isValid() const;
 
 		void bind(GLenum = GL_FRAMEBUFFER) const;
 		void unbind(GLenum = GL_FRAMEBUFFER) const;
@@ -21,9 +22,11 @@ class FBO {
 
 		void checkError(GLenum = GL_FRAMEBUFFER) const;
 
+		void blit(GLenum, GLint, GLint, GLint, GLint, GLint, GLint, GLint, GLint,
+			GLbitfield = GL_COLOR_BUFFER_BIT, GLenum = GL_LINEAR);
+
 	private:		
 
-		GLuint m_name;
 		unsigned int m_colorAttachments;
 
 };

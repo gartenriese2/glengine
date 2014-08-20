@@ -19,9 +19,9 @@ Loop::Loop()
 
 void Loop::start(GLFWwindow * window) {
 
-	glfwSetKeyCallback(window, [](GLFWwindow * window, int key, int scancode, int action, int mods){
+	glfwSetKeyCallback(window, [](GLFWwindow * windowPtr, int key, int scancode, int action, int mods){
 
-		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(window));
+		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(windowPtr));
 		Loop & loop = win->getLoop();
 
 		if (loop.m_keyEvents.count(key) != 0 && (action == GLFW_PRESS || action == GLFW_REPEAT))
@@ -29,9 +29,9 @@ void Loop::start(GLFWwindow * window) {
 
 	});
 
-	glfwSetMouseButtonCallback(window, [](GLFWwindow * window, int button, int action, int mods){
+	glfwSetMouseButtonCallback(window, [](GLFWwindow * windowPtr, int button, int action, int mods){
 
-		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(window));
+		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(windowPtr));
 		Loop & loop = win->getLoop();
 
 		if (loop.m_mouseClickEvents.count(button) != 0 && (action == GLFW_PRESS || action == GLFW_REPEAT))
@@ -39,18 +39,18 @@ void Loop::start(GLFWwindow * window) {
 
 	});
 
-	glfwSetCursorPosCallback(window, [](GLFWwindow * window, double xpos, double ypos){
+	glfwSetCursorPosCallback(window, [](GLFWwindow * windowPtr, double xpos, double ypos){
 
-		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(window));
+		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(windowPtr));
 		Loop & loop = win->getLoop();
 
 		loop.m_mouseMoveEvent(xpos, ypos);
 
 	});
 
-	glfwSetScrollCallback(window, [](GLFWwindow * window, double xoffset, double yoffset){
+	glfwSetScrollCallback(window, [](GLFWwindow * windowPtr, double xoffset, double yoffset){
 
-		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(window));
+		Window * win = static_cast<Window *>(glfwGetWindowUserPointer(windowPtr));
 		Loop & loop = win->getLoop();
 
 		loop.m_scrollEvent(xoffset, yoffset);

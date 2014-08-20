@@ -3,9 +3,9 @@
 
 #include "../gl/glincludes.hpp"
 #include "../glmincludes.hpp"
-#include "../gl/buffer.hpp"
-#include "../gl/indexbuffer.hpp"
 #include "../gl/vao.hpp"
+#include "../gl/vbo.hpp"
+#include "../gl/ibo.hpp"
 
 #include <vector>
 #include <initializer_list>
@@ -40,7 +40,7 @@ class Object {
 		Object & operator=(const Object &) = delete;
 		Object & operator=(Object &&) = delete;
 
-		virtual ~Object();
+		virtual ~Object() {}
 
 	protected:
 
@@ -68,12 +68,11 @@ class Object {
 		virtual const std::vector<Tri> & getTriangles() const { return m_triangles; }
 		virtual unsigned int getType() const = 0;
 
-		GLuint m_vertexArray;
 		gl::VAO m_vao;
-		Buffer m_vertexBuffer;
-		Buffer m_colorBuffer;
-		Buffer m_normalBuffer;
-		IndexBuffer m_indexBuffer;
+		gl::VBO m_vertexBuffer;
+		gl::VBO m_colorBuffer;
+		gl::VBO m_normalBuffer;
+		gl::IBO m_indexBuffer;
 
 		std::vector<glm::vec4> m_data;
 		std::vector<Tri> m_triangles;

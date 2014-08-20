@@ -4,6 +4,7 @@
 #include "../objects/objectinterface.hpp"
 #include "../debug.hpp"
 #include "../light.hpp"
+#include "../gl/texture.hpp"
 
 RaycomputingPass::RaycomputingPass(Texture & positionTex, Texture & directionTex, Texture & color, Texture & result)
   : m_positionTex(positionTex),
@@ -56,16 +57,16 @@ void RaycomputingPass::draw(const Camera & cam, const std::vector<std::shared_pt
 
 	}
 
-	m_triangleBuffer.addData(triVec, triVec.size());
+	m_triangleBuffer.addData(triVec, static_cast<unsigned int>(triVec.size()), GL_STATIC_COPY);
 	m_program["numTri"] = static_cast<int>(triVec.size());
 
-	int size = lights.size();
+	const size_t size {lights.size()};
 	std::vector<LightData> data;
 	for (const auto & light : lights) {
 		data.emplace_back(light->getData());
 	}	
 
-	m_lightBuffer.addData(data, size);
+	m_lightBuffer.addData(data, static_cast<unsigned int>(size), GL_STATIC_COPY);
 	m_program["numLights"] = size;
 
 	glDispatchCompute(cam.getWidth() / 16, cam.getHeight() / 16 , 1);

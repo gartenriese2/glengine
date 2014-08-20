@@ -30,7 +30,7 @@ Road::Road(const std::vector<glm::vec2> & points, WindowID & win, RenderID & ren
 		glm::vec3 dirStart = glm::normalize(end - beforeStart);
 		glm::vec3 dirEnd = glm::normalize(afterEnd - start);
 
-		int steps = glm::length(end - start) / 0.1f;
+		unsigned int steps = static_cast<unsigned int>(glm::length(end - start) / 0.1f);
 
 		m_objects.emplace_back(win.createSpline(start, dirStart, end, dirEnd, {0.f, 1.f, 0.f},
 			k_width, k_width, steps, k_smoothness, k_color));
