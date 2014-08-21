@@ -22,9 +22,10 @@ class Object {
 
 	protected:
 
+		Object();
 		Object(GLenum);
 		Object(const Object &);
-		Object(Object &&) {}
+		Object(Object &&);
 		Object & operator=(const Object &) { return *this; }
 		Object & operator=(Object &&) { return *this; }
 

@@ -2,6 +2,13 @@
 
 namespace gl {
 
+Object::Object()
+  : m_name{0},
+  	m_identifier{GL_NONE}
+{
+	
+}
+
 Object::Object(GLenum identifier)
   : m_name{0},
   	m_identifier{identifier}
@@ -14,6 +21,14 @@ Object::Object(const Object & other)
     m_identifier{other.m_identifier}
 {
 
+}
+
+Object::Object(Object && other)
+  : m_name{0},
+  	m_identifier{GL_NONE}
+{
+	std::swap(m_name, other.m_name);
+	std::swap(m_identifier, other.m_identifier);
 }
 
 void Object::setLabel(const std::string & name) {

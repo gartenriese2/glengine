@@ -16,7 +16,7 @@ class VAO : public gl::Object {
 	public:
 
 		VAO();
-		VAO(VAO &&);
+		VAO(VAO && v) : gl::Object{std::forward<gl::Object>(v)} {}
 		VAO & operator=(VAO &&) &;
 		~VAO();
 

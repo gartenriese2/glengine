@@ -16,15 +16,6 @@ VAO::VAO()
 
 }
 
-VAO::VAO(VAO && other)
-  : gl::Object(GL_VERTEX_ARRAY)
-{
-
-	glDeleteVertexArrays(1, &m_name);
-	std::swap(m_name, other.m_name);
-
-}
-
 VAO & VAO::operator=(VAO && other) & {
 
 	if (this != &other) {
