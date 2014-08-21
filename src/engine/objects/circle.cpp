@@ -78,8 +78,6 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 
 void Circle::draw() const {
 
-	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLE_FAN, static_cast<GLsizei>(m_indices) * 3, GL_UNSIGNED_SHORT, (void*)0);
-	glBindVertexArray(0);
+	m_vao.draw(static_cast<GLsizei>(m_indices) * 3, GL_TRIANGLE_FAN);
 
 }

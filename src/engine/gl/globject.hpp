@@ -9,25 +9,21 @@ namespace gl {
 
 class Object {
 
-	public:
-
-		virtual ~Object() {}
-
-		operator GLuint() const { return m_name; }
-
-		virtual bool isValid() const = 0;
-
-		const std::string getLabel() const;
-		void setLabel(const std::string &);
-
 	protected:
 
-		Object();
 		Object(GLenum);
 		Object(const Object &);
 		Object(Object &&);
 		Object & operator=(const Object &) { return *this; }
 		Object & operator=(Object &&) { return *this; }
+		virtual ~Object() {}
+public:
+		operator GLuint() const { return m_name; }
+protected:
+		virtual bool isValid() const = 0;
+
+		const std::string getLabel() const;
+		void setLabel(const std::string &);
 
 		GLuint m_name;
 		GLenum m_identifier;

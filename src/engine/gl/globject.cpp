@@ -2,13 +2,6 @@
 
 namespace gl {
 
-Object::Object()
-  : m_name{0},
-  	m_identifier{GL_NONE}
-{
-	
-}
-
 Object::Object(GLenum identifier)
   : m_name{0},
   	m_identifier{identifier}

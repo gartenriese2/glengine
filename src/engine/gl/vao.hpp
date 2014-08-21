@@ -25,6 +25,8 @@ class VAO : public gl::Object {
 		void attachVBO(const gl::VBO &, GLuint, GLuint);
 		void attachIBO(const gl::IBO &);
 
+		void draw(GLsizei, GLenum = GL_TRIANGLES, GLenum = GL_UNSIGNED_SHORT) const;
+
 	private:
 
 		VAO(const VAO &) = delete;
