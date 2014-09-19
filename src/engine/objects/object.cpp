@@ -6,26 +6,29 @@
 static const glm::vec3 k_defaultColor {1.f, 0.f, 0.f};
 
 Object::Object()
-  : m_vertexBuffer{3},
-  	m_colorBuffer{3},
-  	m_normalBuffer{3},
+  : m_vertexBufferPtr{new gl::VBO(3)},
+  	m_colorBufferPtr{new gl::VBO(3)},
+  	m_normalBufferPtr{new gl::VBO(3)},
+  	m_indexBufferPtr{new gl::IBO()},
   	m_modelMatrix{glm::mat4(1.f)},
   	m_scaleMatrix{glm::mat4(1.f)},
   	m_rotationMatrix{glm::mat4(1.f)},
   	m_translationMatrix{glm::mat4(1.f)},
   	m_actualScale{1.f}
 {
-	m_vao.attachIBO(m_indexBuffer);
-	m_vao.attachVBO(m_vertexBuffer, 0, 0);
-	m_vao.attachVBO(m_colorBuffer, 1, 1);
-	m_vao.attachVBO(m_normalBuffer, 2, 2);
+
+	m_vao.attachIBO(m_indexBufferPtr);
+	m_vao.attachVBO(*m_vertexBufferPtr, 0, 0);
+	m_vao.attachVBO(*m_colorBufferPtr, 1, 1);
+	m_vao.attachVBO(*m_normalBufferPtr, 2, 2);
+
 }
 
 Object::Object(const Object & other)
-  : m_vertexBuffer(other.m_vertexBuffer),
-  	m_colorBuffer(other.m_colorBuffer),
-  	m_normalBuffer(other.m_normalBuffer),
-  	m_indexBuffer(other.m_indexBuffer),
+  : m_vertexBufferPtr(other.m_vertexBufferPtr),
+  	m_colorBufferPtr(other.m_colorBufferPtr),
+  	m_normalBufferPtr(other.m_normalBufferPtr),
+  	m_indexBufferPtr(other.m_indexBufferPtr),
   	m_modelMatrix(other.m_modelMatrix),
   	m_scaleMatrix(other.m_scaleMatrix),
   	m_rotationMatrix(other.m_rotationMatrix),
@@ -34,10 +37,10 @@ Object::Object(const Object & other)
   	m_actualPosition(other.m_actualPosition),
   	m_actualScale(other.m_actualScale)
 {
-	m_vao.attachIBO(m_indexBuffer);
-	m_vao.attachVBO(m_vertexBuffer, 0, 0);
-	m_vao.attachVBO(m_colorBuffer, 1, 1);
-	m_vao.attachVBO(m_normalBuffer, 2, 2);
+	m_vao.attachIBO(m_indexBufferPtr);
+	m_vao.attachVBO(*m_vertexBufferPtr, 0, 0);
+	m_vao.attachVBO(*m_colorBufferPtr, 1, 1);
+	m_vao.attachVBO(*m_normalBufferPtr, 2, 2);
 }
 
 void Object::rotate(float radians, const glm::vec3 & axis) {
@@ -119,15 +122,15 @@ void Object::scale(const glm::vec3 & val) {
 
 void Object::scaleColor(float scale) {
 
-	GLuint size = m_colorBuffer.getSize() / sizeof(GLfloat);
-	
-	GLfloat * data = (GLfloat *) glMapNamedBuffer(m_colorBuffer, GL_READ_WRITE);
+	GLuint size = m_colorBufferPtr->getSize() / m_colorBufferPtr->getTypeSize();
+
+	GLfloat * data = (GLfloat *) glMapNamedBuffer(*m_colorBufferPtr, GL_READ_WRITE);
 
 	if (data != (GLfloat *) nullptr) {
 		for(GLuint i = 0; i < size; ++i) {
         	data[i] *= scale;
         }
-		glUnmapNamedBuffer(m_colorBuffer);
+		glUnmapNamedBuffer(*m_colorBufferPtr);
 	} else {
 		Debug::log("glMapBuffer failed!");
 	}
@@ -136,13 +139,13 @@ void Object::scaleColor(float scale) {
 
 void Object::setColor(const std::initializer_list<glm::vec3> & colors) {
 
-	m_colorBuffer.insertData(getColorVector(colors, static_cast<unsigned int>(m_colorBuffer.getSize())));
+	m_colorBufferPtr->insertData(getColorVector(colors, static_cast<unsigned int>(m_colorBufferPtr->getSize())));
 
 }
 
 void Object::setColor(const glm::vec3 & color) {
 
-	m_colorBuffer.insertData(getColorVector(color, static_cast<unsigned int>(m_colorBuffer.getSize())));
+	m_colorBufferPtr->insertData(getColorVector(color, static_cast<unsigned int>(m_colorBufferPtr->getSize())));
 
 }
 

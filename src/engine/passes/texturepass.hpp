@@ -20,8 +20,8 @@ class TexturePass : public Pass {
  	private:
 
  		gl::VAO m_vertexArray;
- 		gl::VBO m_vertexBuffer;
- 		gl::IBO m_indexBuffer;
+ 		std::shared_ptr<gl::VBO> m_vertexBufferPtr;
+ 		std::shared_ptr<gl::IBO> m_indexBufferPtr;
  		Texture & m_tex;
 
 };

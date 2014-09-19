@@ -2,22 +2,22 @@
 
 namespace gl {
 
-constexpr GLuint k_defaultSize {4};
+constexpr GLuint k_defaultChannelSize {4};
 
 VBO::VBO()
-  : m_size{k_defaultSize}
+  : m_channels{k_defaultChannelSize}
 {
 
 }
 
 VBO::VBO(GLuint size)
-  : m_size{size}
+  : m_channels{size}
 {
 
 }
 
 VBO::VBO(const VBO & other)
-  : m_size{other.m_size}
+  : m_channels{other.m_channels}
 {
 
 	if (other.isValid()) {
@@ -34,7 +34,7 @@ VBO::VBO(const VBO & other)
 
 VBO::VBO(VBO && other) {
 
-	std::swap(m_size, other.m_size);
+	std::swap(m_channels, other.m_channels);
 
 }
 
@@ -50,7 +50,7 @@ VBO & VBO::operator=(const VBO & other) & {
 
 	}
 
-	m_size = other.m_size;
+	m_channels = other.m_channels;
 
 	return *this;
 
@@ -58,7 +58,7 @@ VBO & VBO::operator=(const VBO & other) & {
 
 VBO & VBO::operator=(VBO && other) {
 
-	std::swap(m_size, other.m_size);
+	std::swap(m_channels, other.m_channels);
 
 	return *this;
 

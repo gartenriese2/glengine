@@ -29,27 +29,27 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 
 	setCenter((a + b + c + d) / 4.f);
 
-	m_vertexBuffer.insertData({
+	m_vertexBufferPtr->insertData({
 		a.x, a.y, a.z,
 	   	b.x, b.y, b.z,
 	   	c.x, c.y, c.z,
 	   	d.x, d.y, d.z
 	});
 
-	m_colorBuffer.insertData(colors);
+	m_colorBufferPtr->insertData(colors);
 
 	glm::vec3 nA = glm::cross(b - a, d - a);
 	glm::vec3 nB = glm::cross(c - b, a - b);
 	glm::vec3 nC = glm::cross(d - c, b - c);
 	glm::vec3 nD = glm::cross(a - d, c - d);
-	m_normalBuffer.insertData({
+	m_normalBufferPtr->insertData({
 		nA.x, nA.y, nA.z,
 		nB.x, nB.y, nB.z,
 		nC.x, nC.y, nC.z,
 		nD.x, nD.y, nD.z
 	});
 
-	m_indexBuffer.insertData({
+	m_indexBufferPtr->insertData({
 		0, 1, 2,
 		2, 3, 0
 	});

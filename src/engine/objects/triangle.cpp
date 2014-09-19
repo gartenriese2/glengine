@@ -26,16 +26,16 @@ void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & 
 
 	setCenter((a + b + c) / 3.f);
 
-	m_vertexBuffer.insertData({
+	m_vertexBufferPtr->insertData({
 		a.x, a.y, a.z,
 		b.x, b.y, b.z,
 		c.x, c.y, c.z
 	});
 
-	m_colorBuffer.insertData(colors);
+	m_colorBufferPtr->insertData(colors);
 
 	glm::vec3 normal = glm::cross(b - a, c - a);
-	m_normalBuffer.insertData({
+	m_normalBufferPtr->insertData({
 		normal.x, normal.y, normal.z,
 		normal.x, normal.y, normal.z,
 		normal.x, normal.y, normal.z

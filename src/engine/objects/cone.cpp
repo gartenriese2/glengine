@@ -188,11 +188,11 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 		}
 	}
 
-	m_vertexBuffer.insertData(vertices);
+	m_vertexBufferPtr->insertData(vertices);
 
-	m_colorBuffer.insertData(colors);
+	m_colorBufferPtr->insertData(colors);
 
-	m_normalBuffer.insertData(normals);
+	m_normalBufferPtr->insertData(normals);
 
 	std::vector<GLushort> indices;
 	if (lowerRadius > 0.f) {
@@ -248,7 +248,7 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 	}
 
 
-	m_indexBuffer.insertData(indices);
+	m_indexBufferPtr->insertData(indices);
 
 	m_indices = static_cast<unsigned int>(indices.size());
 

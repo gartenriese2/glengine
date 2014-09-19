@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <initializer_list>
+#include <memory>
 
 class ObjectInterface;
 
@@ -69,10 +70,10 @@ class Object {
 		virtual unsigned int getType() const = 0;
 
 		gl::VAO m_vao;
-		gl::VBO m_vertexBuffer;
-		gl::VBO m_colorBuffer;
-		gl::VBO m_normalBuffer;
-		gl::IBO m_indexBuffer;
+		std::shared_ptr<gl::VBO> m_vertexBufferPtr;
+		std::shared_ptr<gl::VBO> m_colorBufferPtr;
+		std::shared_ptr<gl::VBO> m_normalBufferPtr;
+		std::shared_ptr<gl::IBO> m_indexBufferPtr;
 
 		std::vector<glm::vec4> m_data;
 		std::vector<Tri> m_triangles;

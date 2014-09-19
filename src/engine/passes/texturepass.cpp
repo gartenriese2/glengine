@@ -5,7 +5,7 @@
 #include "../debug.hpp"
 
 TexturePass::TexturePass(Texture & tex)
-  : m_vertexBuffer{3},
+  : m_vertexBufferPtr{new gl::VBO(3)},
   	m_tex{tex}
 {
 
@@ -14,19 +14,19 @@ TexturePass::TexturePass(Texture & tex)
 	m_program.attachShader(vert);
 	m_program.attachShader(frag);
 
-	m_vertexBuffer.insertData({
+	m_vertexBufferPtr->insertData({
 		-1.f, -1.f, 0.f,
 	   	1.f, -1.f, 0.f,
 	   	1.f, 1.f, 0.f,
 	   	-1.f, 1.f, 0.f
 	});
-	m_vertexArray.attachVBO(m_vertexBuffer, 0, 0);
+	m_vertexArray.attachVBO(*m_vertexBufferPtr, 0, 0);
 	
-	m_indexBuffer.insertData({
+	m_indexBufferPtr->insertData({
 		0, 1, 2,
 		2, 3, 0
 	});
-	m_vertexArray.attachIBO(m_indexBuffer);
+	m_vertexArray.attachIBO(m_indexBufferPtr);
 
 }
 

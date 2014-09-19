@@ -68,10 +68,10 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	   	b.x, b.y, b.z,
 	};
 
-	m_vertexBuffer.insertData(vertices);
+	m_vertexBufferPtr->insertData(vertices);
 	
 
-	m_colorBuffer.insertData(colors);
+	m_colorBufferPtr->insertData(colors);
 
 	glm::vec3 nABED = glm::cross(b - a, d - a);
 	glm::vec3 nCADF = glm::cross(a - c, f - c);
@@ -80,7 +80,7 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	glm::vec3 nDEHF = glm::cross(e - d, f - d);
 	glm::vec3 nGCAB = -glm::cross(c - g, b - g);
 
-	m_normalBuffer.insertData({
+	m_normalBufferPtr->insertData({
 		nABED.x, nABED.y, nABED.z,
 		nABED.x, nABED.y, nABED.z,
 		nABED.x, nABED.y, nABED.z,
@@ -132,7 +132,7 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 		22, 23, 20
 	};
 
-	m_indexBuffer.insertData(indices);
+	m_indexBufferPtr->insertData(indices);
 
 	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(d, 0.f)});
 

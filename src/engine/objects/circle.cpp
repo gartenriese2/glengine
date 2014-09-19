@@ -44,18 +44,18 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 		normals.emplace_back(1.f);
 	}
 
-	m_vertexBuffer.insertData(vertices);
+	m_vertexBufferPtr->insertData(vertices);
 
-	m_colorBuffer.insertData(colors);
+	m_colorBufferPtr->insertData(colors);
 
-	m_normalBuffer.insertData(normals);
+	m_normalBufferPtr->insertData(normals);
 
 	std::vector<GLushort> indices;
 	for (unsigned int i = 0; i < edges + 1; ++i) {
 		indices.emplace_back(i);
 	}
 	indices.emplace_back(1);
-	m_indexBuffer.insertData(indices);
+	m_indexBufferPtr->insertData(indices);
 
 	moveTo(center);
 	rotate(glm::acos(glm::dot(axis, {0.f, 0.f, 1.f}) / glm::length(axis)), glm::cross(axis, {0.f, 0.f, 1.f}));

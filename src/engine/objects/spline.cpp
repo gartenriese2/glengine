@@ -92,18 +92,18 @@ void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, con
 		colors.emplace_back(color[2]);
 	}
 
-	m_vertexBuffer.insertData(vertices);
+	m_vertexBufferPtr->insertData(vertices);
 
-	m_colorBuffer.insertData(colors);
+	m_colorBufferPtr->insertData(colors);
 
-	m_normalBuffer.insertData(normals);
+	m_normalBufferPtr->insertData(normals);
 
 	std::vector<GLushort> indices;
 	for (unsigned int i = 0; i < m_indices; ++i) {
 		indices.emplace_back(i);
 	}
 	
-	m_indexBuffer.insertData(indices);
+	m_indexBufferPtr->insertData(indices);
 
 	m_data.insert(m_data.begin(), {glm::vec4(0.f), glm::vec4(0.f), glm::vec4(0.f), glm::vec4(0.f)});
 

@@ -9,7 +9,8 @@ Buffer::Buffer()
 {
 
 	glCreateBuffers(1, &m_name);
-
+	assert(isValid());
+	
 }
 
 Buffer::Buffer(const Buffer & other)
@@ -85,13 +86,14 @@ bool Buffer::isValid() const {
 
 GLuint Buffer::getSize() const {
 
-	GLint size {0};
+	//GLint size {0};
+	GLint size[128];
 
 	if (isValid()){
-		glGetNamedBufferParameteriv(m_name, GL_BUFFER_SIZE, &size);
+		glGetNamedBufferParameteriv(m_name, GL_BUFFER_SIZE, size);
 	}
 
-	return static_cast<GLuint>(size);
+	return static_cast<GLuint>(*size);
 
 }
 

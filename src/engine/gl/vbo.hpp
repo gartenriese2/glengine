@@ -20,7 +20,7 @@ class VBO : public gl::Buffer {
 		VBO & operator=(VBO &&);
 		~VBO() {}
 
-		GLuint getSize() const { return m_size; }
+		GLuint getChannels() const { return m_channels; }
 		GLenum getType() const { return GL_FLOAT; }
 		GLuint getTypeSize() const { return sizeof(GLfloat); }
 		bool normalized() const { return false; }
@@ -29,7 +29,7 @@ class VBO : public gl::Buffer {
 
 	private:
 
-		GLuint m_size;
+		GLuint m_channels;
 
 };
 

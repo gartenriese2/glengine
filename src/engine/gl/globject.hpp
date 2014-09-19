@@ -2,6 +2,7 @@
 #define _GL_OBJECT_
 
 #include "glincludes.hpp"
+#include "../debug.hpp"
 
 #include <string>
 
@@ -21,8 +22,8 @@ public:
 		operator GLuint() const { return m_name; }
 protected:
 		virtual bool isValid() const = 0;
-
-		const std::string getLabel() const;
+		
+		const std::string getLabel();
 		void setLabel(const std::string &);
 
 		GLuint m_name;

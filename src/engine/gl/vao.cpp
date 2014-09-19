@@ -54,14 +54,14 @@ void VAO::draw(GLsizei size, GLenum mode, GLenum type) const {
 
 void VAO::attachVBO(const gl::VBO & vbo, GLuint index, GLuint attribindex) {
 
-	attachBuffer(index, static_cast<GLint>(vbo.getSize()), vbo.getType(), vbo.normalized(),
-		0, vbo, static_cast<GLsizei>(vbo.getSize() * vbo.getTypeSize()), attribindex);
+	attachBuffer(index, static_cast<GLint>(vbo.getChannels()), vbo.getType(), vbo.normalized(),
+		0, vbo, static_cast<GLsizei>(vbo.getChannels() * vbo.getTypeSize()), attribindex);
 
 }
 
-void VAO::attachIBO(const gl::IBO & ibo) {
+void VAO::attachIBO(const std::shared_ptr<gl::IBO> ibo) {
 
-	attachIndexBuffer(ibo);
+	attachIndexBuffer(*ibo);
 
 }
 

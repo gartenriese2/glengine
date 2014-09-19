@@ -106,13 +106,13 @@ void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 
 	m_indices = static_cast<unsigned int>(indices.size());
 
-	m_vertexBuffer.insertData(vertices);
+	m_vertexBufferPtr->insertData(vertices);
 
-	m_colorBuffer.insertData(colors);
+	m_colorBufferPtr->insertData(colors);
 
-	m_normalBuffer.insertData(normals);
+	m_normalBufferPtr->insertData(normals);
 
-	m_indexBuffer.insertData(indices);
+	m_indexBufferPtr->insertData(indices);
 
 	moveTo(center);
 
