@@ -14,7 +14,7 @@ GBufferPass::GBufferPass() {
 
 }
 
-void GBufferPass::draw(const Camera & cam, const FBO & fbo) {
+void GBufferPass::draw(const Camera & cam, const gl::FBO & fbo) {
 
 	fbo.bind();
 

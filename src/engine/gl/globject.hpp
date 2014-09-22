@@ -10,21 +10,28 @@ namespace gl {
 
 class Object {
 
-	protected:
+	public:
 
-		Object(GLenum);
-		Object(const Object &);
-		Object(Object &&);
-		Object & operator=(const Object &) { return *this; }
-		Object & operator=(Object &&) { return *this; }
-		virtual ~Object() {}
-public:
-		operator GLuint() const { return m_name; }
-protected:
-		virtual bool isValid() const = 0;
-		
+		virtual operator GLuint() const final { return m_name; }
+
 		const std::string getLabel();
 		void setLabel(const std::string &);
+
+	protected:
+
+		Object(GLenum) noexcept;
+		Object(const Object &) noexcept;
+		Object(Object &&) noexcept;
+		Object & operator=(Object) noexcept;
+		virtual ~Object();
+
+		virtual bool isValid() const { return false; }
+
+		friend void swap(Object & a, Object & b) noexcept {
+			using std::swap;
+			swap(a.m_name, b.m_name);
+			swap(a.m_identifier, b.m_identifier);
+		}
 
 		GLuint m_name;
 		GLenum m_identifier;

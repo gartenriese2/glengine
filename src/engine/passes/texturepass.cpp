@@ -4,8 +4,9 @@
 #include "../objects/objectinterface.hpp"
 #include "../debug.hpp"
 
-TexturePass::TexturePass(Texture & tex)
+TexturePass::TexturePass(gl::Texture & tex)
   : m_vertexBufferPtr{new gl::VBO(3)},
+  	m_indexBufferPtr{new gl::IBO()},
   	m_tex{tex}
 {
 
@@ -21,7 +22,7 @@ TexturePass::TexturePass(Texture & tex)
 	   	-1.f, 1.f, 0.f
 	});
 	m_vertexArray.attachVBO(*m_vertexBufferPtr, 0, 0);
-	
+
 	m_indexBufferPtr->insertData({
 		0, 1, 2,
 		2, 3, 0
@@ -38,8 +39,7 @@ void TexturePass::draw() {
 	m_program.use();
 
 	m_program["tex"] = {0};
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_tex);
+	glBindTextureUnit(0, m_tex);
 
 	glBindVertexArray(m_vertexArray);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);

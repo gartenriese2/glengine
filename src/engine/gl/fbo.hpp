@@ -4,7 +4,9 @@
 #include "glincludes.hpp"
 #include "globject.hpp"
 
-class Texture;
+#include "texture.hpp"
+
+namespace gl {
 
 class FBO : public gl::Object {
 
@@ -17,8 +19,8 @@ class FBO : public gl::Object {
 
 		void bind(GLenum = GL_FRAMEBUFFER) const;
 		void unbind(GLenum = GL_FRAMEBUFFER) const;
-		void attachColorTexture(const Texture &, GLenum = GL_FRAMEBUFFER);
-		void attachDepthTexture(const Texture &, GLenum = GL_FRAMEBUFFER);
+		void attachColorTexture(const gl::Texture &, GLenum = GL_FRAMEBUFFER);
+		void attachDepthTexture(const gl::Texture &, GLenum = GL_FRAMEBUFFER);
 
 		void checkError(GLenum = GL_FRAMEBUFFER) const;
 
@@ -30,5 +32,7 @@ class FBO : public gl::Object {
 		unsigned int m_colorAttachments;
 
 };
+
+} // namespace gl
 
 #endif // _FBO_

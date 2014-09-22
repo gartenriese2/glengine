@@ -16,7 +16,7 @@ RaycastingPass::RaycastingPass() {
 
 }
 
-void RaycastingPass::draw(const Camera & cam, const FBO & fbo, const std::vector<std::shared_ptr<Light>> lights) {
+void RaycastingPass::draw(const Camera & cam, const gl::FBO & fbo, const std::vector<std::shared_ptr<Light>> lights) {
 
 	fbo.bind();
 

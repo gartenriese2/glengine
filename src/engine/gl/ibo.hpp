@@ -12,14 +12,20 @@ class IBO : public gl::Buffer {
 
 	public:
 
-		IBO() {}
-		IBO(const IBO &);
-		IBO(IBO &&) {}
-		IBO & operator=(const IBO &) &;
-		IBO & operator=(IBO &&) { return *this; }
-		~IBO() {}
+		IBO() noexcept;
+		IBO(const IBO &) = default;
+		IBO(IBO &&) noexcept;
+		IBO & operator=(IBO) noexcept;
+		virtual ~IBO() {}
 
 		void insertData(const std::vector<GLushort> &);
+
+	protected:
+
+		friend void swap(IBO & a, IBO & b) noexcept {
+			using std::swap;
+			swap(static_cast<gl::Buffer &>(a), static_cast<gl::Buffer &>(b));
+		}
 
 };
 

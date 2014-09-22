@@ -3,6 +3,8 @@
 #include "texture.hpp"
 #include "../debug.hpp"
 
+namespace gl {
+
 FBO::FBO()
   : gl::Object(GL_FRAMEBUFFER),
   	m_colorAttachments{0}
@@ -34,7 +36,7 @@ void FBO::unbind(GLenum target) const {
 
 }
 
-void FBO::attachColorTexture(const Texture & tex, GLenum target) {
+void FBO::attachColorTexture(const gl::Texture & tex, GLenum target) {
 
 	if (isValid()) {
 		
@@ -45,7 +47,7 @@ void FBO::attachColorTexture(const Texture & tex, GLenum target) {
 
 }
 
-void FBO::attachDepthTexture(const Texture & tex, GLenum target) {
+void FBO::attachDepthTexture(const gl::Texture & tex, GLenum target) {
 
 	if (isValid()) {
 		
@@ -85,3 +87,5 @@ void FBO::blit(GLenum src, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
 	}
 
 }
+
+} // namespace gl

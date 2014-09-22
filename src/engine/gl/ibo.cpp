@@ -4,34 +4,20 @@
 
 namespace gl {
 
-IBO::IBO(const IBO & other) {
-
-	if (other.isValid()) {
-
-		GLint size {0};
-		glGetNamedBufferParameteriv(other, GL_BUFFER_SIZE, &size);
-
-		glNamedBufferData(m_name, size, nullptr, GL_STATIC_DRAW);
-		glCopyNamedBufferSubData(other, m_name, 0, 0, size);
-
-	}
-	
+IBO::IBO() noexcept
+  : gl::Buffer{}
+{
 }
 
-IBO & IBO::operator=(const IBO & other) & {
+IBO::IBO(IBO && other) noexcept
+  : IBO{}
+{
+	swap(*this, other);
+}
 
-	if (this != &other && other.isValid()) {
-
-		GLint size {0};
-		glGetNamedBufferParameteriv(other, GL_BUFFER_SIZE, &size);
-
-		glNamedBufferData(m_name, size, nullptr, GL_STATIC_DRAW);
-		glCopyNamedBufferSubData(other, m_name, 0, 0, size);
-
-	}
-
+IBO & IBO::operator=(IBO other) noexcept {
+	swap(*this, other);
 	return *this;
-
 }
 
 void IBO::insertData(const std::vector<GLushort> & data) {

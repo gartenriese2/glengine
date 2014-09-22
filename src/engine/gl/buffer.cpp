@@ -4,68 +4,39 @@
 
 namespace gl {
 
-Buffer::Buffer()
-  : gl::Object(GL_BUFFER)
+Buffer::Buffer() noexcept
+  : gl::Object{GL_BUFFER}
 {
-
 	glCreateBuffers(1, &m_name);
-	assert(isValid());
-	
 }
 
-Buffer::Buffer(const Buffer & other)
-  : gl::Object(GL_BUFFER)
+Buffer::Buffer(const Buffer & other) noexcept
+  : gl::Object{other}
 {
 
 	glCreateBuffers(1, &m_name);
 
+	if (other.isValid()) {
+
+		GLuint otherSize {other.getSize()};
+
+		glNamedBufferData(m_name, otherSize, nullptr, GL_STATIC_DRAW);
+		glCopyNamedBufferSubData(other, m_name, 0, 0, otherSize);
+
+	}
+
 }
 
-Buffer::Buffer(Buffer && other)
-  : gl::Object(GL_BUFFER)
+Buffer::Buffer(Buffer && other) noexcept
+  : Buffer{}
 {
-
-	if (isValid()) {
-		
-		glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
-		glDeleteBuffers(1, &m_name);
-
-	}
-
-	std::swap(m_name, other.m_name);
-
+	swap(*this, other);
 }
 
-Buffer & Buffer::operator=(const Buffer & other) {
-
-	if (!isValid()) {
-
-		glCreateBuffers(1, &m_name);
-
-	}
-
+Buffer & Buffer::operator=(Buffer other) noexcept {
+	swap(*this, other);
 	return *this;
-
 };
-
-Buffer & Buffer::operator=(Buffer && other) & {
-
-	if (this != &other) {
-
-		if (isValid()) {
-			
-			glNamedBufferData(m_name, 0, nullptr, GL_STREAM_DRAW);
-			glDeleteBuffers(1, &m_name);
-
-		}
-
-		std::swap(m_name, other.m_name);
-
-	}
-
-	return *this;
-
-}
 
 Buffer::~Buffer() {
 
@@ -86,14 +57,13 @@ bool Buffer::isValid() const {
 
 GLuint Buffer::getSize() const {
 
-	//GLint size {0};
-	GLint size[128];
+	GLint size {0};
 
 	if (isValid()){
-		glGetNamedBufferParameteriv(m_name, GL_BUFFER_SIZE, size);
+		glGetNamedBufferParameteriv(m_name, GL_BUFFER_SIZE, &size);
 	}
 
-	return static_cast<GLuint>(*size);
+	return static_cast<GLuint>(size);
 
 }
 

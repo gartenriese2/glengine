@@ -24,12 +24,12 @@ class GBufferRender : public Render {
 	private:
 
 		Camera & m_cam;
-		FBO m_fbo;
-		Texture m_colorTex;
-		Texture m_depthTex;
-		Texture m_normalTex;
-		Texture m_positionTex;
-		Texture m_depthAttachment;
+		gl::FBO m_fbo;
+		gl::Texture m_colorTex;
+		gl::Texture m_depthTex;
+		gl::Texture m_normalTex;
+		gl::Texture m_positionTex;
+		gl::Texture m_depthAttachment;
 		GBufferPass m_gbufferPass;
 
 };

@@ -4,7 +4,9 @@
 #include "pass.hpp"
 #include "../gl/shaderstoragebuffer.hpp"
 
-class FBO;
+namespace gl {
+	class FBO;
+};
 
 class RaycastingPass : public Pass {
 
@@ -12,7 +14,7 @@ class RaycastingPass : public Pass {
 
 		RaycastingPass();
 
-		void draw(const Camera &, const FBO &, const std::vector<std::shared_ptr<Light>>);
+		void draw(const Camera &, const gl::FBO &, const std::vector<std::shared_ptr<Light>>);
 
 	private:
 

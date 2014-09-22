@@ -12,7 +12,7 @@ class TexturePass : public Pass {
 
  	public:
 
- 		TexturePass(Texture &);
+ 		TexturePass(gl::Texture &);
  		~TexturePass() {}
 
  		void draw();
@@ -22,7 +22,7 @@ class TexturePass : public Pass {
  		gl::VAO m_vertexArray;
  		std::shared_ptr<gl::VBO> m_vertexBufferPtr;
  		std::shared_ptr<gl::IBO> m_indexBufferPtr;
- 		Texture & m_tex;
+ 		gl::Texture & m_tex;
 
 };
 

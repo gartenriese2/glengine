@@ -480,12 +480,12 @@ void mapcity() {
 
 int main() {
 
-	ampelDemo();
+	//ampelDemo();
 	//rotateDemo();
 	// secondWindowDemo();
 	// test();
 	//coneTest();
-	//fbo();
+	fbo();
 	// spline();
 	//raytracing();
 	 //mapcity();

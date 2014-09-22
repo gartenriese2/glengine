@@ -8,36 +8,19 @@
 
 namespace gl {
 
-VAO::VAO()
+VAO::VAO() noexcept
   : gl::Object(GL_VERTEX_ARRAY)
 {
-
 	glCreateVertexArrays(1, &m_name);
-
 }
 
-VAO & VAO::operator=(VAO && other) & {
-
-	if (this != &other) {
-
-		if (isValid()) {
-
-			glDeleteVertexArrays(1, &m_name);
-
-		}
-		
-		std::swap(m_name, other.m_name);
-
-	}
-
+VAO & VAO::operator=(VAO && other) noexcept {
+	swap(*this, other);
 	return *this;
-
 }
 
 VAO::~VAO() {
-
 	glDeleteVertexArrays(1, &m_name);
-
 }
 
 bool VAO::isValid() const {

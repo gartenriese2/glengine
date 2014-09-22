@@ -32,12 +32,12 @@ class RaytracingRender : public Render {
 
 		Camera & m_cam;
 		std::vector<std::shared_ptr<Light>> m_lights;
-		FBO m_fbo;
-		Texture m_colorTex;
-		Texture m_positionTex;
-		Texture m_reflectedTex;
-		Texture m_depthAttachment;
-		Texture m_result;
+		gl::FBO m_fbo;
+		gl::Texture m_colorTex;
+		gl::Texture m_positionTex;
+		gl::Texture m_reflectedTex;
+		gl::Texture m_depthAttachment;
+		gl::Texture m_result;
 		RaycastingPass m_raycastingPass;
 		RaycomputingPass m_raycomputingPass;
 		TexturePass m_texturePass;

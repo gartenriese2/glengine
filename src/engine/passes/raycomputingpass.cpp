@@ -6,7 +6,8 @@
 #include "../light.hpp"
 #include "../gl/texture.hpp"
 
-RaycomputingPass::RaycomputingPass(Texture & positionTex, Texture & directionTex, Texture & color, Texture & result)
+RaycomputingPass::RaycomputingPass(gl::Texture & positionTex, gl::Texture & directionTex,
+	gl::Texture & color, gl::Texture & result)
   : m_positionTex(positionTex),
   	m_directionTex(directionTex),
   	m_colorTex(color),
@@ -28,16 +29,13 @@ void RaycomputingPass::draw(const Camera & cam, const std::vector<std::shared_pt
 	m_program["windowHeight"] = cam.getHeight();
 
 	m_program["positionTex"] = 0;
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_positionTex);
+	glBindTextureUnit(0, m_positionTex);
 
 	m_program["directionTex"] = 1;
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_directionTex);
+	glBindTextureUnit(1, m_directionTex);
 
 	m_program["colorTex"] = 2;
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, m_colorTex);
+	glBindTextureUnit(2, m_colorTex);
 
 	m_triangleBuffer.bindTo(0);
 	m_lightBuffer.bindTo(1);

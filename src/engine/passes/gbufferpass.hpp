@@ -3,7 +3,9 @@
 
 #include "pass.hpp"
 
-class FBO;
+namespace gl {
+	class FBO;
+};
 
 class GBufferPass : public Pass {
 
@@ -11,7 +13,7 @@ class GBufferPass : public Pass {
 
 		GBufferPass();
 
-		void draw(const Camera &, const FBO &);
+		void draw(const Camera &, const gl::FBO &);
 
 };
 

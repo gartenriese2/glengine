@@ -10,15 +10,15 @@ namespace gl {
 
 class VBO : public gl::Buffer {
 
+		static constexpr GLuint k_defaultChannelSize {4};
+
 	public:
 
-		VBO();
-		VBO(GLuint);
-		VBO(const VBO &);
-		VBO(VBO &&);
-		VBO & operator=(const VBO &) &;
-		VBO & operator=(VBO &&);
-		~VBO() {}
+		VBO(GLuint = k_defaultChannelSize) noexcept;
+		VBO(const VBO &) = default;
+		VBO(VBO &&) noexcept;
+		VBO & operator=(VBO) noexcept;
+		virtual ~VBO() {}
 
 		GLuint getChannels() const { return m_channels; }
 		GLenum getType() const { return GL_FLOAT; }
@@ -27,7 +27,13 @@ class VBO : public gl::Buffer {
 
 		void insertData(const std::vector<GLfloat> &, GLenum = GL_STATIC_DRAW);
 
-	private:
+	protected:
+
+		friend void swap(VBO & a, VBO & b) noexcept {
+			using std::swap;
+			swap(static_cast<gl::Buffer &>(a), static_cast<gl::Buffer &>(b));
+			swap(a.m_channels, b.m_channels);
+		}
 
 		GLuint m_channels;
 

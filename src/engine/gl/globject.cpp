@@ -1,26 +1,33 @@
 #include "globject.hpp"
-#include <istream>
 
 namespace gl {
 
-Object::Object(GLenum identifier)
+Object::Object(GLenum identifier) noexcept
   : m_name{0},
   	m_identifier{identifier}
 {
 }
 
-Object::Object(const Object & other)
-  : m_name{0},
+Object::Object(const Object & other) noexcept
+  : m_name{other.m_name},
     m_identifier{other.m_identifier}
 {
 }
 
-Object::Object(Object && other)
-  : m_name{0},
-  	m_identifier{GL_NONE}
+Object::Object(Object && other) noexcept
+  : Object(GL_NONE)
 {
-	std::swap(m_name, other.m_name);
-	std::swap(m_identifier, other.m_identifier);
+	swap(*this, other);
+}
+
+Object & Object::operator=(Object other) noexcept {
+    swap(*this, other);
+    return *this;
+}
+
+Object::~Object() {
+	m_name = 0;
+	m_identifier = GL_NONE;
 }
 
 void Object::setLabel(const std::string & name) {
@@ -33,11 +40,13 @@ void Object::setLabel(const std::string & name) {
 
 const std::string Object::getLabel() {
 
-	const unsigned int size {GL_MAX_LABEL_LENGTH};
-	char label[size];
-	GLsizei len[size];
+	GLint size {0};
+	glGetIntegerv(GL_MAX_LABEL_LENGTH, &size);
+	/*GLchar label[size];*/ // NO VLA
+	GLchar label[1024];
+	GLsizei len {0};
 
-	glGetObjectLabel(m_identifier, m_name, size, len, label);
+	glGetObjectLabel(m_identifier, m_name, size, &len, label);
 	
 	return label;
 

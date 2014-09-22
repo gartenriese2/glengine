@@ -12,16 +12,22 @@ class Buffer : public gl::Object {
 
 	public:
 
-		Buffer();
-		Buffer(const Buffer &);
-		Buffer(Buffer &&);
-		Buffer & operator=(const Buffer &);
-		Buffer & operator=(Buffer &&) &;
+		Buffer() noexcept;
+		Buffer(const Buffer &) noexcept;
+		Buffer(Buffer &&) noexcept;
+		Buffer & operator=(Buffer) noexcept;
 		virtual ~Buffer();
 
 		virtual bool isValid() const override;
 
 		GLuint getSize() const;
+
+	protected:
+
+		friend void swap(Buffer & a, Buffer & b) noexcept {
+			using std::swap;
+			swap(static_cast<gl::Object &>(a), static_cast<gl::Object &>(b));
+		}
 
 };
 

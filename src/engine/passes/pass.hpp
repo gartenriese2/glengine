@@ -11,7 +11,9 @@
 
 class Light;
 class Camera;
-class FBO;
+namespace gl {
+	class FBO;
+};
 
 class Pass {
 	
@@ -26,8 +28,8 @@ class Pass {
 		virtual void draw() {}
 		virtual void draw(const Camera &) {}
 		virtual void draw(const Camera &, const std::vector<std::shared_ptr<Light>>) {}
-		virtual void draw(const Camera &, const FBO &) {}
-		virtual void draw(const Camera &, const FBO &, const std::vector<std::shared_ptr<Light>>) {}
+		virtual void draw(const Camera &, const gl::FBO &) {}
+		virtual void draw(const Camera &, const gl::FBO &, const std::vector<std::shared_ptr<Light>>) {}
 
 		void addObjects(std::set<unsigned long> set) { m_objects.insert(set.cbegin(), set.cend()); }
 		void removeObject(unsigned long id) { m_objects.erase(id); }
