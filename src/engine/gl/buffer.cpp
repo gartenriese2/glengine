@@ -18,7 +18,7 @@ Buffer::Buffer(const Buffer & other) noexcept
 
 	if (other.isValid()) {
 
-		GLuint otherSize {other.getSize()};
+		GLuint otherSize {other.getByteSize()};
 
 		glNamedBufferData(m_name, otherSize, nullptr, GL_STATIC_DRAW);
 		glCopyNamedBufferSubData(other, m_name, 0, 0, otherSize);
@@ -55,7 +55,7 @@ bool Buffer::isValid() const {
 
 }
 
-GLuint Buffer::getSize() const {
+GLuint Buffer::getByteSize() const {
 
 	GLint size {0};
 

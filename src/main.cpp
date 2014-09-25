@@ -394,7 +394,7 @@ void raytracing() {
 	spotlight.setAsSpotLight();
 	spotlight.setSpotCutoff(0.1f);
 	spotlight.setSpotExponent(2.f);
-	// spotlight.setColor({0.f, 0.f, 1.f});
+	//spotlight.setColor({0.f, 0.f, 1.f});
 	RenderID lighting = w.createRaytracingRendering(cam, {spotlight});
 	// RenderID lighting = w.createBasicLightingRendering(cam, {spotlight});
 	lighting.set();
@@ -417,15 +417,18 @@ void raytracing() {
 	cube.rotate(0.785f, {0.f, 1.f, 0.f});
 	ObjectID cube2 = w.createCuboid({-1.f, -1.f, 1.f}, {1.f, -1.f, 1.f}, {-1.f, 1.f, 1.f},
 		{-1.f, -1.f, -1.f}, {0.9f, 0.9f, 0.f});
+	ObjectID cube3 = w.createCuboidInstance();
+	cube3.move(1.f, {2.f, 2.f, 0.f});
 	// ObjectID sphere = w.createSphere({2.5f, -3.f, -2.5f}, 2.f, 12, 12, {0.9f, 0.9f, 0.9f});
 
-	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, cube2});	
+	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, cube2, cube3});	
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;
 	while(1) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
 		cube2.rotate(6.28f * rotPerSecond * step, {0.f, 1.f, 0.f});
+		cube3.rotate(3.14f * rotPerSecond * step, {1.f, 0.f, 0.f});
 	}
 
 }
@@ -485,9 +488,9 @@ int main() {
 	// secondWindowDemo();
 	// test();
 	//coneTest();
-	fbo();
+	//fbo();
 	// spline();
-	//raytracing();
+	raytracing();
 	 //mapcity();
 
 	return 0;

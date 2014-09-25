@@ -41,8 +41,6 @@ class Cuboid : public Object {
 		void init(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::vector<GLfloat> &);
 
-		unsigned int m_indices;
-
 };
 
 #endif // _CUBOID_

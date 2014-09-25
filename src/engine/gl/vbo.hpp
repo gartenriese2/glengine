@@ -23,6 +23,7 @@ class VBO : public gl::Buffer {
 		GLuint getChannels() const { return m_channels; }
 		GLenum getType() const { return GL_FLOAT; }
 		GLuint getTypeSize() const { return sizeof(GLfloat); }
+		GLuint getSize() const { return getByteSize() / getTypeSize(); }
 		bool normalized() const { return false; }
 
 		void insertData(const std::vector<GLfloat> &, GLenum = GL_STATIC_DRAW);

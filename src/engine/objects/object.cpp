@@ -122,7 +122,7 @@ void Object::scale(const glm::vec3 & val) {
 
 void Object::scaleColor(float scale) {
 
-	GLuint size = m_colorBufferPtr->getSize() / m_colorBufferPtr->getTypeSize();
+	GLuint size = m_colorBufferPtr->getSize();
 
 	GLfloat * data = (GLfloat *) glMapNamedBuffer(*m_colorBufferPtr, GL_READ_WRITE);
 
@@ -139,13 +139,13 @@ void Object::scaleColor(float scale) {
 
 void Object::setColor(const std::initializer_list<glm::vec3> & colors) {
 
-	m_colorBufferPtr->insertData(getColorVector(colors, static_cast<unsigned int>(m_colorBufferPtr->getSize())));
+	m_colorBufferPtr->insertData(getColorVector(colors, static_cast<unsigned int>(m_colorBufferPtr->getByteSize())));
 
 }
 
 void Object::setColor(const glm::vec3 & color) {
 
-	m_colorBufferPtr->insertData(getColorVector(color, static_cast<unsigned int>(m_colorBufferPtr->getSize())));
+	m_colorBufferPtr->insertData(getColorVector(color, static_cast<unsigned int>(m_colorBufferPtr->getByteSize())));
 
 }
 

@@ -20,7 +20,7 @@ class Buffer : public gl::Object {
 
 		virtual bool isValid() const override;
 
-		GLuint getSize() const;
+		GLuint getByteSize() const;
 
 	protected:
 

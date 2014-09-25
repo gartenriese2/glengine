@@ -35,6 +35,7 @@ class ObjectInterface {
 			const glm::vec3 &, const glm::vec3 &);
 		static void createCuboid(unsigned long, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
+		static void createCuboidInstance(unsigned long);
 
 		// CONE
 		static void createCone(unsigned long, const glm::vec3 &, const glm::vec3 &, float, float, float,

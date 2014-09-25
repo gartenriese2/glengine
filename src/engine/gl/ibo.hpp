@@ -18,6 +18,9 @@ class IBO : public gl::Buffer {
 		IBO & operator=(IBO) noexcept;
 		virtual ~IBO() {}
 
+		GLuint getTypeSize() const { return sizeof(GLushort); }
+		GLuint getSize() const { return getByteSize() / getTypeSize(); }
+
 		void insertData(const std::vector<GLushort> &);
 
 	protected:

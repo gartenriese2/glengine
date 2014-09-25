@@ -38,7 +38,7 @@ void ObjectInterface::createTriangle(unsigned long id, const glm::vec3 & a, cons
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Triangle(a, b, c, col)));
+	addObject(id, std::shared_ptr<Object>(new Triangle(a, b, c, col)));
 
 }
 
@@ -47,7 +47,7 @@ void ObjectInterface::createTriangle(unsigned long id, const glm::vec3 & a, cons
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Triangle(a, b, c, colors)));
+	addObject(id, std::shared_ptr<Object>(new Triangle(a, b, c, colors)));
 
 }
 
@@ -56,7 +56,7 @@ void ObjectInterface::createQuadrilateral(unsigned long id, const glm::vec3 & a,
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, col)));
+	addObject(id, std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, col)));
 
 }
 
@@ -65,7 +65,7 @@ void ObjectInterface::createQuadrilateral(unsigned long id, const glm::vec3 & a,
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, colors)));
+	addObject(id, std::shared_ptr<Object>(new Quadrilateral(a, b, c, d, colors)));
 
 }
 
@@ -74,7 +74,7 @@ void ObjectInterface::createCircle(unsigned long id, const glm::vec3 & center, c
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Circle(center, axis, radius, edges, color)));
+	addObject(id, std::shared_ptr<Object>(new Circle(center, axis, radius, edges, color)));
 
 }
 
@@ -83,7 +83,7 @@ void ObjectInterface::createCircle(unsigned long id, const glm::vec3 & center, c
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Circle(center, axis, radius, edges, colors)));
+	addObject(id, std::shared_ptr<Object>(new Circle(center, axis, radius, edges, colors)));
 
 }
 
@@ -92,7 +92,7 @@ void ObjectInterface::createCuboid(unsigned long id, const glm::vec3 & a, const 
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Cuboid(a, b, c, d, col)));
+	addObject(id, std::shared_ptr<Object>(new Cuboid(a, b, c, d, col)));
 
 }
 
@@ -101,7 +101,21 @@ void ObjectInterface::createCuboid(unsigned long id, const glm::vec3 & a, const 
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Cuboid(a, b, c, d, colors)));
+	addObject(id, std::shared_ptr<Object>(new Cuboid(a, b, c, d, colors)));
+
+}
+
+void ObjectInterface::createCuboidInstance(unsigned long id) {
+
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	static std::shared_ptr<Object> ptr;
+	if (!ptr) {
+		ptr = std::shared_ptr<Object>(new Cuboid({-0.5f, -0.5f, 0.5f}, {0.5f, -0.5f, 0.5f}, {-0.5f, -0.5f, -0.5f},
+			{-0.5f, 0.5f, 0.5f}, {1.f, 1.f, 1.f}));
+	}
+
+	addObject(id, ptr);
 
 }
 
@@ -110,7 +124,7 @@ void ObjectInterface::createCone(unsigned long id, const glm::vec3 & base, const
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Cone(base, axis, length, lowerRadius, upperRadius, sections, col)));
+	addObject(id, std::shared_ptr<Object>(new Cone(base, axis, length, lowerRadius, upperRadius, sections, col)));
 
 }
 
@@ -119,7 +133,7 @@ void ObjectInterface::createCone(unsigned long id, const glm::vec3 & base, const
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Cone(base, axis, length, lowerRadius, upperRadius, sections, colors)));
+	addObject(id, std::shared_ptr<Object>(new Cone(base, axis, length, lowerRadius, upperRadius, sections, colors)));
 
 }
 
@@ -128,7 +142,7 @@ void ObjectInterface::createSphere(unsigned long id, const glm::vec3 & center, f
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Sphere(center, radius, rings, sectors, color)));
+	addObject(id, std::shared_ptr<Object>(new Sphere(center, radius, rings, sectors, color)));
 
 }
 
@@ -137,7 +151,7 @@ void ObjectInterface::createSphere(unsigned long id, const glm::vec3 & center, f
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Sphere(center, radius, rings, sectors, colors)));
+	addObject(id, std::shared_ptr<Object>(new Sphere(center, radius, rings, sectors, colors)));
 
 }
 
@@ -147,7 +161,7 @@ void ObjectInterface::createSpline(unsigned long id, const glm::vec3 & start, co
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Spline(start, dirStart, end, dirEnd, up,
+	addObject(id, std::shared_ptr<Object>(new Spline(start, dirStart, end, dirEnd, up,
 		widthStart, widthEnd, steps, smooth, color)));
 
 }
@@ -157,7 +171,7 @@ void ObjectInterface::createSpline(unsigned long id, const std::vector<glm::vec3
 
 	std::lock_guard<std::mutex> lock(s_mutex);
 
-	return addObject(id, std::shared_ptr<Object>(new Spline(path, up, width, color)));
+	addObject(id, std::shared_ptr<Object>(new Spline(path, up, width, color)));
 
 }
 
@@ -166,7 +180,7 @@ void ObjectInterface::copyObject(unsigned long orig, unsigned long copy) {
 	std::lock_guard<std::mutex> lock(s_mutex);
 
 	instance().checkID(orig);
-	return addObject(copy, instance().m_objects.at(orig)->getCopy());
+	addObject(copy, instance().m_objects.at(orig)->getCopy());
 
 }
 

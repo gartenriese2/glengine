@@ -109,6 +109,7 @@ class WindowID {
 			const glm::vec3 &, const glm::vec3 &);
 		const ObjectID & createCuboid(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
+		const ObjectID & createCuboidInstance();
 
 		const ObjectID & createCone(const glm::vec3 &, const glm::vec3 &, float, float, float,
 			unsigned int, const glm::vec3 &);

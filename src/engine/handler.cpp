@@ -314,6 +314,20 @@ const ObjectID & WindowID::createCuboid(const glm::vec3 & a, const glm::vec3 & b
 
 }
 
+const ObjectID & WindowID::createCuboidInstance() {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createCuboidInstance(id);
+	});
+
+	return *m_objects.back();
+
+}
+
 const ObjectID & WindowID::createCone(const glm::vec3 & base, const glm::vec3 & axis, float length,
 	float lowerRadius, float upperRadius, unsigned int sections, const glm::vec3 & color) {
 

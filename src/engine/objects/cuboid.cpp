@@ -69,7 +69,6 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	};
 
 	m_vertexBufferPtr->insertData(vertices);
-	
 
 	m_colorBufferPtr->insertData(colors);
 
@@ -142,8 +141,6 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 
 void Cuboid::draw() const {
 
-	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, (void*)0);
-	glBindVertexArray(0);
+	m_vao.draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()));
 
 }
