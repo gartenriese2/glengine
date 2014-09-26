@@ -105,20 +105,6 @@ void ObjectInterface::createCuboid(unsigned long id, const glm::vec3 & a, const 
 
 }
 
-void ObjectInterface::createCuboidInstance(unsigned long id) {
-
-	std::lock_guard<std::mutex> lock(s_mutex);
-
-	static std::shared_ptr<Object> ptr;
-	if (!ptr) {
-		ptr = std::shared_ptr<Object>(new Cuboid({-0.5f, -0.5f, 0.5f}, {0.5f, -0.5f, 0.5f}, {-0.5f, -0.5f, -0.5f},
-			{-0.5f, 0.5f, 0.5f}, {1.f, 1.f, 1.f}));
-	}
-
-	addObject(id, ptr);
-
-}
-
 void ObjectInterface::createCone(unsigned long id, const glm::vec3 & base, const glm::vec3 & axis, float length,
 			float lowerRadius, float upperRadius, unsigned int sections, const glm::vec3 & col) {
 
@@ -183,6 +169,25 @@ void ObjectInterface::copyObject(unsigned long orig, unsigned long copy) {
 	addObject(copy, instance().m_objects.at(orig)->getCopy());
 
 }
+
+template<class T>
+void ObjectInterface::createInstance(unsigned long id) {
+			
+	std::lock_guard<std::mutex> lock(s_mutex);
+
+	T tmp;
+
+	addObject(id, tmp.getInstance());
+
+}
+
+template void ObjectInterface::createInstance<Triangle>(unsigned long);
+template void ObjectInterface::createInstance<Quadrilateral>(unsigned long);
+template void ObjectInterface::createInstance<Circle>(unsigned long);
+template void ObjectInterface::createInstance<Cuboid>(unsigned long);
+template void ObjectInterface::createInstance<Cone>(unsigned long);
+template void ObjectInterface::createInstance<Sphere>(unsigned long);
+template void ObjectInterface::createInstance<Spline>(unsigned long);
 
 void ObjectInterface::draw(unsigned long id) {
 

@@ -30,13 +30,16 @@ class Cuboid : public Object {
 			const std::initializer_list<glm::vec3> & = {});
 		Cuboid(const Cuboid & t) : Object(t) {}
 
-		std::shared_ptr<Object> getCopy();
+		std::shared_ptr<Object> getCopy() override;
+		std::shared_ptr<Object> getInstance() const override;
 
-		void draw() const;
+		void draw() const override;
 
-		unsigned int getType() const { return CUBOID; }
+		unsigned int getType() const override { return CUBOID; }
 
 	private:
+
+		Cuboid() {};
 
 		void init(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::vector<GLfloat> &);

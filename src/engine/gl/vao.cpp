@@ -42,9 +42,9 @@ void VAO::attachVBO(const gl::VBO & vbo, GLuint index, GLuint attribindex) {
 
 }
 
-void VAO::attachIBO(const std::shared_ptr<gl::IBO> ibo) {
+void VAO::attachIBO(const gl::IBO & ibo) {
 
-	attachIndexBuffer(*ibo);
+	attachIndexBuffer(ibo);
 
 }
 

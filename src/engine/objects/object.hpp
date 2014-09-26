@@ -43,16 +43,23 @@ class Object {
 
 		virtual ~Object() {}
 
+		void makeInstance(const Object &);
+
 	protected:
 
 		friend ObjectInterface;
 
-		Object();
+		Object() {};
 		Object(const Object &);
 
+		void init();
+		void attachBuffers();
+
 		virtual std::shared_ptr<Object> getCopy() = 0;
+		virtual std::shared_ptr<Object> getInstance() const = 0;
 
 		virtual void draw() const = 0;
+		
 		const glm::mat4 & getModelMatrix() const { return m_modelMatrix; }
 		void rotate(float, const glm::vec3 &);
 		void rotateAround(float, const glm::vec3 &, const glm::vec3 &);
@@ -69,7 +76,7 @@ class Object {
 		virtual const std::vector<Tri> & getTriangles() const { return m_triangles; }
 		virtual unsigned int getType() const = 0;
 
-		gl::VAO m_vao;
+		std::shared_ptr<gl::VAO> m_vaoPtr;
 		std::shared_ptr<gl::VBO> m_vertexBufferPtr;
 		std::shared_ptr<gl::VBO> m_colorBufferPtr;
 		std::shared_ptr<gl::VBO> m_normalBufferPtr;

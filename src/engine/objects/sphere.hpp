@@ -30,7 +30,8 @@ class Sphere : public Object {
 			const std::initializer_list<glm::vec3> & = {});
 		Sphere(const Sphere & t) : Object(t) {}
 
-		std::shared_ptr<Object> getCopy();
+		std::shared_ptr<Object> getCopy() override;
+		std::shared_ptr<Object> getInstance() const override;
 
 		void draw() const;
 
@@ -38,10 +39,10 @@ class Sphere : public Object {
 
 	private:
 
+		Sphere() {}
+
 		void init(const glm::vec3 &, float, unsigned int, unsigned int,
 			const std::vector<GLfloat> &);
-
-		unsigned int m_indices;
 
 };
 

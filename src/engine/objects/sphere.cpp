@@ -33,8 +33,21 @@ std::shared_ptr<Object> Sphere::getCopy() {
 
 }
 
+std::shared_ptr<Object> Sphere::getInstance() const {
+
+	static std::shared_ptr<Object> ptr(new Sphere({0.f, 0.f, 0.f}, 0.5f, 50, 50,
+		{1.f, 1.f, 1.f}));
+	
+	std::shared_ptr<Object> instance(new Sphere());
+	instance->makeInstance(*ptr);
+	return instance;
+
+}
+
 void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 	unsigned int sectors, const std::vector<GLfloat> & colors) {
+
+	Object::init();
 
 	setCenter({0.f, 0.f, 0.f});
 
@@ -104,8 +117,6 @@ void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 
 	}
 
-	m_indices = static_cast<unsigned int>(indices.size());
-
 	m_vertexBufferPtr->insertData(vertices);
 
 	m_colorBufferPtr->insertData(colors);
@@ -124,8 +135,6 @@ void Sphere::init(const glm::vec3 & center, float radius, unsigned int rings,
 
 void Sphere::draw() const {
 
-	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indices) * 3, GL_UNSIGNED_SHORT, (void*)0);
-	glBindVertexArray(0);
+	m_vaoPtr->draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()));
 
 }

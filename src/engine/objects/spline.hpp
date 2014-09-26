@@ -28,7 +28,8 @@ class Spline : public Object {
 		Spline(const std::vector<glm::vec3> &, const glm::vec3 &, float, const glm::vec3 &);
 		Spline(const Spline & t) : Object(t) {}
 
-		std::shared_ptr<Object> getCopy();
+		std::shared_ptr<Object> getCopy() override;
+		std::shared_ptr<Object> getInstance() const override;
 
 		void draw() const;
 
@@ -36,9 +37,9 @@ class Spline : public Object {
 
 	private:
 
-		void init(const std::vector<glm::vec3> &, const glm::vec3 &, const glm::vec3 &);
+		Spline() {}
 
-		unsigned int m_indices;
+		void init(const std::vector<glm::vec3> &, const glm::vec3 &, const glm::vec3 &);
 
 };
 

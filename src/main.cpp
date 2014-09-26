@@ -65,9 +65,14 @@ void ampelDemo() {
 
 	});
 
-	ObjectID red = w.createCircle({0.f, 1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.25f, 0.f, 0.f});
-	ObjectID orange = w.createCircle({0.f, 0.f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {1.0f, 0.5f, 0.f});
-	ObjectID green = w.createCircle({0.f, -1.5f, 0.f}, {0.f, 0.f, 1.f}, 0.5f, 50, {0.f, 0.25f, 0.f});
+	ObjectID red {w.createCircleInstance()};
+	red.moveTo({0.f, 1.5f, 0.f});
+	red.setColor({0.25f, 0.f, 0.f});
+	ObjectID orange {w.createCircleInstance()};
+	orange.setColor({1.0f, 0.5f, 0.f});
+	ObjectID green {w.createCircleInstance()};
+	green.moveTo({0.f, -1.5f, 0.f});
+	green.setColor({0.f, 0.25f, 0.f});
 	basic.addObjects({red, orange, green});
 
 	float step = 0.001f;
@@ -103,7 +108,7 @@ void rotateDemo() {
 
 	WindowID w = e.createWindow(800, 800);
 
-	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
+	CameraID cam = w.createCamera({0.f, 0.f, 10.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
 	RenderID basic = w.createBasicRendering(cam);
 	basic.set();
 
@@ -141,18 +146,20 @@ void secondWindowDemo() {
 	WindowID w1 = e.createWindow(800, 600);
 	WindowID w2 = e.createWindow(600, 800);
 
-	CameraID cam1 = w1.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
+	CameraID cam1 = w1.createCamera({0.f, 0.f, 10.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
 	RenderID basic1 = w1.createBasicRendering(cam1);
 	basic1.set();
-	CameraID cam2 = w2.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
+	CameraID cam2 = w2.createCamera({0.f, 0.f, 10.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
 	RenderID basic2 = w2.createBasicRendering(cam2);
 	basic2.set();
 
 	ObjectID q = w2.createQuadrilateral({-2.f, -2.f, 0.f}, {2.f, -2.f, 0.f}, {2.f, 2.f, 0.f}, {-2.f, 2.f, 0.f},
 			{{0.f, 1.f, 1.f}, {1.f, 0.f, 1.f}, {1.f, 1.f, 1.f}, {0.f, 0.f, 1.f}});
 	ObjectID q2 = w2.createCopy(q);
+	ObjectID q3 {w1.createQuadrilateralInstance()};
 
 	basic2.addObjects({q, q2});
+	basic1.addObjects({q3});
 
 	q2.moveTo({2.f, 0.f, -1.f});
 
@@ -163,6 +170,7 @@ void secondWindowDemo() {
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 * step)));
 
 		q2.rotate(-6.28f * 2*rotPerSecond * step, {0.f, 0.f, 1.f});
+		q3.rotate(3.14f * 2*rotPerSecond * step, {0.f, 0.f, 1.f});
 
 	}
 
@@ -174,8 +182,6 @@ void test() {
 	CameraID cam = w.createCamera({0.f, 2.5f, 5.f}, {0.f, -0.5f, -1.f}, {0.f, 1.f, -0.5f});
 	LightID light = w.createLight({10.f, 0.f, 0.f}, {-1.f, 0.f, -0.1f});
 	LightID spotlight = w.createLight({0.f, 0.f, -5.f}, {0.f, 0.f, -1.f});
-	// ObjectID flashlight = w.createCuboid({-0.3f, -0.2f, -3.f}, {0.3f, -0.2f, -3.f},
-	// 	{-0.3f, -0.2f, -5.f}, {-0.3f, 0.2f, -3.f}, {0.2f, 0.2f, 0.4f});
 	ObjectID flashlight = w.createCone({0.f, 0.f, -3.5f}, {0.f, 0.f, -1.f}, 1.5f, 0.3f, 0.3f, 50, {0.2f, 0.2f, 0.4f});
 	spotlight.setAsSpotLight();
 	spotlight.setSpotCutoff(0.1f);
@@ -419,6 +425,8 @@ void raytracing() {
 		{-1.f, -1.f, -1.f}, {0.9f, 0.9f, 0.f});
 	ObjectID cube3 = w.createCuboidInstance();
 	cube3.move(1.f, {2.f, 2.f, 0.f});
+	cube3.setColor({0.8f, 0.f, 0.8f});
+	cube3.setShininess(250.f);
 	// ObjectID sphere = w.createSphere({2.5f, -3.f, -2.5f}, 2.f, 12, 12, {0.9f, 0.9f, 0.9f});
 
 	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, cube2, cube3});	
@@ -485,13 +493,13 @@ int main() {
 
 	//ampelDemo();
 	//rotateDemo();
-	// secondWindowDemo();
-	// test();
+	//secondWindowDemo();
+	//test();
 	//coneTest();
 	//fbo();
-	// spline();
+	//spline();
 	raytracing();
-	 //mapcity();
+	//mapcity();
 
 	return 0;
 

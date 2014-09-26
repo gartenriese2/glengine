@@ -45,7 +45,7 @@ void BasicLightingPass::draw(const Camera & cam, const std::vector<std::shared_p
 		// fragment
 		m_program["camPos"] = cam.getPos();
 		m_program["viewDir"] = cam.getDir();
-		m_program["lightDataSize"] = size;
+		m_program["lightDataSize"] = static_cast<int>(size);
 		m_program["material.emission"] = ObjectID::getID(id)->getEmission();
 		m_program["material.ambient"] = ObjectID::getID(id)->getAmbient();
 		m_program["material.diffuse"] = ObjectID::getID(id)->getDiffuse();

@@ -5,30 +5,12 @@
 
 static const glm::vec3 k_defaultColor {1.f, 0.f, 0.f};
 
-Object::Object()
-  : m_vertexBufferPtr{new gl::VBO(3)},
-  	m_colorBufferPtr{new gl::VBO(3)},
-  	m_normalBufferPtr{new gl::VBO(3)},
-  	m_indexBufferPtr{new gl::IBO()},
-  	m_modelMatrix{glm::mat4(1.f)},
-  	m_scaleMatrix{glm::mat4(1.f)},
-  	m_rotationMatrix{glm::mat4(1.f)},
-  	m_translationMatrix{glm::mat4(1.f)},
-  	m_actualScale{1.f}
-{
-
-	m_vao.attachIBO(m_indexBufferPtr);
-	m_vao.attachVBO(*m_vertexBufferPtr, 0, 0);
-	m_vao.attachVBO(*m_colorBufferPtr, 1, 1);
-	m_vao.attachVBO(*m_normalBufferPtr, 2, 2);
-
-}
-
 Object::Object(const Object & other)
-  : m_vertexBufferPtr(other.m_vertexBufferPtr),
-  	m_colorBufferPtr(other.m_colorBufferPtr),
-  	m_normalBufferPtr(other.m_normalBufferPtr),
-  	m_indexBufferPtr(other.m_indexBufferPtr),
+  : m_vaoPtr(new gl::VAO()),
+  	m_vertexBufferPtr(new gl::VBO(*other.m_vertexBufferPtr)),
+  	m_colorBufferPtr(new gl::VBO(*other.m_colorBufferPtr)),
+  	m_normalBufferPtr(new gl::VBO(*other.m_normalBufferPtr)),
+  	m_indexBufferPtr(new gl::IBO(*other.m_indexBufferPtr)),
   	m_modelMatrix(other.m_modelMatrix),
   	m_scaleMatrix(other.m_scaleMatrix),
   	m_rotationMatrix(other.m_rotationMatrix),
@@ -37,10 +19,52 @@ Object::Object(const Object & other)
   	m_actualPosition(other.m_actualPosition),
   	m_actualScale(other.m_actualScale)
 {
-	m_vao.attachIBO(m_indexBufferPtr);
-	m_vao.attachVBO(*m_vertexBufferPtr, 0, 0);
-	m_vao.attachVBO(*m_colorBufferPtr, 1, 1);
-	m_vao.attachVBO(*m_normalBufferPtr, 2, 2);
+	attachBuffers();
+}
+
+void Object::init() {
+
+	m_vaoPtr = std::make_shared<gl::VAO>();
+	m_vertexBufferPtr = std::make_shared<gl::VBO>(3);
+  	m_colorBufferPtr = std::make_shared<gl::VBO>(3);
+  	m_normalBufferPtr = std::make_shared<gl::VBO>(3);
+  	m_indexBufferPtr = std::make_shared<gl::IBO>();
+  	m_modelMatrix = glm::mat4(1.f);
+  	m_scaleMatrix = glm::mat4(1.f);
+  	m_rotationMatrix = glm::mat4(1.f);
+  	m_translationMatrix = glm::mat4(1.f);
+  	m_actualScale = {1.f, 1.f, 1.f};
+
+  	attachBuffers();
+
+}
+
+void Object::attachBuffers() {
+
+	m_vaoPtr->attachIBO(*m_indexBufferPtr);
+	m_vaoPtr->attachVBO(*m_vertexBufferPtr, 0, 0);
+	m_vaoPtr->attachVBO(*m_colorBufferPtr, 1, 1);
+	m_vaoPtr->attachVBO(*m_normalBufferPtr, 2, 2);
+
+}
+
+void Object::makeInstance(const Object & other) {
+
+	m_vaoPtr = std::make_shared<gl::VAO>();
+	m_vertexBufferPtr = other.m_vertexBufferPtr;
+	m_colorBufferPtr = std::make_shared<gl::VBO>(*other.m_colorBufferPtr);
+	m_normalBufferPtr = other.m_normalBufferPtr;
+	m_indexBufferPtr = other.m_indexBufferPtr;
+	m_modelMatrix = other.m_modelMatrix;
+	m_scaleMatrix = other.m_scaleMatrix;
+	m_rotationMatrix = other.m_rotationMatrix;
+	m_translationMatrix = other.m_translationMatrix;
+	m_center = other.m_center;
+	m_actualPosition = other.m_actualPosition;
+	m_actualScale = other.m_actualScale;
+
+	attachBuffers();
+
 }
 
 void Object::rotate(float radians, const glm::vec3 & axis) {

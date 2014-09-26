@@ -28,13 +28,16 @@ class Triangle : public Object {
 		Triangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
 		Triangle(const Triangle & t) : Object(t) {}
 
-		std::shared_ptr<Object> getCopy();
+		std::shared_ptr<Object> getCopy() override;
+		std::shared_ptr<Object> getInstance() const override;
 
 		void draw() const;
 
 		unsigned int getType() const { return TRIANGLE; }
 
 	private:
+
+		Triangle() {}
 
 		void init(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const std::vector<GLfloat> &);
 

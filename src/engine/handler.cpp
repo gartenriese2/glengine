@@ -147,6 +147,14 @@ void ObjectID::attachTo(const ObjectID & other) {
 *
 */
 
+class Triangle;
+class Quadrilateral;
+class Circle;
+class Cuboid;
+class Cone;
+class Sphere;
+class Spline;
+
 WindowID::WindowID(std::shared_ptr<Window> ptr)
   : m_window(ptr)
 {
@@ -224,6 +232,20 @@ const ObjectID & WindowID::createTriangle(const glm::vec3 & a, const glm::vec3 &
 
 }
 
+const ObjectID & WindowID::createTriangleInstance() {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createInstance<Triangle>(id);
+	});
+
+	return *m_objects.back();
+
+}
+
 const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::vec3 & b,
 	const glm::vec3 & c, const glm::vec3 & d, const glm::vec3 & color) {
 
@@ -254,6 +276,20 @@ const ObjectID & WindowID::createQuadrilateral(const glm::vec3 & a, const glm::v
 
 }
 
+const ObjectID & WindowID::createQuadrilateralInstance() {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createInstance<Quadrilateral>(id);
+	});
+
+	return *m_objects.back();
+
+}
+
 const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec3 & axis, float radius,
 	unsigned int edges, const glm::vec3 & color) {
 
@@ -278,6 +314,20 @@ const ObjectID & WindowID::createCircle(const glm::vec3 & center, const glm::vec
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createCircle(id, center, axis, radius, edges, colors);
+	});
+
+	return *m_objects.back();
+
+}
+
+const ObjectID & WindowID::createCircleInstance() {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createInstance<Circle>(id);
 	});
 
 	return *m_objects.back();
@@ -321,7 +371,7 @@ const ObjectID & WindowID::createCuboidInstance() {
 	Loop & loop = m_window->getLoop();
 
 	loop.addCommand([=, &loop](){
-		ObjectInterface::createCuboidInstance(id);
+		ObjectInterface::createInstance<Cuboid>(id);
 	});
 
 	return *m_objects.back();
@@ -358,6 +408,20 @@ const ObjectID & WindowID::createCone(const glm::vec3 & base, const glm::vec3 & 
 
 }
 
+const ObjectID & WindowID::createConeInstance() {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createInstance<Cone>(id);
+	});
+
+	return *m_objects.back();
+
+}
+
 const ObjectID & WindowID::createSphere(const glm::vec3 & center, float radius, unsigned int rings,
 	unsigned int sectors, const glm::vec3 & color) {
 
@@ -382,6 +446,20 @@ const ObjectID & WindowID::createSphere(const glm::vec3 & center, float radius, 
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createSphere(id, center, radius, rings, sectors, colors);
+	});
+
+	return *m_objects.back();
+
+}
+
+const ObjectID & WindowID::createSphereInstance() {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createInstance<Sphere>(id);
 	});
 
 	return *m_objects.back();
@@ -413,6 +491,20 @@ const ObjectID & WindowID::createSpline(const std::vector<glm::vec3> & path, con
 
 	loop.addCommand([=, &loop](){
 		ObjectInterface::createSpline(id, path, up, width, color);
+	});
+
+	return *m_objects.back();
+
+}
+
+const ObjectID & WindowID::createSplineInstance() {
+
+	m_objects.emplace_back(ObjectID::create(*this));
+	unsigned long id = (*m_objects.back())();
+	Loop & loop = m_window->getLoop();
+
+	loop.addCommand([=, &loop](){
+		ObjectInterface::createInstance<Spline>(id);
 	});
 
 	return *m_objects.back();

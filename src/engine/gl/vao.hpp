@@ -23,7 +23,7 @@ class VAO : public gl::Object {
 		virtual bool isValid() const;
 
 		void attachVBO(const gl::VBO &, GLuint, GLuint);
-		void attachIBO(const std::shared_ptr<gl::IBO>);
+		void attachIBO(const gl::IBO &);
 
 		void draw(GLsizei, GLenum = GL_TRIANGLES, GLenum = GL_UNSIGNED_SHORT) const;
 

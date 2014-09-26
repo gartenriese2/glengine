@@ -22,7 +22,20 @@ std::shared_ptr<Object> Triangle::getCopy() {
 
 }
 
+std::shared_ptr<Object> Triangle::getInstance() const {
+
+	static std::shared_ptr<Object> ptr(new Triangle({-0.5f, -0.5f, 0.f}, {0.5f, -0.5f, 0.f},
+		{0.f, 0.5f, 0.f}, {1.f, 1.f, 1.f}));
+	
+	std::shared_ptr<Object> instance(new Triangle());
+	instance->makeInstance(*ptr);
+	return instance;
+
+}
+
 void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const std::vector<GLfloat> & colors) {
+
+	Object::init();
 
 	setCenter((a + b + c) / 3.f);
 
@@ -41,6 +54,10 @@ void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & 
 		normal.x, normal.y, normal.z
 	});
 
+	m_indexBufferPtr->insertData({
+		0, 1, 2
+	});
+
 	m_data.insert(m_data.begin(), {glm::vec4(a, 0.f), glm::vec4(b, 0.f), glm::vec4(c, 0.f), glm::vec4(0.f)});
 
 	m_triangles.emplace_back(glm::vec4(a.x, a.y, a.z, 1.f), glm::vec4(b.x, b.y, b.z, 1.f), glm::vec4(c.x, c.y, c.z, 1.f));
@@ -49,8 +66,6 @@ void Triangle::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & 
 
 void Triangle::draw() const {
 
-	glBindVertexArray(m_vao);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glBindVertexArray(0);
+	m_vaoPtr->draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()));
 
 }

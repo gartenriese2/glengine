@@ -94,16 +94,19 @@ class WindowID {
 			const glm::vec3 &);
 		const ObjectID & createTriangle(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const std::initializer_list<glm::vec3> & = {});
+		const ObjectID & createTriangleInstance();
 
 		const ObjectID & createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const glm::vec3 &);
 		const ObjectID & createQuadrilateral(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const std::initializer_list<glm::vec3> & = {});
+		const ObjectID & createQuadrilateralInstance();
 
 		const ObjectID & createCircle(const glm::vec3 &, const glm::vec3 &, float, unsigned int,
 			const glm::vec3 &);
 		const ObjectID & createCircle(const glm::vec3 &, const glm::vec3 &, float, unsigned int,
 			const std::initializer_list<glm::vec3> & = {});
+		const ObjectID & createCircleInstance();
 
 		const ObjectID & createCuboid(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, const glm::vec3 &);
@@ -115,15 +118,18 @@ class WindowID {
 			unsigned int, const glm::vec3 &);
 		const ObjectID & createCone(const glm::vec3 &, const glm::vec3 &, float, float, float,
 			unsigned int, const std::initializer_list<glm::vec3> & = {});
+		const ObjectID & createConeInstance();
 
 		const ObjectID & createSphere(const glm::vec3 &, float, unsigned int, unsigned int,
 			const glm::vec3 &);
 		const ObjectID & createSphere(const glm::vec3 &, float, unsigned int, unsigned int,
 			const std::initializer_list<glm::vec3> & = {});
+		const ObjectID & createSphereInstance();
 
 		const ObjectID & createSpline(const glm::vec3 &, const glm::vec3 &, const glm::vec3 &, const glm::vec3 &,
 			const glm::vec3 &, float, float, unsigned int, float, const glm::vec3 &);
 		const ObjectID & createSpline(const std::vector<glm::vec3> &, const glm::vec3 &, float, const glm::vec3 &);
+		const ObjectID & createSplineInstance();
 
 		const ObjectID & createCopy(const ObjectID &);
 

@@ -24,8 +24,21 @@ std::shared_ptr<Object> Quadrilateral::getCopy() {
 
 }
 
+std::shared_ptr<Object> Quadrilateral::getInstance() const {
+
+	static std::shared_ptr<Object> ptr(new Quadrilateral({-1.f, -1.f, 0.f}, {1.f, -1.f, 0.f},
+		{1.f, 1.f, 0.f}, {-1.f, 1.f, 0.f}, {1.f, 1.f, 1.f}));
+	
+	std::shared_ptr<Object> instance(new Quadrilateral());
+	instance->makeInstance(*ptr);
+	return instance;
+
+}
+
 void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c, const glm::vec3 & d,
 	const std::vector<GLfloat> & colors) {
+
+	Object::init();
 
 	setCenter((a + b + c + d) / 4.f);
 
@@ -63,8 +76,6 @@ void Quadrilateral::init(const glm::vec3 & a, const glm::vec3 & b, const glm::ve
 
 void Quadrilateral::draw() const {
 
-	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
-	glBindVertexArray(0);
+	m_vaoPtr->draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()));
 
 }

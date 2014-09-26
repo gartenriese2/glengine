@@ -27,7 +27,8 @@ class Circle : public Object {
 		Circle(const glm::vec3 &, const glm::vec3 &, float, unsigned int, const std::initializer_list<glm::vec3> & = {});
 		Circle(const Circle & t) : Object(t) {}
 
-		std::shared_ptr<Object> getCopy();
+		std::shared_ptr<Object> getCopy() override;
+		std::shared_ptr<Object> getInstance() const override;
 
 		void draw() const;
 
@@ -35,9 +36,9 @@ class Circle : public Object {
 
 	private:
 
-		void init(const glm::vec3 &, const glm::vec3 &, float, unsigned int, const std::vector<GLfloat> &);
+		Circle() {}
 
-		unsigned int m_indices;
+		void init(const glm::vec3 &, const glm::vec3 &, float, unsigned int, const std::vector<GLfloat> &);
 
 };
 

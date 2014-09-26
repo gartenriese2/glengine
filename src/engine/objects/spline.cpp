@@ -72,15 +72,28 @@ std::shared_ptr<Object> Spline::getCopy() {
 
 }
 
+std::shared_ptr<Object> Spline::getInstance() const {
+
+	static std::shared_ptr<Object> ptr(new Spline({-0.5f, 0.f, 0.f}, {1.f, 0.f, 0.f},
+		{0.5f, 0.f, 0.f}, {1.f, 0.f, 0.f}, {0.f, 1.f, 0.f}, 1.f, 1.f, 2, 1.f, {1.f, 1.f, 1.f}));
+	
+	std::shared_ptr<Object> instance(new Spline());
+	instance->makeInstance(*ptr);
+	return instance;
+
+}
+
 void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, const glm::vec3 & color) {
 
-	m_indices = static_cast<unsigned int>(vert.size());
-	setCenter((vert[0] + vert[1] + vert[m_indices - 2] + vert[m_indices - 1]) / 4.f);
+	Object::init();
+
+	unsigned int numIndices = static_cast<unsigned int>(vert.size());
+	setCenter((vert[0] + vert[1] + vert[numIndices - 2] + vert[numIndices - 1]) / 4.f);
 
 	std::vector<GLfloat> vertices;
 	std::vector<GLfloat> normals;
 	std::vector<GLfloat> colors;
-	for (unsigned int i = 0; i < m_indices; ++i) {
+	for (unsigned int i = 0; i < numIndices; ++i) {
 		vertices.emplace_back(vert[i][0]);
 		vertices.emplace_back(vert[i][1]);
 		vertices.emplace_back(vert[i][2]);
@@ -99,7 +112,7 @@ void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, con
 	m_normalBufferPtr->insertData(normals);
 
 	std::vector<GLushort> indices;
-	for (unsigned int i = 0; i < m_indices; ++i) {
+	for (unsigned int i = 0; i < numIndices; ++i) {
 		indices.emplace_back(i);
 	}
 	
@@ -133,8 +146,6 @@ void Spline::init(const std::vector<glm::vec3> & vert, const glm::vec3 & up, con
 
 void Spline::draw() const {
 
-	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLE_STRIP, static_cast<GLsizei>(m_indices), GL_UNSIGNED_SHORT, (void*)0);
-	glBindVertexArray(0);
+	m_vaoPtr->draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()), GL_TRIANGLE_STRIP);
 
 }

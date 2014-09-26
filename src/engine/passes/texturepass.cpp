@@ -27,7 +27,7 @@ TexturePass::TexturePass(gl::Texture & tex)
 		0, 1, 2,
 		2, 3, 0
 	});
-	m_vertexArray.attachIBO(m_indexBufferPtr);
+	m_vertexArray.attachIBO(*m_indexBufferPtr);
 
 }
 
@@ -41,8 +41,6 @@ void TexturePass::draw() {
 	m_program["tex"] = {0};
 	glBindTextureUnit(0, m_tex);
 
-	glBindVertexArray(m_vertexArray);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
-	glBindVertexArray(0);
+	m_vertexArray.draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()));
 
 }

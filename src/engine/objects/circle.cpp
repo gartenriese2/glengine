@@ -27,10 +27,22 @@ std::shared_ptr<Object> Circle::getCopy() {
 
 }
 
+std::shared_ptr<Object> Circle::getInstance() const {
+
+	static std::shared_ptr<Object> ptr(new Circle({0.f, 0.f, 0.f}, {0.f, 0.f, 1.f},
+		0.5f, 50, {1.f, 1.f, 1.f}));
+
+	std::shared_ptr<Object> instance(new Circle());
+	instance->makeInstance(*ptr);
+	return instance;
+
+}
+
 void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius,
 	unsigned int edges, const std::vector<GLfloat> & colors) {
 
-	m_indices = edges + 2;
+	Object::init();
+
 	setCenter({0.f, 0.f, 0.f});
 
 	std::vector<GLfloat> vertices {0.f, 0.f, 0.f};
@@ -78,6 +90,6 @@ void Circle::init(const glm::vec3 & center, const glm::vec3 & axis, float radius
 
 void Circle::draw() const {
 
-	m_vao.draw(static_cast<GLsizei>(m_indices) * 3, GL_TRIANGLE_FAN);
+	m_vaoPtr->draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()), GL_TRIANGLE_FAN);
 
 }

@@ -45,8 +45,21 @@ std::shared_ptr<Object> Cone::getCopy() {
 
 }
 
+std::shared_ptr<Object> Cone::getInstance() const {
+
+	static std::shared_ptr<Object> ptr(new Cone({0.f, -0.5f, 0.f}, {0.f, 1.f, 0.f},
+		1.f, 0.5f, 0.5f, 50, {1.f, 1.f, 1.f}));
+	
+	std::shared_ptr<Object> instance(new Cone());
+	instance->makeInstance(*ptr);
+	return instance;
+
+}
+
 void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, float lowerRadius,
 	float upperRadius, unsigned int sections, const std::vector<GLfloat> & colors) {
+
+	Object::init();
 
 	setCenter({0.f, 0.f, 0.f});
 
@@ -250,8 +263,6 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 
 	m_indexBufferPtr->insertData(indices);
 
-	m_indices = static_cast<unsigned int>(indices.size());
-
 	moveTo(base + glm::normalize(axis) * length / 2.f);
 
 	m_data.insert(m_data.begin(), {glm::vec4(base, 0.f), glm::vec4(axis, 0.f),
@@ -263,8 +274,6 @@ void Cone::init(const glm::vec3 & base, const glm::vec3 & axis, float length, fl
 
 void Cone::draw() const {
 
-	glBindVertexArray(m_vao);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_indices), GL_UNSIGNED_SHORT, (void*)0);
-	glBindVertexArray(0);
+	m_vaoPtr->draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()));
 
 }

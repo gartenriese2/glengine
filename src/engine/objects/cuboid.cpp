@@ -24,8 +24,21 @@ std::shared_ptr<Object> Cuboid::getCopy() {
 
 }
 
+std::shared_ptr<Object> Cuboid::getInstance() const {
+
+	static std::shared_ptr<Object> ptr(new Cuboid({-0.5f, -0.5f, 0.5f}, {0.5f, -0.5f, 0.5f},
+		{-0.5f, -0.5f, -0.5f}, {-0.5f, 0.5f, 0.5f}, {1.f, 1.f, 1.f}));
+	
+	std::shared_ptr<Object> instance(new Cuboid());
+	instance->makeInstance(*ptr);
+	return instance;
+
+}
+
 void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 	const glm::vec3 & d, const std::vector<GLfloat> & colors) {
+
+	Object::init();
 
 	glm::vec3 up = d - a;
 
@@ -141,6 +154,6 @@ void Cuboid::init(const glm::vec3 & a, const glm::vec3 & b, const glm::vec3 & c,
 
 void Cuboid::draw() const {
 
-	m_vao.draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()));
+	m_vaoPtr->draw(static_cast<GLsizei>(m_indexBufferPtr->getSize()));
 
 }
