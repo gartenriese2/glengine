@@ -6,8 +6,7 @@ Window::Window(unsigned int width, unsigned int height, const std::string & titl
   : m_width(width),
 	m_height(height),
 	m_title(title),
-	m_fullscreen(fullscreen),
-	m_init(false)
+	m_fullscreen(fullscreen)
 {
 }
 
@@ -64,10 +63,10 @@ void Window::start() {
 	
 	});
 
-	m_init = true;
-
+	m_running = true;
 	m_loop.start(m_window);
-	glfwDestroyWindow(m_window);
+	m_running = false;
+	Debug::log("Window Loop ends now!");
 
 }
 
