@@ -51,11 +51,11 @@ void ampelDemo() {
 	CameraID cam = w.createCamera({0.f, 0.f, 5.f}, {0.f, 0.f, -1.f}, {0.f, 1.f, 0.f});
 	RenderID basic = w.createBasicRendering(cam);
 	basic.set();
-	
+
 	addControls(w, cam);
 	float oldX = -1.0, oldY = -1.0;
 	w.setMouseMoveEvent([&](float xpos, float ypos){
-		
+
 		if (oldX != -1.0 && oldY != -1.0 && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
@@ -125,9 +125,9 @@ void rotateDemo() {
 	float rotPerSecond = 0.33f;
 	long count = 0;
 	while (1) {
-		
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 * step)));
-		
+
 		t1.rotateAround(6.28f * rotPerSecond * step, {0.f, 0.f, 1.f}, {0.f, 0.f, 0.f});
 		t1.rotate(-6.28f * 2*rotPerSecond * step, {0.f, 0.f, 1.f});
 		t2.rotate(6.28f * 2*rotPerSecond * step, {0.f, 0.f, 1.f});
@@ -193,7 +193,7 @@ void test() {
 	addControls(w, cam);
 	float oldX = -1.0f, oldY = -1.0f;
 	w.setMouseMoveEvent([&](float xpos, float ypos){
-		
+
 		if (oldX != -1.0f && oldY != -1.0f && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
@@ -277,7 +277,7 @@ void coneTest() {
 	addControls(w, cam);
 	float oldX = -1.0, oldY = -1.0;
 	w.setMouseMoveEvent([&](float xpos, float ypos){
-		
+
 		if (oldX != -1.0f && oldY != -1.0f && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
@@ -335,7 +335,7 @@ void fbo() {
 	addControls(w, cam);
 	float oldX = -1.0f, oldY = -1.0f;
 	w.setMouseMoveEvent([&](float xpos, float ypos){
-		
+
 		if (oldX != -1.0f && oldY != -1.0f && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
@@ -351,7 +351,7 @@ void fbo() {
 		std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(1000 *  step)));
 		sphere.rotate(6.28f * rotPerSecond * step, {0.f, 1.f, 0.f});
 	}
-	
+
 }
 
 void spline() {
@@ -386,7 +386,7 @@ void raytracing() {
 	addControls(w, cam);
 	float oldX = -1.0f, oldY = -1.0f;
 	w.setMouseMoveEvent([&](float xpos, float ypos){
-		
+
 		if (oldX != -1.0f && oldY != -1.0f && w.isLeftMouseButtonPressed()) {
 			cam.yaw(-(oldX - xpos) * 0.001f);
 			cam.pitch((oldY - ypos) * 0.001f);
@@ -400,8 +400,13 @@ void raytracing() {
 	spotlight.setAsSpotLight();
 	spotlight.setSpotCutoff(0.1f);
 	spotlight.setSpotExponent(2.f);
+
+	LightID spotlight2 = w.createLight({4.9f, 0.f, 0.f}, {-1.f, 0.f, 0.f}, {1.f, 0.f, 0.f});
+	spotlight2.setAsSpotLight();
+	spotlight2.setSpotCutoff(0.1f);
+	spotlight2.setSpotExponent(2.f);
 	//spotlight.setColor({0.f, 0.f, 1.f});
-	RenderID lighting = w.createRaytracingRendering(cam, {spotlight});
+	RenderID lighting = w.createRaytracingRendering(cam, {spotlight, spotlight2});
 	// RenderID lighting = w.createBasicLightingRendering(cam, {spotlight});
 	lighting.set();
 
@@ -429,7 +434,7 @@ void raytracing() {
 	cube3.setShininess(250.f);
 	// ObjectID sphere = w.createSphere({2.5f, -3.f, -2.5f}, 2.f, 12, 12, {0.9f, 0.9f, 0.9f});
 
-	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, cube2, cube3});	
+	lighting.addObjects({wallBack, wallLeft, wallRight, floor, ceiling, cube, cube2, cube3});
 
 	float step = 0.001f;
 	float rotPerSecond = 0.33f;

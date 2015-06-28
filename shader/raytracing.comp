@@ -23,7 +23,7 @@ struct Tri {
 };
 
 struct Light {
-	
+
 	vec4 bools; // isEnabled, isLocal, isSpot, 0
 	vec4 position;
 	vec4 color;
@@ -31,7 +31,7 @@ struct Light {
 	vec4 direction;
 	vec4 attenuation; // constant, linear, quadratic, 0
 	vec4 spot; // spotCosCutoff, spotExponent, 0, 0
-	
+
 };
 
 layout(std430, binding = 0) buffer TriangleBuffer {
@@ -43,12 +43,12 @@ layout(std430, binding = 1) buffer LightBuffer {
 };
 
 Ray initRay(uint x, uint y) {
-	
+
 	Ray r;
-	
+
 	r.dir = normalize(texelFetch(directionTex, ivec2(x, y), 0).xyz);
 	r.origin = texelFetch(positionTex, ivec2(x, y), 0).xyz;
-	
+
 	return r;
 }
 
@@ -140,8 +140,8 @@ void main() {
 	uint y = gl_GlobalInvocationID.y;
 
 	if (x < windowWidth && y < windowHeight) {
-		
-		
+
+
 
 		//Initialize the ray
 		Ray r = initRay(x, y);
